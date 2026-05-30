@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Assurances &amp; Sécurité — Le Magazine de l'ASAC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Top navigation bar: contains logo, language switch and hamburger. This bar sits fixed
+       above the hero. On home page it starts transparent with white elements, then
+       becomes white with blue elements when you scroll. The language switch and
+       hamburger retain the same IDs as before so the existing JS continues to work. -->
+  <div id="topBar" class="top-bar">
+    <a href="#" class="top-logo" onclick="event.preventDefault()">
+      <img src="logo.png" alt="ASAC" />
+    </a>
+    <div class="top-right">
+      <!-- Language switcher moved from the floating position into the fixed top bar. -->
+      <button class="lang-switch" onclick="toggleLang()">
+        <span id="langFR" class="lang-opt active">FR</span>
+        <span class="lang-sep">/</span>
+        <span id="langEN" class="lang-opt">EN</span>
+      </button>
+      <!-- Hamburger button retains the same ID so the toggleMenu function still works. -->
+      <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+
+<!-- ========== HOME PAGE ========== -->
+<div id="homePage" class="page active">
+
+  <!-- HERO SLIDER: full-page slideshow of four main articles. Each slide has a masked
+       background using the folder hero shape. The slider auto-advances every few
+       seconds and can be controlled via the navigation dots. A constant caption
+       remains anchored on the right. -->
+  <div class="hero-slider" id="homeSlider">
+    <div class="hero-caption">
+      <h1 class="magazine-title" data-fr="ASSURANCES<br>ET SÉCURITÉ" data-en="INSURANCE<br>AND SECURITY">ASSURANCES<br>ET SÉCURITÉ</h1>
+      <p class="magazine-subtitle" data-fr="Le Magazine de l'Association des Sociétés d'Assurance du Cameroun" data-en="The Magazine of the Association of Insurance Companies of Cameroon">Le Magazine de l'Association des Sociétés d'Assurance du Cameroun</p>
+      <span class="issue-badge">N° 50 Juin 2026</span>
+    </div>
+    <div class="slides">
+      <!-- Slide 0: ÉDITORIAL -->
+      <div class="slide" data-index="0">
+        <!-- Use a representative Unsplash image related to African insurance and teamwork -->
+        <img src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=1200&q=80" alt="Éditorial" />
+        <div class="slide-overlay"></div>
+        <div class="slide-card" onclick="openArticle('editorial',0)">
+          <div class="card-title" data-fr="ÉDITORIAL" data-en="EDITORIAL">ÉDITORIAL</div>
+          <div class="card-subtitle" data-fr="On sort enfin de l'ombre" data-en="Coming out of the shadows">On sort enfin de l'ombre</div>
+          <span class="card-arrow"><img src="arrow_red.svg" alt="→"/></span>
+        </div>
+      </div>
+      <!-- Slide 1: ACTUALITÉ -->
+      <div class="slide" data-index="1">
+        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&q=80" alt="Actualité" />
+        <div class="slide-overlay"></div>
+        <div class="slide-card" onclick="openArticle('actualite',0)">
+          <div class="card-title" data-fr="ACTUALITÉ" data-en="NEWS">ACTUALITÉ</div>
+          <div class="card-subtitle" data-fr="Fusion approuvée pour Sanlam et Allianz" data-en="Merger approved for Sanlam &amp; Allianz">Fusion approuvée pour Sanlam et Allianz</div>
+          <span class="card-arrow"><img src="arrow_red.svg" alt="→"/></span>
+        </div>
+      </div>
+      <!-- Slide 2: ÉVÈNEMENT -->
+      <div class="slide" data-index="2">
+        <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&q=80" alt="Évènement" />
+        <div class="slide-overlay"></div>
+        <div class="slide-card" onclick="openArticle('evenement',0)">
+          <div class="card-title" data-fr="ÉVÈNEMENT" data-en="EVENT">ÉVÈNEMENT</div>
+          <div class="card-subtitle" data-fr="48ème Assemblée Générale de la FANAF" data-en="48th FANAF General Assembly">48ème Assemblée Générale de la FANAF</div>
+          <span class="card-arrow"><img src="arrow_red.svg" alt="→"/></span>
+        </div>
+      </div>
+      <!-- Slide 3: FOCUS -->
+      <div class="slide" data-index="3">
+        <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1200&q=80" alt="Focus" />
+        <div class="slide-overlay"></div>
+        <div class="slide-card" onclick="openArticle('focus',0)">
+          <div class="card-title">FOCUS</div>
+          <div class="card-subtitle" data-fr="La dématérialisation de l'assurance auto" data-en="Digitalising auto insurance">La dématérialisation de l'assurance auto</div>
+          <span class="card-arrow"><img src="arrow_red.svg" alt="→"/></span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-dots">
+      <span class="dot active" data-index="0"></span>
+      <span class="dot" data-index="1"></span>
+      <span class="dot" data-index="2"></span>
+      <span class="dot" data-index="3"></span>
+    </div>
+  </div>
+</div>
+
+<!-- ========== MENU PAGE ========== -->
+<div id="menuPage" class="page">
+  <div class="menu-top">
+    <div>
+      <h2 class="menu-title" data-fr="ASSURANCES<br>ET SÉCURITÉ" data-en="INSURANCE<br>AND SECURITY">ASSURANCES<br>ET SÉCURITÉ</h2>
+      <p class="menu-sub" data-fr="Le Magazine de l'Association des Sociétés d'Assurance du Cameroun" data-en="The Magazine of the Association of Insurance Companies of Cameroon">Le Magazine de l'Association des Sociétés d'Assurance du Cameroun</p>
+    </div>
+    <div class="menu-actions">
+      <!-- Language switcher for the menu page.  This echoes the top bar switch
+           but is styled for a light background.  It calls toggleLang() to
+           change the interface language. -->
+      <button class="lang-switch" onclick="toggleLang()">
+        <span class="lang-opt active">FR</span>
+        <span class="lang-sep">/</span>
+        <span class="lang-opt">EN</span>
+      </button>
+      <button class="menu-close" onclick="toggleMenu()">✕</button>
+    </div>
+  </div>
+
+  <div class="menu-grid">
+    <!-- First menu card: no longer pre-filled image. The image will be revealed on hover via CSS. -->
+    <div class="m-card stagger-1" onclick="openCategory('editorial')" style="--bg:url('https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=700&q=80')">
+      <span class="m-arrow"><img src="arrow_red.svg" alt="→" /></span>
+      <div class="m-card-body"><h3 data-fr="ÉDITORIAL" data-en="EDITORIAL">ÉDITORIAL</h3><p data-fr="L'impératif de l'assainissement de notre marché" data-en="The imperative of cleaning up our market">L'impératif de l'assainissement de notre marché</p></div>
+    </div>
+
+    <div class="m-card stagger-2" onclick="openCategory('actualite')">
+      <span class="m-arrow red"><img src="arrow_red.svg" alt="" /></span>
+      <div class="m-card-body">
+        <h3 data-fr="ACTUALITÉ" data-en="NEWS">ACTUALITÉ</h3>
+        <div class="m-list">
+          <div class="m-list-item"><span class="m-bar"></span><span data-fr="L'impératif de l'assainissement de notre marché" data-en="The imperative of cleaning up our market">L'impératif de l'assainissement de notre marché</span></div>
+          <div class="m-list-item"><span class="m-bar"></span><span data-fr="L'impératif de l'assainissement de notre marché" data-en="The imperative of cleaning up our market">L'impératif de l'assainissement de notre marché</span></div>
+          <div class="m-list-item"><span class="m-bar"></span><span data-fr="L'impératif de l'assainissement de notre marché" data-en="The imperative of cleaning up our market">L'impératif de l'assainissement de notre marché</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="m-card stagger-3" onclick="openCategory('evenement')">
+      <span class="m-arrow red"><img src="arrow_red.svg" alt="" /></span>
+      <div class="m-card-body"><h3 data-fr="EVENEMENT" data-en="EVENT">EVENEMENT</h3><p data-fr="L'impératif de l'assainissement de notre marché" data-en="The imperative of cleaning up our market">L'impératif de l'assainissement de notre marché</p></div>
+    </div>
+
+    <div class="m-card stagger-4" onclick="openCategory('focus')">
+      <span class="m-arrow red"><img src="arrow_red.svg" alt="" /></span>
+      <div class="m-card-body">
+        <h3>FOCUS</h3>
+        <div class="m-list">
+          <div class="m-list-item"><span class="m-bar"></span><span data-fr="L'impératif de l'assainissement de notre marché" data-en="The imperative of cleaning up our market">L'impératif de l'assainissement de notre marché</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="m-card stagger-5" onclick="openCategory('vie')">
+      <span class="m-arrow red"><img src="arrow_red.svg" alt="" /></span>
+      <div class="m-card-body"><h3 data-fr="VIE DE L'ASAC" data-en="ASAC LIFE">VIE DE L'ASAC</h3><p data-fr="L'impératif de l'assainissement de notre marché" data-en="Strengthening governance">L'impératif de l'assainissement de notre marché</p></div>
+    </div>
+
+    <div class="m-card stagger-6" onclick="openCategory('bouge')">
+      <span class="m-arrow red"><img src="arrow_red.svg" alt="" /></span>
+      <div class="m-card-body"><h3 data-fr="ÇA BOUGE !" data-en="ON THE MOVE!">ÇA BOUGE !</h3><p data-fr="L'impératif de l'assainissement de notre marché" data-en="News and appointments">L'impératif de l'assainissement de notre marché</p></div>
+    </div>
+
+    <div class="m-card m-wide stagger-7" onclick="openCategory('avis')">
+      <span class="m-arrow red"><img src="arrow_red.svg" alt="" /></span>
+      <div class="m-card-body"><h3 data-fr="EVENEMENT" data-en="EVENT">EVENEMENT</h3><p data-fr="L'impératif de l'assainissement de notre marché" data-en="The imperative">L'impératif de l'assainissement de notre marché</p></div>
+    </div>
+
+    <div class="m-card stagger-8" onclick="openCategory('metiers')">
+      <span class="m-arrow red"><img src="arrow_red.svg" alt="" /></span>
+      <div class="m-card-body"><h3 data-fr="LES MÉTIERS" data-en="CAREERS">LES MÉTIERS</h3><p data-fr="Portrait d'un actuaire" data-en="Portrait of an actuary">Portrait d'un actuaire</p></div>
+    </div>
+
+    <div class="m-card stagger-9" onclick="openCategory('emploi')">
+      <span class="m-arrow red"><img src="arrow_red.svg" alt="" /></span>
+      <div class="m-card-body"><h3 data-fr="EMPLOI" data-en="EMPLOYMENT">EMPLOI</h3><p data-fr="Offres d'emploi" data-en="Job offers">Offres d'emploi</p></div>
+    </div>
+
+    <div class="m-card stagger-10" onclick="openCategory('fun')">
+      <span class="m-arrow red"><img src="arrow_red.svg" alt="" /></span>
+      <div class="m-card-body"><h3 data-fr="INSTANT FUN" data-en="FUN TIME">INSTANT FUN</h3><p data-fr="Quiz assurance" data-en="Insurance quiz">Quiz assurance</p></div>
+    </div>
+
+    <div class="m-card stagger-11" onclick="openCategory('membres')">
+      <span class="m-arrow red"><img src="arrow_red.svg" alt="" /></span>
+      <div class="m-card-body"><h3 data-fr="MEMBRES" data-en="MEMBERS">MEMBRES</h3><p data-fr="Compagnies membres" data-en="Member companies">Compagnies membres</p></div>
+    </div>
+  </div>
+
+  <!-- TEAM — directly on gray bg, no white box -->
+  <div class="team-section">
+    <h2 class="team-heading" data-fr="EQUIPE DU<br>JOURNAL" data-en="EDITORIAL<br>TEAM">EQUIPE DU<br>JOURNAL</h2>
+    <div class="team-rule"></div>
+    <div class="team-cols">
+      <div class="team-col">
+        <div class="team-role"><strong data-fr="Directeur de Publication :" data-en="Publishing Director:">Directeur de Publication :</strong><span>Thierry KEPEDEN</span></div>
+        <div class="team-role"><strong data-fr="Directeur de Publication Délégué :" data-en="Deputy Publishing Director:">Directeur de Publication Délégué :</strong><span>Vincent ONGONO</span></div>
+        <div class="team-role"><strong data-fr="Administration :" data-en="Administration:">Administration :</strong><span>Emmanuel EBONGO</span></div>
+        <div class="team-role"><strong data-fr="Comité Editorial :" data-en="Editorial Committee:">Comité Editorial :</strong><span data-fr="Commission Communication de l'ASAC" data-en="ASAC Communication Committee">Commission Communication de l'ASAC</span></div>
+        <div class="team-role"><strong data-fr="Rédacteur en Chef :" data-en="Editor-in-Chief:">Rédacteur en Chef :</strong><span>Fortune NOUKOUA</span></div>
+      </div>
+      <div class="team-col">
+        <strong data-fr="Ont collaboré :" data-en="Contributors:">Ont collaboré :</strong>
+        <ul class="team-names">
+          <li>Flora BELLE</li><li>Larissa BONGAM</li><li>Vanessa MBOULE</li>
+          <li>Felicia NKONDOCK</li><li>Ahmed YOMBO</li><li>Christian OMOKO</li>
+          <li>Julien NGUE</li><li>Pierre MBOUMMA</li><li>Alfred NKOYOG</li>
+          <li>Daniel DOUALLA</li><li>Benoit MENDZANA.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="team-logo"><img src="logo.png" alt="ASAC" /></div>
+  </div>
+</div>
+
+<!-- ========== ARTICLE PAGE ========== -->
+<div id="articlePage" class="page">
+  <div class="art-nav">
+    <button class="art-close" onclick="closeArticle()">✕</button>
+    <span class="art-cat" id="articleCatLabel">ÉDITORIAL</span>
+  </div>
+  <div class="art-hero"><img id="articleHeroImg" src="" alt="" /></div>
+  <div class="art-body">
+    <h1 class="art-title" id="articleTitle"></h1>
+    <div class="art-content" id="articleContent"></div>
+  </div>
+  <div class="art-divider"></div>
+  <div class="art-next"><img id="articleNextImg" src="" alt="" loading="lazy" /></div>
+</div>
+
+<!-- ========== CATEGORY PAGE ========== -->
+<div id="categoryPage" class="page">
+  <div class="art-nav">
+    <button class="art-close gray" onclick="closeCategory()">✕</button>
+    <span class="art-cat" id="catPageLabel"></span>
+  </div>
+  <div class="cat-hero"><img id="catHeroImg" src="" alt="" /><div class="cat-dim"></div><div class="cat-hero-text" id="catHeroText"></div></div>
+  <div class="cat-list" id="categoryList"></div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
