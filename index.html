@@ -47,22 +47,17 @@
       <span class="issue-badge">N° 50 Juin 2026</span>
     </div>
     <div class="slides">
-      <!-- Slide 0: ÉDITORIAL -->
+      <!-- Slide 0: TITLE SLIDE (no card, only magazine info) -->
       <div class="slide" data-index="0">
         <!-- Use a representative Unsplash image related to African insurance and teamwork -->
         <img src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=1200&q=80" alt="Éditorial" />
         <div class="slide-overlay"></div>
-        <div class="slide-card" onclick="openArticle('editorial',0)">
-          <div class="card-title" data-fr="ÉDITORIAL" data-en="EDITORIAL">ÉDITORIAL</div>
-          <div class="card-subtitle" data-fr="On sort enfin de l'ombre" data-en="Coming out of the shadows">On sort enfin de l'ombre</div>
-          <span class="card-arrow"><img src="arrow_red.svg" alt="→"/></span>
-        </div>
       </div>
       <!-- Slide 1: ACTUALITÉ -->
       <div class="slide" data-index="1">
         <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&q=80" alt="Actualité" />
         <div class="slide-overlay"></div>
-        <div class="slide-card" onclick="openArticle('actualite',0)">
+        <div class="slide-card" onclick="openCategory('actualite')">
           <div class="card-title" data-fr="ACTUALITÉ" data-en="NEWS">ACTUALITÉ</div>
           <div class="card-subtitle" data-fr="Fusion approuvée pour Sanlam et Allianz" data-en="Merger approved for Sanlam &amp; Allianz">Fusion approuvée pour Sanlam et Allianz</div>
           <span class="card-arrow"><img src="arrow_red.svg" alt="→"/></span>
@@ -72,7 +67,7 @@
       <div class="slide" data-index="2">
         <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&q=80" alt="Évènement" />
         <div class="slide-overlay"></div>
-        <div class="slide-card" onclick="openArticle('evenement',0)">
+        <div class="slide-card" onclick="openCategory('evenement')">
           <div class="card-title" data-fr="ÉVÈNEMENT" data-en="EVENT">ÉVÈNEMENT</div>
           <div class="card-subtitle" data-fr="48ème Assemblée Générale de la FANAF" data-en="48th FANAF General Assembly">48ème Assemblée Générale de la FANAF</div>
           <span class="card-arrow"><img src="arrow_red.svg" alt="→"/></span>
@@ -82,13 +77,15 @@
       <div class="slide" data-index="3">
         <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1200&q=80" alt="Focus" />
         <div class="slide-overlay"></div>
-        <div class="slide-card" onclick="openArticle('focus',0)">
+        <div class="slide-card" onclick="openCategory('focus')">
           <div class="card-title">FOCUS</div>
           <div class="card-subtitle" data-fr="La dématérialisation de l'assurance auto" data-en="Digitalising auto insurance">La dématérialisation de l'assurance auto</div>
           <span class="card-arrow"><img src="arrow_red.svg" alt="→"/></span>
         </div>
       </div>
     </div>
+    <button class="nav-arrow left" onclick="prevSlide()" aria-label="Previous slide"><img src="arrow_white.svg" alt="←" style="transform:rotate(180deg)"/></button>
+    <button class="nav-arrow right" onclick="nextSlide()" aria-label="Next slide"><img src="arrow_white.svg" alt="→"/></button>
     <div class="hero-dots">
       <span class="dot active" data-index="0"></span>
       <span class="dot" data-index="1"></span>
@@ -125,7 +122,7 @@
       <div class="m-card-body"><h3 data-fr="ÉDITORIAL" data-en="EDITORIAL">ÉDITORIAL</h3><p data-fr="L'impératif de l'assainissement de notre marché" data-en="The imperative of cleaning up our market">L'impératif de l'assainissement de notre marché</p></div>
     </div>
 
-    <div class="m-card stagger-2" onclick="openCategory('actualite')">
+    <div class="m-card stagger-2" onclick="openCategory('actualite')" style="--bg:url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=700&q=80')">
       <span class="m-arrow red"><img src="arrow_red.svg" alt="" /></span>
       <div class="m-card-body">
         <h3 data-fr="ACTUALITÉ" data-en="NEWS">ACTUALITÉ</h3>
@@ -137,12 +134,12 @@
       </div>
     </div>
 
-    <div class="m-card stagger-3" onclick="openCategory('evenement')">
+    <div class="m-card stagger-3" onclick="openCategory('evenement')" style="--bg:url('https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=700&q=80')">
       <span class="m-arrow red"><img src="arrow_red.svg" alt="" /></span>
       <div class="m-card-body"><h3 data-fr="EVENEMENT" data-en="EVENT">EVENEMENT</h3><p data-fr="L'impératif de l'assainissement de notre marché" data-en="The imperative of cleaning up our market">L'impératif de l'assainissement de notre marché</p></div>
     </div>
 
-    <div class="m-card stagger-4" onclick="openCategory('focus')">
+    <div class="m-card stagger-4" onclick="openCategory('focus')" style="--bg:url('https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=700&q=80')">
       <span class="m-arrow red"><img src="arrow_red.svg" alt="" /></span>
       <div class="m-card-body">
         <h3>FOCUS</h3>
@@ -152,37 +149,37 @@
       </div>
     </div>
 
-    <div class="m-card stagger-5" onclick="openCategory('vie')">
+    <div class="m-card stagger-5" onclick="openCategory('vie')" style="--bg:url('https://images.unsplash.com/photo-1556761175-4b46a572b786?w=700&q=80')">
       <span class="m-arrow red"><img src="arrow_red.svg" alt="" /></span>
       <div class="m-card-body"><h3 data-fr="VIE DE L'ASAC" data-en="ASAC LIFE">VIE DE L'ASAC</h3><p data-fr="L'impératif de l'assainissement de notre marché" data-en="Strengthening governance">L'impératif de l'assainissement de notre marché</p></div>
     </div>
 
-    <div class="m-card stagger-6" onclick="openCategory('bouge')">
+    <div class="m-card stagger-6" onclick="openCategory('bouge')" style="--bg:url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=700&q=80')">
       <span class="m-arrow red"><img src="arrow_red.svg" alt="" /></span>
       <div class="m-card-body"><h3 data-fr="ÇA BOUGE !" data-en="ON THE MOVE!">ÇA BOUGE !</h3><p data-fr="L'impératif de l'assainissement de notre marché" data-en="News and appointments">L'impératif de l'assainissement de notre marché</p></div>
     </div>
 
-    <div class="m-card m-wide stagger-7" onclick="openCategory('avis')">
+    <div class="m-card m-wide stagger-7" onclick="openCategory('avis')" style="--bg:url('https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=700&q=80')">
       <span class="m-arrow red"><img src="arrow_red.svg" alt="" /></span>
       <div class="m-card-body"><h3 data-fr="EVENEMENT" data-en="EVENT">EVENEMENT</h3><p data-fr="L'impératif de l'assainissement de notre marché" data-en="The imperative">L'impératif de l'assainissement de notre marché</p></div>
     </div>
 
-    <div class="m-card stagger-8" onclick="openCategory('metiers')">
+    <div class="m-card stagger-8" onclick="openCategory('metiers')" style="--bg:url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=700&q=80')">
       <span class="m-arrow red"><img src="arrow_red.svg" alt="" /></span>
       <div class="m-card-body"><h3 data-fr="LES MÉTIERS" data-en="CAREERS">LES MÉTIERS</h3><p data-fr="Portrait d'un actuaire" data-en="Portrait of an actuary">Portrait d'un actuaire</p></div>
     </div>
 
-    <div class="m-card stagger-9" onclick="openCategory('emploi')">
+    <div class="m-card stagger-9" onclick="openCategory('emploi')" style="--bg:url('https://images.unsplash.com/photo-1552664730-d307ca884978?w=700&q=80')">
       <span class="m-arrow red"><img src="arrow_red.svg" alt="" /></span>
       <div class="m-card-body"><h3 data-fr="EMPLOI" data-en="EMPLOYMENT">EMPLOI</h3><p data-fr="Offres d'emploi" data-en="Job offers">Offres d'emploi</p></div>
     </div>
 
-    <div class="m-card stagger-10" onclick="openCategory('fun')">
+    <div class="m-card stagger-10" onclick="openCategory('fun')" style="--bg:url('https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=700&q=80')">
       <span class="m-arrow red"><img src="arrow_red.svg" alt="" /></span>
       <div class="m-card-body"><h3 data-fr="INSTANT FUN" data-en="FUN TIME">INSTANT FUN</h3><p data-fr="Quiz assurance" data-en="Insurance quiz">Quiz assurance</p></div>
     </div>
 
-    <div class="m-card stagger-11" onclick="openCategory('membres')">
+    <div class="m-card stagger-11" onclick="openCategory('membres')" style="--bg:url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=700&q=80')">
       <span class="m-arrow red"><img src="arrow_red.svg" alt="" /></span>
       <div class="m-card-body"><h3 data-fr="MEMBRES" data-en="MEMBERS">MEMBRES</h3><p data-fr="Compagnies membres" data-en="Member companies">Compagnies membres</p></div>
     </div>

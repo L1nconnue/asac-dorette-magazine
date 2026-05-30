@@ -274,7 +274,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const slides = slider.querySelectorAll('.slide');
     const dots = slider.querySelectorAll('.dot');
     let currentSlide = 0;
-    function showSlide(i) {
+    window.showSlide = function(i) {
       if (!slidesContainer) return;
       slidesContainer.style.transform = `translateX(-${i * 100}%)`;
       dots.forEach((dot, idx) => dot.classList.toggle('active', idx === i));
@@ -282,6 +282,14 @@ document.addEventListener('DOMContentLoaded', () => {
         slide.classList.toggle('active', idx === i);
       });
       currentSlide = i;
+    }
+    window.nextSlide = function() {
+      showSlide((currentSlide + 1) % slides.length);
+      resetInterval();
+    }
+    window.prevSlide = function() {
+      showSlide((currentSlide - 1 + slides.length) % slides.length);
+      resetInterval();
     }
     dots.forEach(dot => {
       dot.addEventListener('click', () => {
