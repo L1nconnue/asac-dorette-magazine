@@ -1,8 +1,0 @@
-{
-  "name": "asac-magazine",
-  "version": "1.0.0",
-  "description": "Assurances & Sécurité - Le Magazine de l'ASAC",
-  "scripts": {
-    "start": "npx serve ."
-  }
-}
