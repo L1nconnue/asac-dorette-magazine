@@ -33,7 +33,7 @@ body{font-family:'Poppins',sans-serif;background:var(--white);color:var(--text);
   z-index:200;
   background:transparent;
   color:var(--white);
-  transition:background .3s,color .3s,box-shadow .3s;
+  transition:none;
 }
 .top-bar .top-right{
   display:flex;
@@ -41,12 +41,12 @@ body{font-family:'Poppins',sans-serif;background:var(--white);color:var(--text);
   gap:16px;
 }
 .top-bar .top-logo img{
-  height:38.4px;
+  height:38px;
   width:auto;
   object-fit:contain;
-  /* Blue in light mode, white in dark mode */
+  /* Show the logo in its native colours in light mode; dark mode
+     inversion is applied below via a media query. */
   filter:none;
-  transition:filter .3s;
 }
 .top-bar .hamburger{
   width:44px;
@@ -56,7 +56,6 @@ body{font-family:'Poppins',sans-serif;background:var(--white);color:var(--text);
   align-items:center;
   justify-content:center;
   gap:6px;
-  color:var(--white);
 }
 .top-bar .hamburger span{
   display:block;
@@ -90,6 +89,13 @@ body{font-family:'Poppins',sans-serif;background:var(--white);color:var(--text);
   color:var(--white);
   font-weight:700;
 }
+
+/* Display the logo in white when the user prefers a dark colour scheme. */
+@media (prefers-color-scheme: dark){
+  .top-bar .top-logo img{
+    filter:brightness(0) invert(1);
+  }
+}
 .top-bar .lang-switch .lang-sep{
   color:rgba(255,255,255,.4);
 }
@@ -99,7 +105,7 @@ body{font-family:'Poppins',sans-serif;background:var(--white);color:var(--text);
   box-shadow:0 2px 6px rgba(0,0,0,.05);
 }
 .top-bar.scrolled .top-logo img{
-  filter:invert(1) brightness(0.2);
+  filter:none;
 }
 .top-bar.scrolled .lang-switch{
   background:rgba(235,235,235,.8);
@@ -129,7 +135,12 @@ ul{list-style:none}
 }
 .page.active{transform:translateX(0);opacity:1;pointer-events:all;z-index:15}
 .page.behind{transform:translateX(-4%);opacity:.65;pointer-events:none;z-index:10}
-#homePage{transform:translateX(0);opacity:1;pointer-events:all;z-index:5;padding-top:60px;overflow:hidden}
+#homePage{transform:translateX(0);opacity:1;pointer-events:all;z-index:5;padding-top:60px}
+#homePage{
+  /* Prevent vertical scrolling on the home page.  The hero slider
+     occupies the full viewport height so no scrollbars appear. */
+  overflow:hidden;
+}
 #homePage.behind{transform:translateX(-4%);opacity:.6;pointer-events:none}
 #menuPage{z-index:30}
 #articlePage{z-index:25}
@@ -665,11 +676,11 @@ ul{list-style:none}
   min-height:500px;
   overflow:hidden;
   z-index:1;
-  margin:0 auto;
+  /* Apply the new folder shape to the entire slider and leave a small margin on
+     the left and right.  We set a horizontal margin of 20px and reduce the
+     width accordingly. */
+  margin:0 20px;
   width:calc(100% - 40px);
-  margin-left:20px;
-  margin-right:20px;
-  /* Apply the new folder shape to the entire slider */
   -webkit-mask-image:url('folder_hero_new.svg');
   mask-image:url('folder_hero_new.svg');
   -webkit-mask-size:cover;
@@ -721,9 +732,6 @@ ul{list-style:none}
   font-family:'Bebas Neue',sans-serif;
   font-size:clamp(48px,13vw,96px);
   line-height:0.9;
-}
-.hero-slider .slide:not([data-index="0"]) .hero-caption .magazine-title{
-  font-size:clamp(33.6px,9.1vw,67.2px);
 }
 .hero-slider .hero-caption .magazine-subtitle{
   font-size:clamp(12px,2.2vw,20px);
@@ -805,33 +813,90 @@ ul{list-style:none}
 .hero-slider .dot.active{
   background:var(--white);
 }
-.hero-slider .nav-arrow{
+
+/* Slide captions: Each slide has its own caption container.  These
+   captions are positioned near the right side of the hero and vertically
+   centred (slightly below centre) to clear the top bar. */
+.hero-slider .slide-caption{
+  position:absolute;
+  top:55%;
+  right:5%;
+  transform:translateY(-50%);
+  text-align:right;
+  color:var(--white);
+  z-index:6;
+  max-width:45%;
+}
+
+/* Large magazine title on the first slide */
+.hero-slider .title-large{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(48px,13vw,96px);
+  line-height:0.9;
+  letter-spacing:.02em;
+}
+/* Smaller magazine title on subsequent slides (roughly 30% smaller) */
+.hero-slider .title-small{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(32px,9vw,68px);
+  line-height:0.9;
+  letter-spacing:.02em;
+}
+/* Caption description (subtitle) */
+.hero-slider .caption-desc{
+  font-size:clamp(12px,2.2vw,18px);
+  margin-top:10px;
+  opacity:0.9;
+  line-height:1.4;
+  max-width:100%;
+}
+/* Issue number badge on slide 1 */
+.hero-slider .issue-number{
+  display:inline-block;
+  margin-top:8px;
+  padding:4px 12px;
+  background:var(--red);
+  color:var(--white);
+  border-radius:12px;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.05em;
+}
+
+/* Navigation arrows for the hero slider.  These buttons sit on the left
+   and right edges of the slider and vertically centre themselves.  They
+   only appear on hover or for pointer devices (hidden on touch devices).
+   The arrows use the white SVG and a semi-transparent background for
+   better contrast. */
+.hero-slider .hero-arrow{
   position:absolute;
   top:50%;
   transform:translateY(-50%);
-  width:40px;
-  height:40px;
-  background:rgba(255,255,255,0.2);
-  border:none;
+  width:44px;
+  height:44px;
   border-radius:50%;
+  background:rgba(255,255,255,0.25);
+  backdrop-filter:blur(6px);
+  -webkit-backdrop-filter:blur(6px);
+  border:none;
   display:flex;
-  align-items:center;
   justify-content:center;
+  align-items:center;
+  padding:0;
   cursor:pointer;
-  z-index:6;
-  transition:background 0.3s;
+  z-index:7;
+  transition:background .25s;
 }
-.hero-slider .nav-arrow:hover{
-  background:rgba(255,255,255,0.35);
-}
-.hero-slider .nav-arrow.left{
-  left:3%;
-}
-.hero-slider .nav-arrow.right{
-  right:3%;
-}
-.hero-slider .nav-arrow img{
-  width:20px;
-  height:20px;
+.hero-slider .hero-arrow img{
+  width:22px;
+  height:22px;
   object-fit:contain;
+}
+.hero-slider .hero-arrow:hover{
+  background:rgba(255,255,255,0.4);
+}
+.hero-slider .hero-left{left:8px;}
+.hero-slider .hero-right{right:8px;}
+@media (hover:none){
+  .hero-slider .hero-arrow{display:none;}
 }

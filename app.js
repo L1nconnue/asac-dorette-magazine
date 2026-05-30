@@ -251,20 +251,9 @@ document.addEventListener('DOMContentLoaded', () => {
   applyLang();
   // Render the initial page state.
   render();
-  // When the home page scrolls, toggle the scrolled class on the top bar
-  // to switch between transparent and white backgrounds.  The bar only
-  // listens while the home page is in view; on other pages it is hidden.
-  const homePage = document.getElementById('homePage');
-  const topBar = document.getElementById('topBar');
-  if (homePage && topBar) {
-    homePage.addEventListener('scroll', () => {
-      if (homePage.scrollTop > 40) {
-        topBar.classList.add('scrolled');
-      } else {
-        topBar.classList.remove('scrolled');
-      }
-    });
-  }
+  // We no longer toggle a scrolled state on the top bar.  The top bar
+  // remains transparent at all times.  Therefore we deliberately do
+  // nothing here.
 
   // Initialize the hero slider on the home page.  The slider cycles
   // horizontally through each slide and updates the navigation dots.
@@ -274,7 +263,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const slides = slider.querySelectorAll('.slide');
     const dots = slider.querySelectorAll('.dot');
     let currentSlide = 0;
-    window.showSlide = function(i) {
+    function showSlide(i) {
       if (!slidesContainer) return;
       slidesContainer.style.transform = `translateX(-${i * 100}%)`;
       dots.forEach((dot, idx) => dot.classList.toggle('active', idx === i));
@@ -282,14 +271,6 @@ document.addEventListener('DOMContentLoaded', () => {
         slide.classList.toggle('active', idx === i);
       });
       currentSlide = i;
-    }
-    window.nextSlide = function() {
-      showSlide((currentSlide + 1) % slides.length);
-      resetInterval();
-    }
-    window.prevSlide = function() {
-      showSlide((currentSlide - 1 + slides.length) % slides.length);
-      resetInterval();
     }
     dots.forEach(dot => {
       dot.addEventListener('click', () => {
@@ -309,5 +290,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     // Kick off initial slide
     showSlide(0);
+
+    // Expose slider controls globally so that arrow buttons can invoke them.
+    window.nextSlide = function() {
+      showSlide((currentSlide + 1) % slides.length);
+      resetInterval();
+    };
+    window.prevSlide = function() {
+      showSlide((currentSlide - 1 + slides.length) % slides.length);
+      resetInterval();
+    };
   }
 });

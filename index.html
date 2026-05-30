@@ -8,6 +8,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
+  <!-- Site favicon -->
+  <link rel="icon" type="image/png" href="favicon.png" />
 </head>
 <body>
 
@@ -36,28 +38,34 @@
 <!-- ========== HOME PAGE ========== -->
 <div id="homePage" class="page active">
 
-  <!-- HERO SLIDER: full-page slideshow of four main articles. Each slide has a masked
-       background using the folder hero shape. The slider auto-advances every few
-       seconds and can be controlled via the navigation dots. A constant caption
-       remains anchored on the right. -->
+  <!-- HERO SLIDER: full-page slideshow of four main articles.  The folder-shaped
+       container leaves a small margin on each side.  Slide 1 displays only
+       the magazine title, description and issue number.  Subsequent slides
+       show the category and a short description along with a smaller
+       magazine title.  Navigation arrows allow moving left or right. -->
   <div class="hero-slider" id="homeSlider">
-    <div class="hero-caption">
-      <h1 class="magazine-title" data-fr="ASSURANCES<br>ET SÉCURITÉ" data-en="INSURANCE<br>AND SECURITY">ASSURANCES<br>ET SÉCURITÉ</h1>
-      <p class="magazine-subtitle" data-fr="Le Magazine de l'Association des Sociétés d'Assurance du Cameroun" data-en="The Magazine of the Association of Insurance Companies of Cameroon">Le Magazine de l'Association des Sociétés d'Assurance du Cameroun</p>
-      <span class="issue-badge">N° 50 Juin 2026</span>
-    </div>
+    <!-- Slide captions are now embedded within each slide instead of a global caption -->
     <div class="slides">
-      <!-- Slide 0: TITLE SLIDE (no card, only magazine info) -->
+      <!-- Slide 0: ÉDITORIAL -->
       <div class="slide" data-index="0">
-        <!-- Use a representative Unsplash image related to African insurance and teamwork -->
         <img src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=1200&q=80" alt="Éditorial" />
         <div class="slide-overlay"></div>
+        <!-- Slide 1 caption: magazine name, description and issue number -->
+        <div class="slide-caption">
+          <h1 class="title-large" data-fr="ASSURANCES<br>ET SÉCURITÉ" data-en="INSURANCE<br>AND SECURITY">ASSURANCES<br>ET SÉCURITÉ</h1>
+          <p class="caption-desc" data-fr="Le Magazine de l'Association des Sociétés d'Assurance du Cameroun" data-en="The Magazine of the Association of Insurance Companies of Cameroon">Le Magazine de l'Association des Sociétés d'Assurance du Cameroun</p>
+          <span class="issue-number">N° 50 Juin 2026</span>
+        </div>
       </div>
       <!-- Slide 1: ACTUALITÉ -->
       <div class="slide" data-index="1">
         <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&q=80" alt="Actualité" />
         <div class="slide-overlay"></div>
-        <div class="slide-card" onclick="openCategory('actualite')">
+        <!-- Smaller magazine title on subsequent slides -->
+        <div class="slide-caption">
+          <h1 class="title-small" data-fr="ASSURANCES<br>ET SÉCURITÉ" data-en="INSURANCE<br>AND SECURITY">ASSURANCES<br>ET SÉCURITÉ</h1>
+        </div>
+        <div class="slide-card" onclick="openArticle('actualite',0)">
           <div class="card-title" data-fr="ACTUALITÉ" data-en="NEWS">ACTUALITÉ</div>
           <div class="card-subtitle" data-fr="Fusion approuvée pour Sanlam et Allianz" data-en="Merger approved for Sanlam &amp; Allianz">Fusion approuvée pour Sanlam et Allianz</div>
           <span class="card-arrow"><img src="arrow_red.svg" alt="→"/></span>
@@ -67,7 +75,10 @@
       <div class="slide" data-index="2">
         <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&q=80" alt="Évènement" />
         <div class="slide-overlay"></div>
-        <div class="slide-card" onclick="openCategory('evenement')">
+        <div class="slide-caption">
+          <h1 class="title-small" data-fr="ASSURANCES<br>ET SÉCURITÉ" data-en="INSURANCE<br>AND SECURITY">ASSURANCES<br>ET SÉCURITÉ</h1>
+        </div>
+        <div class="slide-card" onclick="openArticle('evenement',0)">
           <div class="card-title" data-fr="ÉVÈNEMENT" data-en="EVENT">ÉVÈNEMENT</div>
           <div class="card-subtitle" data-fr="48ème Assemblée Générale de la FANAF" data-en="48th FANAF General Assembly">48ème Assemblée Générale de la FANAF</div>
           <span class="card-arrow"><img src="arrow_red.svg" alt="→"/></span>
@@ -77,15 +88,26 @@
       <div class="slide" data-index="3">
         <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1200&q=80" alt="Focus" />
         <div class="slide-overlay"></div>
-        <div class="slide-card" onclick="openCategory('focus')">
+        <div class="slide-caption">
+          <h1 class="title-small" data-fr="ASSURANCES<br>ET SÉCURITÉ" data-en="INSURANCE<br>AND SECURITY">ASSURANCES<br>ET SÉCURITÉ</h1>
+        </div>
+        <div class="slide-card" onclick="openArticle('focus',0)">
           <div class="card-title">FOCUS</div>
           <div class="card-subtitle" data-fr="La dématérialisation de l'assurance auto" data-en="Digitalising auto insurance">La dématérialisation de l'assurance auto</div>
           <span class="card-arrow"><img src="arrow_red.svg" alt="→"/></span>
         </div>
       </div>
     </div>
-    <button class="nav-arrow left" onclick="prevSlide()" aria-label="Previous slide"><img src="arrow_white.svg" alt="←" style="transform:rotate(180deg)"/></button>
-    <button class="nav-arrow right" onclick="nextSlide()" aria-label="Next slide"><img src="arrow_white.svg" alt="→"/></button>
+    <!-- Arrow navigation buttons for the hero slider.  Each arrow sits on the
+         left or right side of the slider and allows the user to move
+         backward or forward.  The arrows use a white SVG icon and are
+         hidden on very small screens where swipe gestures are available. -->
+    <button class="hero-arrow hero-left" aria-label="Précédent" onclick="prevSlide()">
+      <img src="arrow_white.svg" alt="←" />
+    </button>
+    <button class="hero-arrow hero-right" aria-label="Suivant" onclick="nextSlide()">
+      <img src="arrow_white.svg" alt="→" />
+    </button>
     <div class="hero-dots">
       <span class="dot active" data-index="0"></span>
       <span class="dot" data-index="1"></span>
@@ -169,17 +191,17 @@
       <div class="m-card-body"><h3 data-fr="LES MÉTIERS" data-en="CAREERS">LES MÉTIERS</h3><p data-fr="Portrait d'un actuaire" data-en="Portrait of an actuary">Portrait d'un actuaire</p></div>
     </div>
 
-    <div class="m-card stagger-9" onclick="openCategory('emploi')" style="--bg:url('https://images.unsplash.com/photo-1552664730-d307ca884978?w=700&q=80')">
+    <div class="m-card stagger-9" onclick="openCategory('emploi')" style="--bg:url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=700&q=80')">
       <span class="m-arrow red"><img src="arrow_red.svg" alt="" /></span>
       <div class="m-card-body"><h3 data-fr="EMPLOI" data-en="EMPLOYMENT">EMPLOI</h3><p data-fr="Offres d'emploi" data-en="Job offers">Offres d'emploi</p></div>
     </div>
 
-    <div class="m-card stagger-10" onclick="openCategory('fun')" style="--bg:url('https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=700&q=80')">
+    <div class="m-card stagger-10" onclick="openCategory('fun')" style="--bg:url('https://images.unsplash.com/photo-1509869175650-a1d97972541a?w=700&q=80')">
       <span class="m-arrow red"><img src="arrow_red.svg" alt="" /></span>
       <div class="m-card-body"><h3 data-fr="INSTANT FUN" data-en="FUN TIME">INSTANT FUN</h3><p data-fr="Quiz assurance" data-en="Insurance quiz">Quiz assurance</p></div>
     </div>
 
-    <div class="m-card stagger-11" onclick="openCategory('membres')" style="--bg:url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=700&q=80')">
+    <div class="m-card stagger-11" onclick="openCategory('membres')" style="--bg:url('https://images.unsplash.com/photo-1560472355-536de3962603?w=700&q=80')">
       <span class="m-arrow red"><img src="arrow_red.svg" alt="" /></span>
       <div class="m-card-body"><h3 data-fr="MEMBRES" data-en="MEMBERS">MEMBRES</h3><p data-fr="Compagnies membres" data-en="Member companies">Compagnies membres</p></div>
     </div>
