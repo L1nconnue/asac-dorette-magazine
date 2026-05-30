@@ -1,0 +1,619 @@
+/* ===== RESET ===== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#1B3D8C;
+  --blue-accent:#275BAC;
+  --red:#E62225;
+  --white:#fff;
+  --gray:#6b7280;
+  --gray-bg:#efefef;
+  --gray-border:#e0e0e0;
+  --text:#1a1a2e;
+  --r:20px;
+  --rs:14px;
+  --ease:0.38s cubic-bezier(.4,0,.2,1);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Poppins',sans-serif;background:var(--white);color:var(--text);overflow:hidden;-webkit-font-smoothing:antialiased}
+
+/* ===== TOP BAR =====
+   A fixed navigation bar sits above the hero.  It contains the logo,
+   language switcher and hamburger.  Initially it is transparent and
+   white-coloured when overlaying the hero; as the user scrolls down
+   the home page it turns white with blue accents for contrast.  The
+   hamburger icon reuses its open/close animation from the original
+   hero navigation. */
+.top-bar{
+  position:fixed;
+  top:0;left:0;right:0;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:10px 20px;
+  z-index:200;
+  background:transparent;
+  color:var(--white);
+  transition:background .3s,color .3s,box-shadow .3s;
+}
+.top-bar .top-right{
+  display:flex;
+  align-items:center;
+  gap:16px;
+}
+.top-bar .top-logo img{
+  height:44px;
+  width:auto;
+  object-fit:contain;
+  /* Invert colours by default so the logo appears white on dark hero */
+  filter:brightness(0) invert(1);
+  transition:filter .3s;
+}
+.top-bar .hamburger{
+  width:44px;
+  height:44px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+}
+.top-bar .hamburger span{
+  display:block;
+  width:26px;
+  height:3px;
+  background:currentColor;
+  border-radius:2px;
+  transition:transform .3s,opacity .3s;
+}
+.top-bar .hamburger.open span:nth-child(1){transform:translateY(8.5px) rotate(45deg)}
+.top-bar .hamburger.open span:nth-child(2){opacity:0}
+.top-bar .hamburger.open span:nth-child(3){transform:translateY(-8.5px) rotate(-45deg)}
+.top-bar .lang-switch{
+  display:flex;
+  align-items:center;
+  gap:4px;
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:.05em;
+  padding:5px 10px;
+  border-radius:20px;
+  border:none;
+  cursor:pointer;
+  background:rgba(0,0,0,.3);
+  backdrop-filter:blur(6px);
+  -webkit-backdrop-filter:blur(6px);
+  color:rgba(255,255,255,.85);
+  transition:background .3s,color .3s;
+}
+.top-bar .lang-switch .lang-opt.active{
+  color:var(--white);
+  font-weight:700;
+}
+.top-bar .lang-switch .lang-sep{
+  color:rgba(255,255,255,.4);
+}
+.top-bar.scrolled{
+  background:var(--white);
+  color:var(--blue);
+  box-shadow:0 2px 6px rgba(0,0,0,.05);
+}
+.top-bar.scrolled .top-logo img{
+  filter:none;
+}
+.top-bar.scrolled .lang-switch{
+  background:rgba(235,235,235,.8);
+  color:var(--blue);
+}
+.top-bar.scrolled .lang-switch .lang-sep{
+  color:var(--blue-accent);
+}
+.top-bar.scrolled .lang-switch .lang-opt.active{
+  color:var(--blue);
+}
+.top-bar.scrolled .lang-switch .lang-opt:not(.active){
+  color:var(--blue-accent);
+}
+img{display:block;width:100%;height:100%;object-fit:cover}
+button{cursor:pointer;border:none;background:none;font-family:inherit}
+ul{list-style:none}
+
+/* ===== PAGE SYSTEM ===== */
+.page{
+  position:fixed;inset:0;
+  overflow-y:auto;overflow-x:hidden;
+  background:var(--white);
+  transform:translateX(100%);opacity:0;
+  transition:transform var(--ease),opacity var(--ease);
+  pointer-events:none;z-index:10;
+}
+.page.active{transform:translateX(0);opacity:1;pointer-events:all;z-index:15}
+.page.behind{transform:translateX(-4%);opacity:.65;pointer-events:none;z-index:10}
+#homePage{transform:translateX(0);opacity:1;pointer-events:all;z-index:5;padding-top:60px}
+#homePage.behind{transform:translateX(-4%);opacity:.6;pointer-events:none}
+#menuPage{z-index:30}
+#articlePage{z-index:25}
+#categoryPage{z-index:20}
+
+/* ===== HERO (folder_hero shape) ===== */
+/*
+  The hero section uses a complex “folder” shape with smooth curves and a tab at the
+  top‑right. Instead of approximating this with a polygon (which looked angular and
+  mechanical), we now use the provided SVG as a mask. Modern browsers support
+  CSS masks which allow the HTML content to take on the exact outline of an
+  external SVG. The mask makes the hero follow the same contours as the
+  reference design without compromising interactivity.  
+
+  The section remains sticky so that it stays at the top of the page on scroll.
+*/
+.hero{
+  position:sticky;top:0;
+  height:72vh;
+  min-height:460px;
+  overflow:hidden;
+  z-index:1;
+  /* Use the folder_hero SVG as a mask to achieve the smooth folder outline */
+  -webkit-mask-image:url('folder_hero.svg');
+  mask-image:url('folder_hero.svg');
+  -webkit-mask-size:cover;
+  mask-size:cover;
+  -webkit-mask-repeat:no-repeat;
+  mask-repeat:no-repeat;
+}
+.hero-bg{position:absolute;inset:0}
+.hero-tint{
+  position:absolute;inset:0;
+  background:linear-gradient(170deg,rgba(60,120,200,.35)0%,rgba(30,60,140,.25)50%,rgba(10,25,70,.55)100%);
+}
+
+/* Nav inside hero */
+/*
+  The logo and hamburger icon were previously positioned relative to the
+  hero’s internal shelf calculation, which resulted in them disappearing on
+  some viewports. They now sit consistently near the top of the hero,
+  matching the reference layout. The hamburger is vertically centered within
+  its square button for better visual balance. The logo uses its native
+  colours (no inversion) because the new hero mask and tint ensure
+  sufficient contrast.
+*/
+/* The hero no longer contains its own nav; navigation is handled by the fixed top bar. */
+
+/* Hero body */
+.hero-body{
+  position:relative;z-index:5;height:100%;
+  display:flex;
+  flex-direction:column;
+  /* Place content towards the top with extra padding so it sits below the top bar. */
+  justify-content:flex-start;
+  padding:80px 20px 36px;
+}
+.hero-text-block{
+  /* Align text to the right on wide screens; the bottom margin is removed
+     and we don’t push the block down with a top padding anymore. This
+     matches the reference where the headline appears roughly in the middle
+     of the hero. */
+  text-align:right;
+  margin-bottom:0;
+  padding-top:0;
+}
+.magazine-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(48px,13vw,90px);
+  line-height:.88;color:var(--white);
+  text-shadow:0 2px 24px rgba(0,0,0,.2);
+}
+.magazine-subtitle{
+  font-size:11px;color:rgba(255,255,255,.88);
+  margin-top:6px;font-weight:400;line-height:1.5;
+  max-width:220px;margin-left:auto;
+}
+.issue-badge{
+  display:inline-block;background:var(--red);color:var(--white);
+  font-size:11px;font-weight:700;padding:5px 16px;border-radius:20px;
+  margin-top:10px;letter-spacing:.04em;
+}
+
+/* Focus card — left-aligned */
+.hero-focus{
+  background:rgba(255,255,255,.92);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  border-radius:var(--rs);padding:16px 18px 18px;
+  cursor:pointer;position:relative;
+  width:62%;max-width:260px;
+  transition:transform .25s,box-shadow .25s;
+  margin-top:auto;
+}
+.hero-focus:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(0,0,0,.18)}
+.focus-arrow{position:absolute;top:12px;right:14px;width:18px;height:18px}
+.focus-arrow img{width:100%;height:100%;object-fit:contain}
+.focus-heading{font-family:'Bebas Neue',sans-serif;font-size:22px;font-weight:400;color:var(--blue);letter-spacing:.06em}
+.focus-rule{width:32px;height:2px;background:var(--blue);margin:6px 0 8px}
+.focus-desc{font-size:11.5px;color:var(--gray);line-height:1.5;text-align:center}
+
+/* Lang switcher floating on home */
+.lang-float{
+  position:fixed;top:12px;right:70px;z-index:100;
+}
+.lang-switch{
+  display:flex;align-items:center;gap:4px;
+  font-size:11px;font-weight:600;letter-spacing:.05em;color:rgba(255,255,255,.85);
+  padding:5px 10px;border-radius:20px;
+  background:rgba(0,0,0,.2);backdrop-filter:blur(6px);
+  border:none;cursor:pointer;
+}
+.lang-opt{transition:color .2s}
+.lang-opt.active{color:var(--white);font-weight:700}
+.lang-sep{color:rgba(255,255,255,.4)}
+
+/* ===== HOME FEED ===== */
+.home-feed{
+  position:relative;z-index:2;
+  /* Remove the white backdrop so individual feed cards scroll up without a block. */
+  background:transparent;
+  border-radius:0;
+  margin-top:-16px;
+  padding-top:0;
+}
+
+/* Feed card — folder_categories shape */
+.feed-card{
+  position:relative;
+  margin:0 14px;
+  margin-top:-6px;
+  /* Use the folder_categories SVG as a mask so the card matches the
+     reference folder shape. The mask removes the angular look of the
+     original polygon approximation and yields smoother curves. */
+  background:var(--gray-bg);
+  /* The mask will clip the card to the folder outline; the card itself
+     remains rectangular but anything outside the mask is hidden. */
+  -webkit-mask-image:url('folder_categories.svg');
+  mask-image:url('folder_categories.svg');
+  -webkit-mask-size:cover;
+  mask-size:cover;
+  -webkit-mask-repeat:no-repeat;
+  mask-repeat:no-repeat;
+  overflow:hidden;
+  /* Provide sufficient space at the top for the tab portion of the folder
+     shape. */
+  padding:52px 18px 24px;
+  /* Outline the masked shape with a subtle inner stroke to mimic the
+     folder border */
+  box-shadow:0 0 0 1px var(--blue-accent) inset;
+}
+.feed-card:first-child{margin-top:10px}
+
+/* Tab label — positioned in the tab notch area */
+.feed-tab{
+  position:absolute;
+  top:0;
+  left:0;
+  right:auto;
+  /* Place the label in the top-left of the folder.  Padding creates
+     breathing room and matches the reference. */
+  padding:6px 22px 0 18px;
+  height:11.5%;
+  display:flex;
+  align-items:center;
+  width:auto;
+  max-width:100%;
+  /* Label sits in the top-left of the card; width adapts to text length */
+}
+.tab-label{
+  font-size:9px;font-weight:700;
+  letter-spacing:.17em;color:var(--blue);
+  text-transform:uppercase;white-space:nowrap;
+}
+
+.feed-inner{padding-top:2px}
+
+/* Image card */
+.img-card{
+  position:relative;border-radius:var(--rs);
+  overflow:hidden;height:200px;cursor:pointer;
+}
+.img-card.short{height:150px}
+.img-card img{transition:transform .5s ease}
+.img-card:hover img{transform:scale(1.04)}
+.img-card-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(10,25,70,.78)0%,rgba(10,25,70,.05)55%);
+}
+.img-card-text{position:absolute;bottom:0;left:0;right:0;padding:14px}
+.img-card-text span{font-size:13px;font-weight:700;color:var(--white);line-height:1.3;text-shadow:0 1px 6px rgba(0,0,0,.4)}
+
+/* Two-col */
+.two-col{display:grid;grid-template-columns:1fr 115px;gap:14px;align-items:start}
+.news-list{display:flex;flex-direction:column;gap:14px}
+.news-item{display:flex;gap:10px;cursor:pointer;transition:opacity .2s}
+.news-item:hover{opacity:.72}
+.news-bar{width:3px;min-height:100%;background:var(--red);border-radius:2px;flex-shrink:0}
+.news-bar.blue{background:var(--blue)}
+.news-item strong,.job-info strong{display:block;font-size:12px;font-weight:700;color:var(--blue);margin-bottom:3px}
+.news-item p,.job-info p{font-size:11px;color:var(--gray);line-height:1.4}
+.news-photo{border-radius:var(--rs);overflow:hidden;height:125px;cursor:pointer}
+.news-photo img{transition:transform .5s}
+.news-photo:hover img{transform:scale(1.05)}
+
+/* Event row */
+.evt-row{display:flex;gap:14px;cursor:pointer;transition:opacity .2s}
+.evt-row:hover{opacity:.8}
+.evt-thumb{width:100px;height:80px;border-radius:var(--rs);overflow:hidden;flex-shrink:0}
+.evt-info{display:flex;gap:10px;flex:1;align-items:flex-start}
+.evt-info strong{display:block;font-size:13px;font-weight:700;color:var(--blue)}
+.evt-info p{font-size:11px;color:var(--gray);line-height:1.4}
+
+/* Mini row */
+.mini-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mini-card{border-radius:var(--rs);overflow:hidden;background:var(--white);cursor:pointer;transition:transform .25s,box-shadow .25s}
+.mini-card:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,.1)}
+.mini-card img{height:90px}
+.mini-card p{font-size:10.5px;color:var(--gray);padding:8px;line-height:1.4}
+
+/* Opinion */
+.opinion-card{background:var(--white);border-radius:var(--rs);padding:18px 16px;cursor:pointer;border-left:4px solid var(--blue);transition:box-shadow .25s,transform .25s}
+.opinion-card:hover{box-shadow:0 6px 20px rgba(27,61,140,.14);transform:translateX(3px)}
+.opinion-quote{font-size:52px;line-height:.5;color:var(--blue);font-family:Georgia,serif;margin-bottom:12px}
+.opinion-card>p{font-size:13px;font-weight:600;color:var(--text);line-height:1.4;margin-bottom:12px}
+.opinion-cta{font-size:11px;font-weight:700;color:var(--blue);letter-spacing:.04em}
+
+/* Jobs */
+.job-list{display:flex;flex-direction:column}
+.job-item{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--gray-border);cursor:pointer;transition:opacity .2s}
+.job-item:last-child{border-bottom:none}
+.job-item:hover{opacity:.72}
+.job-info{flex:1}
+.job-arrow{width:16px;height:16px;flex-shrink:0}
+.job-arrow img{width:100%;height:100%;object-fit:contain}
+
+/* Fun */
+.fun-card{background:linear-gradient(135deg,var(--blue)0%,var(--blue-accent)100%);border-radius:var(--rs);padding:24px 18px;display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer;transition:transform .25s,box-shadow .25s}
+.fun-card:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(27,61,140,.38)}
+.fun-emoji{font-size:36px}
+.fun-card>p{font-size:13px;font-weight:600;color:var(--white);text-align:center;line-height:1.4}
+.fun-btn{font-size:11px;font-weight:700;color:var(--white);background:rgba(255,255,255,.2);padding:7px 16px;border-radius:20px}
+
+/* Members */
+.members-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.member-card{background:var(--white);border-radius:var(--rs);padding:14px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid var(--gray-border);transition:border-color .2s;min-height:60px}
+.member-card:hover{border-color:var(--blue)}
+.member-card span{font-size:11px;font-weight:600;color:var(--blue)}
+
+/* ===== MENU PAGE ===== */
+#menuPage{
+  background:var(--gray-bg);
+  /* Diagonal stripe texture */
+  background-image:repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 18px,
+    rgba(200,200,200,.22) 18px,
+    rgba(200,200,200,.22) 19px
+  );
+}
+
+.menu-top{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  padding:28px 22px 22px;
+}
+.menu-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(40px,11vw,60px);line-height:.88;
+  color:var(--blue);letter-spacing:.01em;
+}
+.menu-sub{font-size:11.5px;color:var(--blue-accent);margin-top:8px;line-height:1.5;max-width:220px;font-weight:500}
+.menu-close{
+  font-size:22px;color:var(--text);width:36px;height:36px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:color .2s;
+}
+.menu-close:hover{color:var(--red)}
+
+/* Menu grid — regular rounded cards */
+.menu-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:12px;padding:0 16px 16px;
+}
+.m-card{
+  background:var(--white);
+  border-radius:var(--r);
+  padding:16px 14px 18px;
+  position:relative;overflow:hidden;
+  cursor:pointer;min-height:130px;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  opacity:0;transform:translateY(22px);
+  transition:box-shadow .25s,transform .25s,background .25s;
+}
+.m-card.m-wide{grid-column:2/3}
+/* Start without an image; the image will be shown on hover via pseudo-elements. */
+.m-card.m-img{
+  background:var(--white);
+  background-image:none;
+}
+
+/* Reveal the background image and gradient overlay on hover or when the card
+   has the `active` class.  The image is specified via the --bg custom
+   property on each card element. */
+.m-card::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background-image:var(--bg);
+  background-size:cover;
+  background-position:center;
+  opacity:0;
+  transition:opacity .3s;
+  z-index:1;
+}
+.m-card::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to top,rgba(10,25,70,.88) 0%,rgba(10,25,70,.15) 70%);
+  opacity:0;
+  transition:opacity .3s;
+  z-index:2;
+}
+.m-card:hover::before,
+.m-card.active::before{
+  opacity:1;
+}
+.m-card:hover::after,
+.m-card.active::after{
+  opacity:1;
+}
+/* First card full width */
+.m-card.stagger-1{grid-column:1/-1;min-height:180px}
+
+/* Stagger animations */
+.stagger-1{animation-delay:.04s}.stagger-2{animation-delay:.08s}
+.stagger-3{animation-delay:.12s}.stagger-4{animation-delay:.16s}
+.stagger-5{animation-delay:.2s}.stagger-6{animation-delay:.24s}
+.stagger-7{animation-delay:.28s}.stagger-8{animation-delay:.32s}
+.stagger-9{animation-delay:.36s}.stagger-10{animation-delay:.4s}
+.stagger-11{animation-delay:.44s}
+#menuPage.active .m-card{animation:fadeUp .45s both ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+
+.m-card-dim{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(10,25,70,.88)0%,rgba(10,25,70,.15)70%);
+}
+.m-arrow{position:absolute;top:12px;right:14px;width:18px;height:18px;z-index:2}
+.m-arrow img{width:100%;height:100%;object-fit:contain}
+.m-card-body{position:relative;z-index:2}
+.m-card-body h3{font-size:12px;font-weight:800;color:var(--blue);letter-spacing:.07em;margin-bottom:6px;transition:color .3s}
+/* default colours used; override removed */
+.m-card-body p{font-size:10.5px;color:var(--gray);line-height:1.4;transition:color .3s}
+/* default paragraph colour remains; override removed */
+
+.m-list{margin-top:6px;display:flex;flex-direction:column;gap:6px}
+.m-list-item{display:flex;align-items:flex-start;gap:6px;font-size:10px;color:var(--gray);line-height:1.4;border-bottom:1px solid var(--gray-border);padding-bottom:5px;transition:color .3s,border-color .3s}
+.m-list-item:last-child{border-bottom:none;padding-bottom:0}
+.m-bar{width:2px;min-height:12px;background:var(--red);border-radius:2px;flex-shrink:0;margin-top:2px;transition:background .3s}
+
+/* Desktop hover: cards become blue with white text */
+@media(hover:hover)and(pointer:fine){
+  /* Unified hover styles for all menu cards.  On hover the pseudo-elements
+     reveal the background image and gradient overlay, the card lifts and
+     the text and icons turn white. */
+  .m-card:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 30px rgba(27,61,140,.32);
+  }
+  .m-card:hover .m-card-body h3,
+  .m-card:hover .m-card-body p,
+  .m-card:hover .m-list-item{
+    color:var(--white);
+  }
+  .m-card:hover .m-bar{
+    background:rgba(255,255,255,.5);
+  }
+  .m-card:hover .m-list-item{
+    border-bottom-color:rgba(255,255,255,.2);
+  }
+  .m-card:hover .m-arrow img{
+    filter:brightness(0) invert(1);
+  }
+}
+
+/* Team — no white box, directly on gray bg */
+.team-section{
+  padding:32px 22px 40px;
+}
+.team-heading{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(32px,9vw,52px);color:var(--blue);letter-spacing:.02em;line-height:.92;
+}
+.team-rule{height:2px;background:var(--gray-border);margin:16px 0 20px}
+.team-cols{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.team-col{display:flex;flex-direction:column;gap:10px}
+.team-role strong{display:block;font-size:11px;font-weight:700;color:var(--text)}
+.team-role span{font-size:11px;color:var(--gray)}
+.team-names{margin-top:6px;display:flex;flex-direction:column;gap:3px}
+.team-names li{font-size:11px;color:var(--gray)}
+.team-logo{margin-top:24px}
+.team-logo img{width:88px;height:auto;object-fit:contain}
+
+/* ===== ARTICLE PAGE ===== */
+.art-nav{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 20px;border-bottom:1px solid var(--gray-border);
+  background:var(--white);position:sticky;top:0;z-index:10;
+}
+.art-close{
+  width:32px;height:32px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;flex-shrink:0;
+  background:var(--red);color:var(--white);
+  transition:background .2s;
+}
+.art-close:hover{background:#c01d1a}
+.art-close.gray{background:var(--gray-bg);color:var(--text)}
+.art-close.gray:hover{background:var(--gray-border)}
+.art-cat{font-size:10px;font-weight:700;letter-spacing:.15em;color:var(--blue);text-transform:uppercase}
+.art-hero{
+  height:260px;
+  overflow:hidden;
+  background:var(--gray-bg);
+  /* Apply the folder mask so article hero images match the feed cards */
+  -webkit-mask-image:url('folder_categories.svg');
+  mask-image:url('folder_categories.svg');
+  -webkit-mask-size:cover;
+  mask-size:cover;
+  -webkit-mask-repeat:no-repeat;
+  mask-repeat:no-repeat;
+}
+.art-hero img{width:100%;height:100%;object-fit:cover}
+.art-body{padding:24px 20px 28px}
+.art-title{font-size:clamp(22px,6vw,36px);font-weight:800;color:var(--blue);line-height:1.15;margin-bottom:20px}
+.art-content{display:flex;flex-direction:column;gap:14px}
+.art-content p{font-size:14px;color:var(--gray);line-height:1.72}
+.art-content p strong{color:var(--text);font-weight:700}
+.art-divider{height:1px;background:var(--gray-border);margin:0 20px}
+.art-next{height:140px;overflow:hidden}
+.art-next img{width:100%;height:100%;object-fit:cover}
+
+/* ===== CATEGORY PAGE ===== */
+.cat-hero{position:relative;height:200px;overflow:hidden}
+.cat-hero img{width:100%;height:100%;object-fit:cover}
+.cat-dim{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,25,70,.82)0%,rgba(10,25,70,.15)100%)}
+.cat-hero-text{position:absolute;bottom:0;left:0;right:0;padding:18px}
+.cat-hero-text h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(28px,8vw,48px);color:var(--white);letter-spacing:.02em}
+.cat-list{padding:16px 14px;display:flex;flex-direction:column;gap:10px}
+.cat-item{
+  background:var(--gray-bg);border-radius:var(--rs);
+  padding:14px;display:flex;gap:12px;
+  cursor:pointer;transition:box-shadow .25s,transform .25s;
+}
+.cat-item:hover{transform:translateX(3px);box-shadow:0 4px 18px rgba(0,0,0,.08)}
+.cat-thumb{width:76px;height:66px;border-radius:10px;overflow:hidden;flex-shrink:0}
+.cat-thumb img{width:100%;height:100%;object-fit:cover}
+.cat-info{flex:1}
+.cat-info strong{display:block;font-size:12px;font-weight:700;color:var(--blue);line-height:1.3;margin-bottom:4px}
+.cat-info p{font-size:10.5px;color:var(--gray);line-height:1.4}
+.cat-arrow{align-self:center;width:16px;height:16px;flex-shrink:0}
+.cat-arrow img{width:100%;height:100%;object-fit:contain}
+
+/* ===== DESKTOP ===== */
+@media(min-width:620px){
+  .hero{height:80vh;min-height:520px}
+  /* On larger screens the hero splits into two columns. We keep the
+     text block and focus card vertically centered to match the design
+     rather than anchoring them to the bottom. */
+  .hero-body{flex-direction:row;align-items:center}
+  .hero-text-block{flex:1;padding-top:0}
+  .hero-focus{margin-left:0;margin-top:0}
+  .home-feed{max-width:680px;margin:-16px auto 0}
+  .menu-top{max-width:940px;margin:0 auto;padding:36px 32px 24px}
+  .menu-grid{max-width:940px;margin:0 auto;padding:0 32px 24px;grid-template-columns:repeat(3,1fr)}
+  .m-card.stagger-1{grid-column:1/3}
+  .team-section{max-width:940px;margin:0 auto;padding:32px 32px 48px}
+  .art-hero{height:360px}
+  .art-body{max-width:680px;margin:0 auto}
+}
+@media(min-width:960px){
+  .menu-grid{grid-template-columns:repeat(4,1fr)}
+  .m-card.stagger-1{grid-column:1/3}
+}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--gray-border);border-radius:4px}
