@@ -1,7 +1,22 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
+  "rewrites": [
+    { "source": "/article/:id", "destination": "/article.html?id=:id" },
+    { "source": "/article/:id/:cat", "destination": "/article.html?id=:id&cat=:cat" }
+  ],
+  "functions": {
+    "api/categories.js": { "maxDuration": 10 },
+    "api/article.js":    { "maxDuration": 15 }
+  },
   "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET, OPTIONS" }
+      ]
+    },
     {
       "source": "/(.*)\\.(css|js|svg|png|jpg|jpeg|webp|woff2)",
       "headers": [

@@ -13,8 +13,8 @@
       name: { fr: 'Éditorial', en: 'Editorial' },
       image: 'https://images.unsplash.com/photo-1542178243-bc20204b769f?w=1600&q=85&auto=format&fit=crop',
       articles: [
-        { id: 'edito-1', title: { fr: "Le mot du Directeur de Publication", en: "A word from the Publisher" } },
-        { id: 'edito-2', title: { fr: "Bâtir la confiance, ensemble", en: "Building trust together" } },
+        { id: 'edito-1', title: { fr: "La sentinelle et l'architecte", en: "The sentinel and the architect" } },
+        { id: 'edito-2', title: { fr: "On ne pilote pas une compagnie avec une calculatrice", en: "You don't run a company with a calculator" } },
       ],
     },
     {
@@ -41,8 +41,7 @@
       name: { fr: 'Focus', en: 'Focus' },
       image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=1600&q=85&auto=format&fit=crop',
       articles: [
-        // Replace the original micro-insurance focus article with the dematerialisation piece
-        { id: 'focus-0', title: { fr: "Expérience client et dématérialisation de l'assurance auto", en: "Customer experience and dematerialisation of auto insurance" } },
+        { id: 'focus-0', title: { fr: "La dématérialisation de l'assurance automobile au Cameroun : un tournant majeur pour l'expérience client", en: "The dematerialization of motor insurance in Cameroon: a major turning point for the customer experience" } },
         { id: 'focus-1', title: { fr: "L'assurance agricole face aux défis climatiques", en: "Agricultural insurance and climate challenges" } },
       ],
     },
@@ -78,8 +77,7 @@
       name: { fr: "Les métiers de l'assurance", en: "Insurance careers" },
       image: 'https://images.unsplash.com/photo-1521119989659-a83eee488004?w=1600&q=85&auto=format&fit=crop',
       articles: [
-        // Update the first job profile to focus on the technical manager
-        { id: 'metiers-1', title: { fr: "Le responsable technique", en: "The Technical Manager" } },
+        { id: 'metiers-1', title: { fr: "Le Responsable Technique : on sort enfin de l'ombre", en: "The Technical Manager: finally stepping out of the shadows" } },
         { id: 'metiers-2', title: { fr: "Devenir souscripteur : parcours et compétences", en: "Becoming an underwriter: paths and skills" } },
       ],
     },
@@ -114,68 +112,147 @@
 
   // Article bodies (a few are filled out; others use a generic template)
   const ARTICLE_BODIES = {
-  // Updated content for the Focus article about customer experience and dematerialisation of auto insurance
-  'focus-0': {
+    'focus-0': {
+      author: { fr: 'NKEN Martin Olivier', en: 'NKEN Martin Olivier' },
+      role: {
+        fr: "Expert en Relation Client et centres — Responsable Centre Relation Client chez SUNU Assurances Cameroun",
+        en: "Customer Relations & Contact Centres Expert — Head of Customer Relations Centre at SUNU Assurances Cameroon",
+      },
       lead: {
-        fr: "La dématérialisation de l’assurance automobile au Cameroun marque un tournant majeur pour l’expérience client. L’objectif principal est de simplifier l’expérience des assurés en digitalisant les services et en modernisant la relation client.",
-        en: "The dematerialisation of automobile insurance in Cameroon marks a major turning point for customer experience. The main goal is to simplify policyholders' journeys by digitising services and modernising customer relationships.",
+        fr: "Le secteur de l'assurance automobile au Cameroun entre progressivement dans une nouvelle ère marquée par la digitalisation des services et la modernisation de la relation client. Longtemps confronté à des problématiques telles que les longues procédures administratives, les déplacements en agence, les délais de traitement ou encore la fraude documentaire, le marché camerounais amorce aujourd'hui une transformation qui place davantage le client au centre des préoccupations.",
+        en: "Cameroon's motor insurance sector is gradually entering a new era marked by the digitalization of services and the modernization of customer relations. Long faced with issues such as lengthy administrative procedures, branch visits, processing delays and document fraud, the Cameroonian market is now embarking on a transformation that places the customer at the heart of its priorities.",
       },
       paragraphs: {
         fr: [
-          "La digitalisation des services d'assurance permet de réduire les longues procédures administratives, les déplacements en agence et les délais de traitement, offrant ainsi un gain de temps considérable et une meilleure accessibilité pour les assurés.",
-          "Elle contribue également à renforcer la confiance en réduisant la fraude documentaire grâce à une meilleure traçabilité des contrats.",
+          "L'objectif principal de cette dématérialisation est de simplifier l'expérience des assurés. Grâce aux outils numériques, certaines opérations comme la souscription, le renouvellement des contrats, la transmission des documents ou les paiements peuvent désormais être réalisées plus rapidement et avec moins de contraintes. Pour les clients, cela représente un gain de temps considérable, une meilleure accessibilité des services et une relation plus fluide avec leur compagnie d'assurance.",
+          "Cette transformation répond également à un enjeu majeur de confiance. Au Cameroun, la circulation de fausses attestations d'assurance automobile a longtemps fragilisé la crédibilité du secteur. La digitalisation permet ainsi d'améliorer la traçabilité des contrats et de renforcer les dispositifs de contrôle afin de sécuriser davantage les assurés.",
+          "L'expérience ivoirienne constitue d'ailleurs un exemple intéressant pour le marché camerounais. En Côte d'Ivoire, plusieurs avancées ont été réalisées dans la digitalisation de l'assurance automobile, notamment avec la mise en place de solutions numériques facilitant la vérification des contrats et la réduction des fraudes. Cette modernisation a permis d'améliorer la fluidité des services tout en renforçant la confiance des clients envers les assureurs.",
         ],
         en: [
-          "The digitisation of insurance services reduces long administrative procedures, branch visits and processing times, providing considerable time savings and better accessibility for policyholders.",
-          "It also helps to strengthen trust by reducing document fraud through better contract traceability.",
+          "The main goal of this dematerialization is to simplify the policyholder experience. Thanks to digital tools, operations such as subscribing to a policy, renewing contracts, transmitting documents or making payments can now be carried out faster and with fewer constraints. For customers, this means significant time savings, better access to services and a smoother relationship with their insurer.",
+          "This transformation also addresses a major trust issue. In Cameroon, the circulation of fake motor insurance certificates has long undermined the sector's credibility. Digitalization makes it possible to improve contract traceability and strengthen control mechanisms in order to better protect policyholders.",
+          "The Ivorian experience offers a compelling example for the Cameroonian market. In Côte d'Ivoire, several advances have been made in the digitalization of motor insurance, including digital solutions that ease contract verification and reduce fraud. This modernization has improved the fluidity of services while strengthening customer trust in insurers.",
         ],
       },
       sections: {
         fr: [
-          { h: "Un mouvement inspiré d'ailleurs", p: "L’expérience ivoirienne montre que la digitalisation facilite la vérification des contrats et réduit les fraudes, améliorant ainsi la fluidité des services et la confiance des clients." },
-          { h: "Accompagner tous les assurés", p: "Le succès de cette transformation passe par un accompagnement personnalisé, car certains clients éprouvent des difficultés avec les outils numériques. La proximité humaine reste essentielle, notamment lors des sinistres." },
-          { h: "Une opportunité pour le secteur", p: "En modernisant l’assurance automobile, la dématérialisation améliorera l’expérience client, renforcera la confiance et rapprochera davantage les compagnies d’assurance de leurs clients, contribuant à l’essor du secteur au Cameroun." },
+          { h: "Accompagner sans exclure", p: "Cependant, la réussite d'une telle transformation ne dépend pas uniquement de la technologie. Elle nécessite également un important travail d'accompagnement des clients. Tous les assurés ne maîtrisent pas forcément les outils numériques, et certains peuvent éprouver des difficultés face à des procédures entièrement digitalisées. Le risque serait alors de créer une nouvelle forme de frustration ou d'exclusion pour une partie de la clientèle." },
+          { h: "Le digital au service de l'humain", p: "Par ailleurs, dans le domaine des assurances, le besoin de proximité humaine reste essentiel. Même à l'ère du digital, les clients souhaitent continuer à être conseillés, rassurés et accompagnés, notamment dans des situations sensibles comme les sinistres ou les réclamations. La digitalisation ne doit donc pas remplacer la relation humaine, mais plutôt la renforcer en rendant les échanges plus simples et plus efficaces." },
+          { h: "Une opportunité durable", p: "La dématérialisation de l'assurance automobile représente ainsi une véritable opportunité pour améliorer durablement l'expérience client au Cameroun. Elle contribuera à moderniser l'image du secteur, renforcer la confiance des consommateurs et rapprocher davantage les compagnies d'assurances de leurs clients." },
         ],
         en: [
-          { h: "A movement inspired elsewhere", p: "The Ivorian experience shows that digitisation makes it easier to verify contracts and reduces fraud, thus improving service fluidity and customer trust." },
-          { h: "Supporting all policyholders", p: "The success of this transformation depends on personalised support, as some customers find digital tools challenging. Human proximity remains essential, especially when dealing with claims." },
-          { h: "An opportunity for the sector", p: "By modernising automobile insurance, dematerialisation will improve customer experience, strengthen trust and bring insurance companies closer to their customers, contributing to the growth of the sector in Cameroon." },
+          { h: "Supporting without excluding", p: "However, the success of such a transformation does not depend on technology alone. It also requires substantial work to support customers. Not all policyholders are comfortable with digital tools, and some may struggle with fully digital procedures. The risk would be to create a new form of frustration or exclusion for part of the customer base." },
+          { h: "Digital in service of the human", p: "Moreover, in insurance, the need for human proximity remains essential. Even in a digital era, customers want to continue being advised, reassured and supported, particularly in sensitive situations such as claims or complaints. Digitalization should therefore not replace the human relationship, but rather reinforce it by making exchanges simpler and more effective." },
+          { h: "A lasting opportunity", p: "The dematerialization of motor insurance thus represents a genuine opportunity to sustainably improve the customer experience in Cameroon. It will help modernize the sector's image, strengthen consumer trust and bring insurance companies closer to their customers." },
         ],
       },
-      // Use the same featured image as the original focus category
-      image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=1600&q=85&auto=format&fit=crop',
+      sources: [
+        { label: "ASAC Cameroun", url: "https://www.asac-cameroun.org" },
+        { label: "Financial Afrik — Digitalisation des assurances en Afrique", url: "https://www.financialafrik.com/2018/02/26/cameroun-les-assureurs-plaident-pour-une-digitalisation-du-secteur/" },
+        { label: "Atlas Magazine — Assurance automobile en zone CIMA", url: "https://www.atlas-mag.net" },
+      ],
+      image: 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=1600&q=85&auto=format&fit=crop',
     },
 
-    // New article body for the technical manager profile in the "métiers" section
     'metiers-1': {
+      author: { fr: 'Mispa MBONDI', en: 'Mispa MBONDI' },
+      role: {
+        fr: "Responsable Technique",
+        en: "Technical Manager",
+      },
       lead: {
-        fr: "Longtemps considérés comme les solitaires des chiffres, les responsables techniques occupent aujourd'hui un rôle central dans un environnement économique et climatique changeant. Ils ne se contentent plus de calculer le risque, mais donnent un sens aux chiffres pour orienter l'entreprise.",
-        en: "Long seen as solitary number crunchers, technical managers now play a central role in a changing economic and climatic environment. They no longer just calculate risk but give meaning to the figures to guide the company.",
+        fr: "On a longtemps été vus comme les « solitaires des chiffres », ceux qui vivent dans des classeurs Excel avec la clim à fond. Mais aujourd'hui, avec le climat qui s'emballe et l'économie qui joue aux montagnes russes, on est devenus ceux qui tiennent le volant. On ne se contente plus de calculer le risque, on essaie de lui donner un sens pour que la boîte sache où elle va.",
+        en: "We've long been seen as the \"loners of numbers,\" the ones who live in Excel spreadsheets with the AC on full blast. But today, with a climate going wild and an economy on a rollercoaster, we've become the ones holding the wheel. We no longer just calculate risk — we try to give it meaning so the company knows where it's going.",
+      },
+      paragraphs: {
+        fr: [],
+        en: [],
+      },
+      sections: {
+        fr: [
+          { h: "Le grand écart de tous les jours", p: "Faire de la Vie et du Dommages en même temps, c'est un peu comme être sprinteur et marathonien dans la même journée. En Dommages (Auto, Habitation), c'est l'adrénaline. On est dans le concret, l'immédiat. Pourquoi les accidents augmentent sur telle zone ? Comment rester juste dans nos prix sans perdre tout le monde ? C'est une question de réflexes et d'instinct. En Vie, on s'inscrit dans le temps long. On signe des contrats pour les trente prochaines années. C'est une responsabilité immense : s'assurer qu'on pourra honorer nos promesses dans une génération, quoi qu'il arrive." },
+          { h: "Parler le même langage que les autres", p: "C'est peut-être le plus gros changement : on n'est plus les « rabat-joie » qui disent non aux commerciaux. On est devenus des partenaires. Notre défi, c'est de réussir à expliquer des trucs super compliqués avec des mots simples. Convaincre qu'être rigoureux sur les chiffres, ce n'est pas être méchant, c'est juste s'assurer que le client sera vraiment protégé le jour où il en aura besoin." },
+          { h: "Au fond, c'est une question de convictions", p: "On ne fait pas ce métier par amour des probabilités. On le fait parce qu'en équilibrant un contrat, on protège une famille qui vient de tout perdre ou un jeune qui prépare son avenir. C'est un métier de rigueur, c'est vrai, mais c'est surtout un métier d'engagement. On est les gardiens d'une certaine tranquillité d'esprit." },
+        ],
+        en: [
+          { h: "The daily balancing act", p: "Working in both Life and Non-Life at the same time is a bit like being a sprinter and a marathon runner in the same day. In Non-Life (Motor, Home), it's adrenaline. We deal with the concrete and the immediate. Why are accidents rising in this zone? How do we stay fair on pricing without losing everyone? It's a matter of reflexes and instinct. In Life, we operate on the long horizon. We sign contracts for the next thirty years. It's an immense responsibility: making sure we can keep our promises a generation from now, whatever happens." },
+          { h: "Speaking the same language as the rest", p: "This may be the biggest shift: we're no longer the \"killjoys\" who say no to the sales team. We've become partners. Our challenge is explaining hugely complex things in simple words. Convincing people that being rigorous on numbers isn't being mean — it's just making sure the client will be genuinely protected the day they need it." },
+          { h: "Ultimately, it's about conviction", p: "We don't do this job out of love for probabilities. We do it because by balancing a contract, we protect a family that has just lost everything, or a young person building their future. It's a job of rigour, true — but above all it's a job of commitment. We are the guardians of a certain peace of mind." },
+        ],
+      },
+      pullQuote: {
+        fr: "On ne se contente plus de calculer le risque : on lui donne un sens.",
+        en: "We no longer just calculate risk — we give it meaning.",
+      },
+      image: 'https://images.unsplash.com/photo-1573497019418-b400bb3ab074?w=1600&q=85&auto=format&fit=crop',
+    },
+
+    'edito-1': {
+      author: { fr: 'Mispa MBONDI', en: 'Mispa MBONDI' },
+      role: { fr: 'Éditorial — Le Responsable Technique', en: 'Editorial — The Technical Manager' },
+      lead: {
+        fr: "On imagine souvent le Responsable Technique comme l'homme ou la femme des chiffres, enfermé dans une forteresse de statistiques et de probabilités. Un gardien du temple, garant d'une rigueur froide et nécessaire. Mais si l'on regarde de plus près, la réalité du terrain raconte une tout autre histoire.",
+        en: "The Technical Manager is often pictured as a person of numbers, locked inside a fortress of statistics and probabilities. A keeper of the temple, the guarantor of a cold, necessary rigour. But look closer, and the reality on the ground tells a very different story.",
       },
       paragraphs: {
         fr: [
-          "Le responsable technique jongle entre les lignes Vie et Dommages, tel un sprinteur et un marathonien dans la même journée. En Dommages, il doit réagir rapidement aux tendances d'accidentologie et ajuster les tarifs ; en Vie, il s'engage sur le long terme pour garantir les promesses faites aux clients.",
-          "Au-delà des chiffres, il doit savoir communiquer et vulgariser des concepts techniques afin de devenir un véritable partenaire pour les autres départements et convaincre que la rigueur protège véritablement le client.",
+          "Dans un monde où l'imprévisible est devenu la norme — entre caprices climatiques, mutations technologiques et soubresauts économiques — le Responsable Technique est bien plus qu'un analyste. Il est une boussole.",
+          "Qu'il s'agisse de l'assurance Dommages, où il faut réagir avec l'agilité d'un pilote face à l'urgence d'un sinistre, ou de l'assurance Vie, où il faut cultiver la patience d'un bâtisseur de cathédrales pour garantir les promesses de demain, sa mission est fondamentalement humaine. Pourquoi ? Parce que derrière chaque ligne de provisionnement, derrière chaque ajustement tarifaire, il y a une famille que l'on protège, une entreprise que l'on sauve ou une retraite que l'on sécurise.",
         ],
         en: [
-          "The technical manager juggles between Life and Non‑Life lines, like both a sprinter and a marathon runner in the same day. In Non‑Life, he must react quickly to accident trends and adjust rates; in Life, he commits for the long term to ensure the promises made to clients.",
-          "Beyond numbers, he must know how to communicate and simplify technical concepts to become a true partner to other departments and convince that rigour genuinely protects the customer.",
+          "In a world where the unpredictable has become the norm — between climate volatility, technological shifts and economic tremors — the Technical Manager is far more than an analyst. They are a compass.",
+          "Whether in non-life insurance, where one must react with a pilot's agility to the urgency of a claim, or in life insurance, where one must cultivate the patience of a cathedral builder to guarantee tomorrow's promises, the role is fundamentally human. Why? Because behind every provisioning line, behind every pricing adjustment, there is a family being protected, a business being saved, or a retirement being secured.",
         ],
       },
       sections: {
         fr: [
-          { h: "Une mission d’équilibriste", p: "Faire de la Vie et du Dommages simultanément exige des compétences multiples : réflexes pour le court terme et vision pour le long terme." },
-          { h: "Un rôle de pédagogue", p: "Convaincre les équipes que la technique n'est pas un frein mais une garantie pour les assurés est devenu essentiel ; le responsable technique doit partager ses convictions et vulgariser des concepts complexes." },
-          { h: "Engagement et convictions", p: "Ce métier repose sur la conviction de protéger des familles et des jeunes : au-delà des probabilités, il s'agit d'un engagement à assurer leur tranquillité d'esprit." },
+          { h: "Lever le voile sur un métier pivot", p: "Dans ce dossier, nous avons voulu lever le voile sur ce métier pivot, souvent méconnu. Vous découvrirez comment, à l'heure de l'intelligence artificielle et du déluge de données, le Responsable Technique réinvente son rôle. Non plus seulement pour calculer le risque, mais pour lui donner du sens." },
+          { h: "Entre intuition et équations", p: "Bienvenue dans les coulisses d'un métier où la technique n'est que l'outil, et la protection, la véritable destination." },
         ],
         en: [
-          { h: "A tightrope mission", p: "Handling both Life and Non‑Life simultaneously requires multiple skills: quick reflexes for the short term and vision for the long term." },
-          { h: "An educational role", p: "Convincing teams that technical rigor is not a hindrance but a guarantee for policyholders has become essential; the technical manager must share his convictions and simplify complex concepts." },
-          { h: "Commitment and convictions", p: "This profession is based on the conviction of protecting families and youth: beyond probabilities, it's a commitment to ensure their peace of mind." },
+          { h: "Lifting the veil on a pivotal role", p: "In this feature, we wanted to lift the veil on this pivotal, often underappreciated role. You'll discover how, in the age of artificial intelligence and a deluge of data, the Technical Manager is reinventing what they do — no longer just to calculate risk, but to give it meaning." },
+          { h: "Between intuition and equations", p: "Welcome behind the scenes of a profession where technique is merely the tool, and protection is the true destination." },
         ],
       },
-      // Use the same illustrative image as the metiers category
-      image: 'https://images.unsplash.com/photo-1521119989659-a83eee488004?w=1600&q=85&auto=format&fit=crop',
+      pullQuote: {
+        fr: "Le Responsable Technique n'est plus seulement un analyste. Il est une boussole.",
+        en: "The Technical Manager is no longer just an analyst. They are a compass.",
+      },
+      image: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=1600&q=85&auto=format&fit=crop',
+    },
+
+    'edito-2': {
+      author: { fr: 'Mispa MBONDI', en: 'Mispa MBONDI' },
+      role: { fr: 'Éditorial — Le métier au-delà des chiffres', en: 'Editorial — The job beyond the numbers' },
+      lead: {
+        fr: "Si vous dites à un dîner que vous êtes Responsable Technique en assurance, il y a de fortes chances que votre interlocuteur change de sujet. On nous imagine souvent comme des « machines à calculer », perdus dans des fichiers Excel interminables, déconnectés de la vraie vie. Pourtant, la réalité de notre métier, c'est tout le contraire.",
+        en: "Tell someone at a dinner that you're a Technical Manager in insurance and there's a good chance the conversation will move on. We're often imagined as \"calculating machines,\" lost in endless Excel files, disconnected from real life. The reality of our work is the exact opposite.",
+      },
+      paragraphs: {
+        fr: [
+          "Être Responsable Technique aujourd'hui, c'est avoir le cœur qui bat un peu plus vite quand l'orage gronde, parce qu'on sait ce que ça signifie pour nos assurés et pour nos équilibres en Dommages. C'est aussi avoir la tête froide quand les taux s'affolent, pour s'assurer que les économies d'une vie entière sont à l'abri en Assurance Vie.",
+          "On ne fait pas que des mathématiques. On fait des choix. C'est un métier de doute, de discussions passionnées avec les commerciaux, et de décisions parfois solitaires. On est ceux qui doivent dire « attention » quand tout le monde veut accélérer, mais aussi ceux qui cherchent des solutions pour que l'assurance reste accessible, même quand le monde devient imprévisible.",
+        ],
+        en: [
+          "Being a Technical Manager today means your heart beats a little faster when a storm rolls in, because you know what it means for your policyholders and for non-life balance sheets. It also means keeping a cool head when interest rates lurch around, to make sure a lifetime of savings stays safe on the life side.",
+          "We don't just do maths. We make choices. It's a job of doubt, of impassioned discussions with sales teams, and sometimes of lonely decisions. We're the ones who have to say \"careful\" when everyone wants to accelerate — but also the ones searching for solutions so that insurance stays accessible, even when the world becomes unpredictable.",
+        ],
+      },
+      sections: {
+        fr: [
+          { h: "L'IA et la data, des outils — pas des substituts", p: "L'IA et la data ? Ce sont de super outils, certes. Mais ils ne remplaceront jamais notre flair, notre expérience et cette petite voix qui nous dit qu'un chiffre ne raconte pas toute l'histoire." },
+          { h: "Hommage à un métier de l'ombre", p: "Dans ce numéro, on a voulu rendre hommage à ce métier de l'ombre. Un métier qui demande de la rigueur, bien sûr, mais surtout beaucoup d'empathie et de bon sens. Parce qu'au final, derrière nos algorithmes, il n'y a rien de plus humain que la volonté de protéger les autres." },
+        ],
+        en: [
+          { h: "AI and data — tools, not substitutes", p: "AI and data? Sure, they're great tools. But they will never replace our instinct, our experience and that little voice telling us a number doesn't tell the whole story." },
+          { h: "A tribute to a job lived in the shadows", p: "In this issue, we wanted to pay tribute to this job lived in the shadows. A job that demands rigour, of course, but above all empathy and common sense. Because in the end, behind our algorithms, there is nothing more human than the will to protect others." },
+        ],
+      },
+      pullQuote: {
+        fr: "On ne fait pas que des mathématiques. On fait des choix.",
+        en: "We don't just do maths. We make choices.",
+      },
+      image: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=1600&q=85&auto=format&fit=crop',
     },
   };
 
@@ -185,34 +262,72 @@
     panelIndex: 0,
     isMenuOpen: false,
     isCategoryOpen: false,
-    isArticleOpen: false,
+    currentCategoryId: null,
   };
+
+  /* ---------- SCROLL LOCK (robust: html + body, restores Y on unlock) ---------- */
+  let lockCount = 0;
+  let savedScrollY = 0;
+  function lockScroll() {
+    if (lockCount === 0) {
+      savedScrollY = window.scrollY || window.pageYOffset || 0;
+      document.body.style.top = `-${savedScrollY}px`;
+      document.documentElement.classList.add('no-scroll');
+      document.body.classList.add('no-scroll');
+    }
+    lockCount++;
+  }
+  function unlockScroll() {
+    lockCount = Math.max(0, lockCount - 1);
+    if (lockCount === 0) {
+      document.documentElement.classList.remove('no-scroll');
+      document.body.classList.remove('no-scroll');
+      document.body.style.top = '';
+      window.scrollTo(0, savedScrollY);
+    }
+  }
 
   /* ---------- I18N ---------- */
   const I18N = {
     fr: {
       menuLabel: 'Sommaire',
       heroSub: "Le Magazine de l'Association des Sociétés d'Assurance du Cameroun",
+      issueMonth: 'Juin 2026',
       scroll: 'Faites défiler',
       readMore: "Lire l'article",
       editionLabel: 'Édition',
-      // Update the rights line to include the agency credit
-      allRights: 'Tous droits réservés – Made by MW DDB Cameroon',
+      allRights: 'Tous droits réservés',
       exploreAll: 'Explorer tous les articles',
-      downloadMagazine: 'Télécharger le magazine',
       contributors: 'Ont collaboré',
+      by: 'Par',
+      sourcesLabel: 'Sources',
+      downloadIssue: "Télécharger le magazine en PDF",
+      downloadIssueShort: "Télécharger l'édition",
+      preparingPdf: "Préparation du PDF…",
+      readTime: 'min de lecture',
+      contentsTitle: 'Sommaire',
+      issuePrefix: 'Édition',
+      backToMenu: 'Retour au sommaire',
     },
     en: {
       menuLabel: 'Contents',
       heroSub: "The Magazine of the Association of Insurance Companies of Cameroon",
+      issueMonth: 'June 2026',
       scroll: 'Scroll',
       readMore: 'Read article',
       editionLabel: 'Issue',
-      // Include agency credit in the English rights string
-      allRights: 'All rights reserved – Made by MW DDB Cameroon',
+      allRights: 'All rights reserved',
       exploreAll: 'Explore all articles',
-      downloadMagazine: 'Download the magazine',
       contributors: 'Also contributed',
+      by: 'By',
+      sourcesLabel: 'Sources',
+      downloadIssue: 'Download the magazine as PDF',
+      downloadIssueShort: 'Download issue',
+      preparingPdf: 'Preparing the PDF…',
+      readTime: 'min read',
+      contentsTitle: 'Contents',
+      issuePrefix: 'Issue',
+      backToMenu: 'Back to contents',
     },
   };
 
@@ -283,14 +398,12 @@
   const panels = Array.from(document.querySelectorAll('.panel'));
 
   function setupHomeHeight() {
-    // Only adjust body height when there are panels on the page. On
-    // dedicated article pages, panels is empty and we let the natural
-    // document height flow.
-    if (!panels || panels.length === 0) return;
+    // Total scrollable height = panels.length * 100vh (one extra to scroll past the last)
     const vh = window.innerHeight;
     // Each subsequent panel needs one viewport of scroll to fully come up
     const totalScroll = (panels.length) * vh;
     document.body.style.height = `${totalScroll}px`;
+
     // Set z-index so later panels stack on top
     panels.forEach((p, i) => {
       p.style.zIndex = String(i + 1);
@@ -334,13 +447,11 @@
 
   function onScroll() {
     requestAnimationFrame(updatePanels);
-    requestAnimationFrame(updateNavFrost);
   }
 
   function onResize() {
     setupHomeHeight();
     updatePanels();
-    updateNavFrost();
   }
 
   /* ---------- MENU ---------- */
@@ -375,6 +486,14 @@
     });
   }
 
+  let menuScrollHandler = null;
+  function applyMenuFrost(menu, nav) {
+    const y = menu.scrollTop || 0;
+    const p = Math.max(0, Math.min(1, y / 200));
+    nav.style.setProperty('--frost-p', String(p));
+    nav.classList.toggle('is-frost-on', p > 0.02);
+  }
+
   function openMenu() {
     state.isMenuOpen = true;
     const menu = document.getElementById('menu');
@@ -383,15 +502,13 @@
     menu.classList.add('is-open');
     menu.setAttribute('aria-hidden', 'false');
     btn.classList.add('is-open');
-    nav.classList.add('is-dark');
-    // Prevent the page from scrolling when the menu is open
-    // Save the current scroll position and lock the page
-    const scrollY = window.scrollY || window.pageYOffset;
-    document.body.dataset.scrollY = scrollY;
-    document.body.style.top = `-${scrollY}px`;
-    document.body.classList.add('no-scroll');
-    document.documentElement.classList.add('no-scroll');
+    nav.classList.add('is-dark', 'nav--frostable');
+    lockScroll();
     menu.scrollTop = 0;
+    // Frost on scroll inside the menu overlay
+    menuScrollHandler = () => applyMenuFrost(menu, nav);
+    menu.addEventListener('scroll', menuScrollHandler, { passive: true });
+    applyMenuFrost(menu, nav);
   }
 
   function closeMenu() {
@@ -402,14 +519,10 @@
     menu.classList.remove('is-open');
     menu.setAttribute('aria-hidden', 'true');
     btn.classList.remove('is-open');
-    nav.classList.remove('is-dark');
-    // Restore scroll position and unlock the page
-    const y = parseInt(document.body.dataset.scrollY || '0', 10);
-    document.body.classList.remove('no-scroll');
-    document.documentElement.classList.remove('no-scroll');
-    document.body.style.top = '';
-    window.scrollTo(0, y);
-    delete document.body.dataset.scrollY;
+    nav.classList.remove('is-dark', 'nav--frostable', 'is-frost-on');
+    nav.style.removeProperty('--frost-p');
+    if (menuScrollHandler) { menu.removeEventListener('scroll', menuScrollHandler); menuScrollHandler = null; }
+    unlockScroll();
   }
 
   function toggleMenu() {
@@ -443,18 +556,15 @@
     list.querySelectorAll('.category__item').forEach((el) => {
       el.addEventListener('click', (e) => {
         e.preventDefault();
-        openArticle(el.dataset.art, el.dataset.cat);
+        navigateToArticle(el.dataset.art, el.dataset.cat);
       });
     });
 
     state.isCategoryOpen = true;
+    state.currentCategoryId = id;
     overlay.classList.add('is-open');
     overlay.setAttribute('aria-hidden', 'false');
-    const scrollY = window.scrollY || window.pageYOffset;
-    document.body.dataset.scrollY = scrollY;
-    document.body.style.top = `-${scrollY}px`;
-    document.body.classList.add('no-scroll');
-    document.documentElement.classList.add('no-scroll');
+    lockScroll();
     overlay.scrollTop = 0;
   }
 
@@ -463,119 +573,18 @@
     const overlay = document.getElementById('category');
     overlay.classList.remove('is-open');
     overlay.setAttribute('aria-hidden', 'true');
-    if (!state.isMenuOpen) {
-      const y = parseInt(document.body.dataset.scrollY || '0', 10);
-      document.body.classList.remove('no-scroll');
-      document.documentElement.classList.remove('no-scroll');
-      document.body.style.top = '';
-      window.scrollTo(0, y);
-      delete document.body.dataset.scrollY;
-    }
+    if (!state.isMenuOpen) unlockScroll();
   }
 
-  /* ---------- ARTICLE MODAL ---------- */
-  function openArticle(articleId, categoryId) {
-    // Instead of opening a modal, redirect to a dedicated article page.
-    // Compose a URL to the article page with query parameters for the id,
-    // category and current language. Using the URL constructor ensures
-    // relative paths resolve correctly regardless of deployment environment.
-    const url = new URL('article.html', window.location.href);
-    url.searchParams.set('id', articleId);
-    url.searchParams.set('cat', categoryId);
-    url.searchParams.set('lang', state.lang);
-    // When navigating away from the overlay we should close any open
-    // menu or category panels to reset the page state. This prevents
-    // locked scrolling on the destination page.
-    closeArticle();
-    closeCategory();
-    closeMenu();
-    window.location.href = url.toString();
-  }
-
-  function closeArticle() {
-    const modal = document.getElementById('articleModal');
-    state.isArticleOpen = false;
-    modal.classList.remove('is-open');
-    modal.setAttribute('aria-hidden', 'true');
-    if (!state.isMenuOpen && !state.isCategoryOpen) {
-      const y = parseInt(document.body.dataset.scrollY || '0', 10);
-      document.body.classList.remove('no-scroll');
-      document.documentElement.classList.remove('no-scroll');
-      document.body.style.top = '';
-      window.scrollTo(0, y);
-      delete document.body.dataset.scrollY;
-    }
-  }
-
-  /* ---------- ARTICLE PAGE RENDERING ---------- */
-  /**
-   * If this script is running on the dedicated article page, build the
-   * article content dynamically based on the query parameters. The
-   * expected query string includes an `id` (article id), an optional
-   * `cat` (category id) and an optional `lang` which sets the
-   * language. If no category is provided, the function searches all
-   * categories for an article with the given id. The page must
-   * contain an element with id `articlePage` to receive the output.
-   */
-  function renderArticlePage() {
-    const container = document.getElementById('articlePage');
-    if (!container) return;
-    const params = new URLSearchParams(window.location.search);
-    const articleId = params.get('id');
-    let categoryId = params.get('cat');
-    const langParam = params.get('lang');
-    if (langParam && (langParam === 'fr' || langParam === 'en')) {
-      state.lang = langParam;
-    }
-    // Attempt to find the category by id; if not found search for the article
-    let cat = CATEGORIES.find((c) => c.id === categoryId);
-    if (!cat) {
-      for (const c of CATEGORIES) {
-        if (c.articles.some((a) => a.id === articleId)) {
-          cat = c;
-          categoryId = c.id;
-          break;
-        }
-      }
-    }
-    if (!cat) return;
-    const article = cat.articles.find((a) => a.id === articleId);
-    if (!article) return;
-    // Set the language buttons to the appropriate state
-    applyLang();
-    const body = ARTICLE_BODIES[articleId] || makeGenericBody(article, cat);
-    const heroImg = body.image || cat.image;
-    const lead = body.lead[state.lang];
-    const paragraphs = body.paragraphs[state.lang];
-    const sections = body.sections[state.lang];
-    // Compose HTML for the article page. We use semantic elements for
-    // better accessibility and SEO. The hero section contains the
-    // background image with an overlay; the body section holds the
-    // article metadata and content.
-    const heroHtml = `
-      <section class="article-page__hero" style="background-image:url('${heroImg}')">
-        <div class="article-page__hero-overlay"></div>
-        <div class="article-page__hero-content">
-          <span class="article-page__cat">${escapeHtml(cat.name[state.lang])}</span>
-          <h1 class="article-page__title">${escapeHtml(article.title[state.lang])}</h1>
-          <div class="article-page__meta">
-            <span>${state.lang === 'fr' ? 'Juin 2026' : 'June 2026'}</span>
-            <span>${state.lang === 'fr' ? '6 min de lecture' : '6 min read'}</span>
-          </div>
-        </div>
-      </section>
-    `;
-    const bodyHtml = `
-      <section class="article-page__body">
-        <p class="article-page__lead">${escapeHtml(lead)}</p>
-        ${paragraphs.map((p) => `<p>${escapeHtml(p)}</p>`).join('')}
-        <div class="article-page__image" style="background-image:url('${cat.image}')"></div>
-        ${sections.map((s) => `<h3>${escapeHtml(s.h)}</h3><p>${escapeHtml(s.p)}</p>`).join('')}
-      </section>
-    `;
-    container.innerHTML = heroHtml + bodyHtml;
-    // Ensure the nav is scrolled to top on page load
-    window.scrollTo(0, 0);
+  /* ---------- ARTICLE NAVIGATION (real page, no modal) ---------- */
+  function navigateToArticle(articleId, categoryId) {
+    // Persist last menu state so back from article reopens it
+    try {
+      sessionStorage.setItem('asac:returnTo', JSON.stringify({
+        menu: state.isMenuOpen, category: state.isCategoryOpen ? state.currentCategoryId : null,
+      }));
+    } catch (e) {}
+    window.location.href = `article.html?id=${encodeURIComponent(articleId)}&cat=${encodeURIComponent(categoryId)}`;
   }
 
   function makeGenericBody(article, cat) {
@@ -622,60 +631,7 @@
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&#039;');
   }
-
-  /**
-   * Update the frosted state of the fixed navigation bar. When the
-   * visitor scrolls down on the home page or the menu overlay, the
-   * nav should gain a translucent background with blur to remain
-   * legible. This function checks both the global scroll position
-   * and the menu scroll. If the menu is open, we base the decision
-   * on the menu's scrollTop. Otherwise, we look at the window's
-   * scrollY. It is called from the global scroll handler and the
-   * menu scroll listener.
-   */
-  function updateNavFrost() {
-    const nav = document.getElementById('nav');
-    const menu = document.getElementById('menu');
-    if (!nav) return;
-    // Determine how far the user has scrolled. When the menu is open
-    // we base the ratio on the menu's scrollTop; otherwise we use
-    // window.scrollY. The ratio is clamped between 0 and 1 over the
-    // first 100 pixels of scroll. As the ratio increases the nav
-    // becomes more opaque and the blur becomes stronger, creating a
-    // progressive frosted effect.
-    let scrollPos = 0;
-    if (state.isMenuOpen && menu) {
-      scrollPos = menu.scrollTop;
-    } else {
-      scrollPos = window.scrollY;
-    }
-    const ratio = Math.min(1, Math.max(0, scrollPos / 100));
-    if (ratio > 0) {
-      nav.classList.add('is-frosted');
-      // Compute opacity and blur based on ratio. Use different base
-      // colours depending on dark/light context (nav.is-dark is set
-      // when the menu is open).
-      if (nav.classList.contains('is-dark')) {
-        const alpha = 0.85 * ratio;
-        nav.style.background = `rgba(246, 244, 239, ${alpha.toFixed(3)})`;
-      } else {
-        const alpha = 0.6 * ratio;
-        nav.style.background = `rgba(10, 10, 10, ${alpha.toFixed(3)})`;
-      }
-      const blur = 2 + ratio * 8;
-      nav.style.backdropFilter = `blur(${blur.toFixed(2)}px) saturate(1.2)`;
-      nav.style.webkitBackdropFilter = `blur(${blur.toFixed(2)}px) saturate(1.2)`;
-      nav.style.boxShadow = nav.classList.contains('is-dark')
-        ? '0 2px 6px rgba(0, 0, 0, 0.05)'
-        : '0 2px 6px rgba(0, 0, 0, 0.4)';
-    } else {
-      nav.classList.remove('is-frosted');
-      nav.style.background = '';
-      nav.style.backdropFilter = '';
-      nav.style.webkitBackdropFilter = '';
-      nav.style.boxShadow = '';
-    }
-  }
+  function escapeAttr(str) { return escapeHtml(str); }
 
   /* ---------- EVENT WIRING ---------- */
   function bindEvents() {
@@ -687,14 +643,24 @@
       });
     });
 
-    // Menu button
-    document.getElementById('menuBtn').addEventListener('click', toggleMenu);
+    // Menu button (home page only)
+    const menuBtn = document.getElementById('menuBtn');
+    if (menuBtn) menuBtn.addEventListener('click', toggleMenu);
+
+    // Nav close (article page only) -> go back
+    const navClose = document.getElementById('navClose');
+    if (navClose) {
+      navClose.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (window.history.length > 1) window.history.back();
+        else window.location.href = '/';
+      });
+    }
 
     // Logo - go home
     document.querySelectorAll('[data-action="home"]').forEach((el) => {
       el.addEventListener('click', (e) => {
         e.preventDefault();
-        closeArticle();
         closeCategory();
         closeMenu();
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -709,43 +675,30 @@
       });
     });
 
-    // Home featured panels click -> open article directly
-    document.querySelectorAll('.panel__content--feature').forEach((el) => {
-      el.addEventListener('click', () => {
-        const artId = el.dataset.article;
-        // Find category by article id
-        const cat = CATEGORIES.find((c) => c.articles.some((a) => a.id === artId));
-        if (cat) openArticle(artId, cat.id);
+    // Download magazine action (home footer + menu footer)
+    document.querySelectorAll('[data-action="download"]').forEach((el) => {
+      el.addEventListener('click', (e) => {
+        e.preventDefault();
+        generateMagazinePdf(el);
       });
     });
 
-    // When the content menu scrolls, update the nav frosted state.
-    const menuEl = document.getElementById('menu');
-    if (menuEl) {
-      menuEl.addEventListener('scroll', () => {
-        updateNavFrost();
+    // Home featured panels click -> navigate to article page
+    document.querySelectorAll('.panel__content--feature').forEach((el) => {
+      el.addEventListener('click', () => {
+        const artId = el.dataset.article;
+        const cat = CATEGORIES.find((c) => c.articles.some((a) => a.id === artId));
+        if (cat) navigateToArticle(artId, cat.id);
       });
-    }
+    });
 
-    // Category close (only attach if the element exists)
-    const categoryCloseBtn = document.getElementById('categoryClose');
-    if (categoryCloseBtn) {
-      categoryCloseBtn.addEventListener('click', closeCategory);
-    }
-    // Article modal close buttons are only present on the home page; guard for their presence
-    const articleCloseBtn = document.getElementById('articleClose');
-    if (articleCloseBtn) {
-      articleCloseBtn.addEventListener('click', closeArticle);
-    }
-    const articleBackdrop = document.getElementById('articleBackdrop');
-    if (articleBackdrop) {
-      articleBackdrop.addEventListener('click', closeArticle);
-    }
+    // Category close
+    const categoryClose = document.getElementById('categoryClose');
+    if (categoryClose) categoryClose.addEventListener('click', closeCategory);
 
     // ESC key
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
-        if (state.isArticleOpen) return closeArticle();
         if (state.isCategoryOpen) return closeCategory();
         if (state.isMenuOpen) return closeMenu();
       }
@@ -756,23 +709,926 @@
     window.addEventListener('resize', onResize);
   }
 
-  /* ---------- INIT ---------- */
-  function init() {
-    // On every page, attempt to render an article. If the page does not
-    // contain an #articlePage element this call does nothing. The
-    // language parameter in the URL (if present) is applied to state.lang.
-    renderArticlePage();
+  /* ---------- PDF GENERATION ----------
+     Builds the whole magazine as a PDF, page by page:
+       Page 1: cover (no buttons) — issue badge, title, subtitle, edition
+       Page 2: contents — every category + its article titles
+       Pages 3+: each article styled like the site (cat label, title, byline, lead, body, sections, sources)
+     Uses jsPDF (loaded via CDN in index.html). Helvetica is jsPDF's built-in;
+     it stands in for Bebas Neue (uppercased + letter-spaced for similar feel)
+     and for Poppins on body copy. Images are fetched via fetch() → blob → dataURL
+     so they embed cleanly (Unsplash sends CORS headers, so this works in production).
+  */
 
-    // The stacked panel and menu functionality is only relevant on
-    // the home page (index.html). The following calls will have no
-    // adverse effect on other pages because they gracefully handle
-    // missing elements.
-    renderMenuGrid();
-    setupHomeHeight();
-    bindEvents();
-    updatePanels();
+  // Color palette — must mirror the CSS vars
+  const PDF_COLORS = {
+    blue: [30, 79, 168],
+    red: [230, 34, 37],
+    ink: [10, 10, 10],
+    paper: [246, 244, 239],
+    paperDark: [232, 228, 218],
+    grey: [120, 120, 120],
+    greyLight: [210, 210, 210],
+    white: [255, 255, 255],
+  };
+
+  // A4 portrait dimensions in mm
+  const PDF_W = 210;
+  const PDF_H = 297;
+  const PDF_MARGIN_X = 18;
+  const PDF_MARGIN_TOP = 24;
+  const PDF_MARGIN_BOTTOM = 22;
+
+  async function fetchImageAsDataURL(url) {
+    try {
+      const res = await fetch(url, { mode: 'cors', cache: 'force-cache' });
+      if (!res.ok) throw new Error('fetch failed: ' + res.status);
+      const blob = await res.blob();
+      return await new Promise((resolve, reject) => {
+        const fr = new FileReader();
+        fr.onload = () => resolve(fr.result);
+        fr.onerror = () => reject(fr.error);
+        fr.readAsDataURL(blob);
+      });
+    } catch (err) {
+      console.warn('image load failed', url, err);
+      return null;
+    }
+  }
+
+  // Returns image natural dimensions from data URL (for aspect-ratio cropping)
+  function getDataUrlSize(dataUrl) {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => resolve({ w: img.naturalWidth, h: img.naturalHeight });
+      img.onerror = () => resolve({ w: 16, h: 9 });
+      img.src = dataUrl;
+    });
+  }
+
+  // Approximates uppercase Bebas with Helvetica Bold + letter-spacing via spaced chars
+  function setDisplay(doc, sizePt) {
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(sizePt);
+  }
+  function setBody(doc, sizePt, style = 'normal') {
+    doc.setFont('helvetica', style);
+    doc.setFontSize(sizePt);
+  }
+
+  function rgb(doc, c, mode = 'fill') {
+    if (mode === 'fill') doc.setFillColor(c[0], c[1], c[2]);
+    else if (mode === 'text') doc.setTextColor(c[0], c[1], c[2]);
+    else if (mode === 'draw') doc.setDrawColor(c[0], c[1], c[2]);
+  }
+
+  // Wraps a paragraph and writes it, returns the new y position
+  function writeWrapped(doc, text, x, y, maxW, lineH) {
+    const lines = doc.splitTextToSize(text, maxW);
+    for (const line of lines) {
+      if (y > PDF_H - PDF_MARGIN_BOTTOM) {
+        doc.addPage();
+        y = PDF_MARGIN_TOP;
+      }
+      doc.text(line, x, y);
+      y += lineH;
+    }
+    return y;
+  }
+
+  // Letter-spaced uppercase title (mimics Bebas) — wraps across lines
+  function writeDisplayTitle(doc, text, x, y, maxW, sizePt, color, lineH) {
+    setDisplay(doc, sizePt);
+    rgb(doc, color, 'text');
+    doc.setCharSpace(0.4);
+    const lines = doc.splitTextToSize(text.toUpperCase(), maxW);
+    for (const line of lines) {
+      if (y > PDF_H - PDF_MARGIN_BOTTOM) {
+        doc.addPage();
+        y = PDF_MARGIN_TOP;
+      }
+      doc.text(line, x, y);
+      y += lineH;
+    }
+    doc.setCharSpace(0);
+    return y;
+  }
+
+  // Small uppercase label with letter-spacing (used for "Édition", "Sources", category labels, etc.)
+  function writeLabel(doc, text, x, y, sizePt, color, charSpace = 1.2) {
+    setBody(doc, sizePt, 'bold');
+    rgb(doc, color, 'text');
+    doc.setCharSpace(charSpace);
+    doc.text(text.toUpperCase(), x, y);
+    doc.setCharSpace(0);
+  }
+
+  // Pill-style category label box (blue background, white text)
+  function drawCategoryPill(doc, text, x, y) {
+    setBody(doc, 8.5, 'bold');
+    doc.setCharSpace(1.4);
+    const upper = text.toUpperCase();
+    const w = doc.getTextWidth(upper) + 6;
+    const h = 5.8;
+    rgb(doc, PDF_COLORS.blue, 'fill');
+    doc.rect(x, y - h + 1.6, w, h, 'F');
+    rgb(doc, PDF_COLORS.white, 'text');
+    doc.text(upper, x + 3, y);
+    doc.setCharSpace(0);
+    return y + 4;
+  }
+
+  // Renders the cover page (page 1)
+  async function renderCoverPage(doc, coverImg) {
+    // Solid dark background
+    rgb(doc, PDF_COLORS.ink, 'fill');
+    doc.rect(0, 0, PDF_W, PDF_H, 'F');
+
+    // Background image with very dark overlay (if loaded)
+    if (coverImg) {
+      try {
+        doc.addImage(coverImg.data, 'JPEG', 0, 0, PDF_W, PDF_H, undefined, 'FAST');
+      } catch (e) { console.warn('cover image add failed', e); }
+      // Dark overlay
+      doc.setFillColor(10, 10, 10);
+      doc.setGState(new doc.GState({ opacity: 0.78 }));
+      doc.rect(0, 0, PDF_W, PDF_H, 'F');
+      doc.setGState(new doc.GState({ opacity: 1 }));
+    }
+
+    // ASAC small logo line top-left
+    setBody(doc, 11, 'bold');
+    rgb(doc, PDF_COLORS.white, 'text');
+    doc.setCharSpace(1.8);
+    doc.text('ASAC', PDF_MARGIN_X, 22);
+    doc.setCharSpace(0);
+
+    // Issue badge (red rectangle) — Poppins-ish small caps
+    const t = I18N[state.lang];
+    const badgeY = PDF_H / 2 - 50;
+    const badgeText = `N°46  ·  ${t.issueMonth.toUpperCase()}`;
+    setBody(doc, 9, 'bold');
+    doc.setCharSpace(1.6);
+    const badgeW = doc.getTextWidth(badgeText) + 12;
+    const badgeH = 8;
+    rgb(doc, PDF_COLORS.red, 'fill');
+    doc.rect(PDF_MARGIN_X, badgeY, badgeW, badgeH, 'F');
+    rgb(doc, PDF_COLORS.white, 'text');
+    doc.text(badgeText, PDF_MARGIN_X + 6, badgeY + 5.6);
+    doc.setCharSpace(0);
+
+    // Big title
+    const titleY = badgeY + 24;
+    writeDisplayTitle(
+      doc,
+      'Assurances\n& Sécurité',
+      PDF_MARGIN_X,
+      titleY,
+      PDF_W - 2 * PDF_MARGIN_X,
+      48,
+      PDF_COLORS.white,
+      16,
+    );
+
+    // Subtitle
+    setBody(doc, 10, 'normal');
+    rgb(doc, [220, 220, 220], 'text');
+    const sub = t.heroSub;
+    const subLines = doc.splitTextToSize(sub, PDF_W - 2 * PDF_MARGIN_X - 40);
+    let subY = titleY + 24;
+    for (const line of subLines) {
+      doc.text(line, PDF_MARGIN_X, subY);
+      subY += 5.5;
+    }
+
+    // Edition label bottom-right
+    setBody(doc, 8, 'normal');
+    doc.setCharSpace(1.6);
+    rgb(doc, [180, 180, 180], 'text');
+    doc.text(t.editionLabel.toUpperCase(), PDF_W - PDF_MARGIN_X - 24, PDF_H - 24);
+    setBody(doc, 9, 'bold');
+    rgb(doc, PDF_COLORS.white, 'text');
+    doc.text('N°46 — 2026', PDF_W - PDF_MARGIN_X - 24, PDF_H - 18);
+    doc.setCharSpace(0);
+
+    // Footer line
+    setBody(doc, 7.5, 'normal');
+    doc.setCharSpace(1.2);
+    rgb(doc, [180, 180, 180], 'text');
+    doc.text(`© 2026 ASAC  ·  ${t.allRights.toUpperCase()}  —  MADE BY MW DDB CAMEROON`, PDF_MARGIN_X, PDF_H - 12);
+    doc.setCharSpace(0);
+  }
+
+  // Renders the contents page (page 2)
+  function renderContentsPage(doc, articleStarts) {
+    doc.addPage();
+    rgb(doc, PDF_COLORS.paper, 'fill');
+    doc.rect(0, 0, PDF_W, PDF_H, 'F');
+
+    const t = I18N[state.lang];
+
+    // Top-left small ASAC label
+    setBody(doc, 9, 'bold');
+    rgb(doc, PDF_COLORS.blue, 'text');
+    doc.setCharSpace(1.8);
+    doc.text('ASAC', PDF_MARGIN_X, 18);
+    doc.setCharSpace(0);
+
+    // Top-right page number
+    setBody(doc, 8, 'normal');
+    rgb(doc, PDF_COLORS.grey, 'text');
+    doc.setCharSpace(1.4);
+    doc.text('— 02 —', PDF_W - PDF_MARGIN_X - 14, 18);
+    doc.setCharSpace(0);
+
+    // Big Contents title
+    writeDisplayTitle(
+      doc,
+      t.contentsTitle,
+      PDF_MARGIN_X,
+      48,
+      PDF_W - 2 * PDF_MARGIN_X,
+      40,
+      PDF_COLORS.blue,
+      14,
+    );
+
+    // Red thin line
+    rgb(doc, PDF_COLORS.red, 'fill');
+    doc.rect(PDF_MARGIN_X, 56, 30, 1.2, 'F');
+
+    // Two-column list of categories + articles
+    let colY = 70;
+    const colX = PDF_MARGIN_X;
+    const colW = PDF_W - 2 * PDF_MARGIN_X;
+    const lang = state.lang;
+
+    for (const cat of CATEGORIES) {
+      // Category name in blue + small caps
+      if (colY > PDF_H - 50) {
+        doc.addPage();
+        rgb(doc, PDF_COLORS.paper, 'fill');
+        doc.rect(0, 0, PDF_W, PDF_H, 'F');
+        colY = PDF_MARGIN_TOP;
+      }
+      setBody(doc, 9, 'bold');
+      rgb(doc, PDF_COLORS.blue, 'text');
+      doc.setCharSpace(1.6);
+      doc.text(cat.name[lang].toUpperCase(), colX, colY);
+      doc.setCharSpace(0);
+      colY += 4;
+
+      // Hairline under
+      rgb(doc, PDF_COLORS.greyLight, 'draw');
+      doc.setLineWidth(0.2);
+      doc.line(colX, colY, colX + colW, colY);
+      colY += 4;
+
+      // Articles
+      for (const a of cat.articles) {
+        if (colY > PDF_H - 30) {
+          doc.addPage();
+          rgb(doc, PDF_COLORS.paper, 'fill');
+          doc.rect(0, 0, PDF_W, PDF_H, 'F');
+          colY = PDF_MARGIN_TOP;
+        }
+        setBody(doc, 10, 'normal');
+        rgb(doc, PDF_COLORS.ink, 'text');
+        const titleLines = doc.splitTextToSize(a.title[lang], colW - 20);
+        for (const line of titleLines) {
+          doc.text(line, colX, colY);
+          colY += 5;
+        }
+        // Page indicator (we'll fill these in with articleStarts map)
+        if (articleStarts && articleStarts[a.id]) {
+          setBody(doc, 9, 'bold');
+          rgb(doc, PDF_COLORS.red, 'text');
+          doc.setCharSpace(0.8);
+          const pageStr = String(articleStarts[a.id]).padStart(2, '0');
+          const w = doc.getTextWidth(pageStr);
+          doc.text(pageStr, colX + colW - w, colY - 5);
+          doc.setCharSpace(0);
+        }
+        colY += 1;
+      }
+      colY += 6;
+    }
+
+    // Footer
+    setBody(doc, 7.5, 'normal');
+    doc.setCharSpace(1.2);
+    rgb(doc, PDF_COLORS.grey, 'text');
+    doc.text(`N°46  ·  ${t.issueMonth.toUpperCase()}  ·  ASAC`, PDF_MARGIN_X, PDF_H - 12);
+    doc.setCharSpace(0);
+  }
+
+  // Renders one article — handles multi-page flow
+  async function renderArticlePage(doc, article, cat, body, heroImgDataUrl, pageNum, totalPages) {
+    doc.addPage();
+    rgb(doc, PDF_COLORS.paper, 'fill');
+    doc.rect(0, 0, PDF_W, PDF_H, 'F');
+
+    const lang = state.lang;
+    const t = I18N[lang];
+
+    // Hero image strip across top (40mm tall)
+    const heroH = 70;
+    if (heroImgDataUrl) {
+      try {
+        doc.addImage(heroImgDataUrl, 'JPEG', 0, 0, PDF_W, heroH, undefined, 'FAST');
+        // Dark gradient overlay at bottom of hero
+        doc.setGState(new doc.GState({ opacity: 0.5 }));
+        doc.setFillColor(10, 10, 10);
+        doc.rect(0, heroH - 30, PDF_W, 30, 'F');
+        doc.setGState(new doc.GState({ opacity: 1 }));
+      } catch (e) { console.warn('hero image add failed', e); }
+    } else {
+      rgb(doc, PDF_COLORS.ink, 'fill');
+      doc.rect(0, 0, PDF_W, heroH, 'F');
+    }
+
+    // Top page header line (white, on hero)
+    setBody(doc, 8, 'bold');
+    rgb(doc, PDF_COLORS.white, 'text');
+    doc.setCharSpace(1.8);
+    doc.text('ASAC', PDF_MARGIN_X, 12);
+    doc.text(`— ${String(pageNum).padStart(2, '0')} —`, PDF_W - PDF_MARGIN_X - 14, 12);
+    doc.setCharSpace(0);
+
+    // Body starts below hero
+    let y = heroH + 14;
+
+    // Category pill
+    drawCategoryPill(doc, cat.name[lang], PDF_MARGIN_X, y);
+    y += 8;
+
+    // Article title (large, Bebas-styled)
+    y = writeDisplayTitle(
+      doc,
+      article.title[lang],
+      PDF_MARGIN_X,
+      y,
+      PDF_W - 2 * PDF_MARGIN_X,
+      22,
+      PDF_COLORS.ink,
+      8.5,
+    );
+    y += 4;
+
+    // Byline (author + role)
+    if (body.author) {
+      setBody(doc, 8, 'bold');
+      doc.setCharSpace(1.6);
+      rgb(doc, PDF_COLORS.grey, 'text');
+      doc.text(t.by.toUpperCase(), PDF_MARGIN_X, y);
+      const byW = doc.getTextWidth(t.by.toUpperCase()) + 3;
+      doc.setCharSpace(0);
+
+      setBody(doc, 9.5, 'bold');
+      rgb(doc, PDF_COLORS.blue, 'text');
+      doc.text(body.author[lang], PDF_MARGIN_X + byW, y);
+      y += 5;
+
+      if (body.role) {
+        setBody(doc, 8.5, 'italic');
+        rgb(doc, PDF_COLORS.grey, 'text');
+        const roleLines = doc.splitTextToSize(body.role[lang], PDF_W - 2 * PDF_MARGIN_X);
+        for (const line of roleLines) {
+          doc.text(line, PDF_MARGIN_X, y);
+          y += 4.2;
+        }
+      }
+      y += 3;
+    }
+
+    // Thin separator
+    rgb(doc, PDF_COLORS.greyLight, 'draw');
+    doc.setLineWidth(0.3);
+    doc.line(PDF_MARGIN_X, y, PDF_W - PDF_MARGIN_X, y);
+    y += 7;
+
+    // Lead paragraph (left-bordered, slightly larger)
+    if (body.lead) {
+      // Blue left bar
+      rgb(doc, PDF_COLORS.blue, 'fill');
+      const leadX = PDF_MARGIN_X + 3;
+      const leadStartY = y;
+      setBody(doc, 11, 'normal');
+      rgb(doc, PDF_COLORS.ink, 'text');
+      const leadLines = doc.splitTextToSize(body.lead[lang], PDF_W - 2 * PDF_MARGIN_X - 6);
+      let leadY = y + 4;
+      for (const line of leadLines) {
+        if (leadY > PDF_H - PDF_MARGIN_BOTTOM) {
+          doc.addPage();
+          rgb(doc, PDF_COLORS.paper, 'fill');
+          doc.rect(0, 0, PDF_W, PDF_H, 'F');
+          leadY = PDF_MARGIN_TOP;
+        }
+        doc.text(line, leadX + 4, leadY);
+        leadY += 5.4;
+      }
+      // Draw the blue bar over the lead height
+      doc.rect(leadX, leadStartY + 1, 1.4, leadY - leadStartY - 4, 'F');
+      y = leadY + 5;
+    }
+
+    // Body paragraphs
+    setBody(doc, 10, 'normal');
+    rgb(doc, [40, 40, 40], 'text');
+    const paragraphs = (body.paragraphs && body.paragraphs[lang]) || [];
+    for (const p of paragraphs) {
+      if (y > PDF_H - PDF_MARGIN_BOTTOM - 10) {
+        doc.addPage();
+        rgb(doc, PDF_COLORS.paper, 'fill');
+        doc.rect(0, 0, PDF_W, PDF_H, 'F');
+        y = PDF_MARGIN_TOP;
+      }
+      y = writeWrapped(doc, p, PDF_MARGIN_X, y, PDF_W - 2 * PDF_MARGIN_X, 5.2);
+      y += 3.5;
+    }
+
+    // Sections (h3 + p)
+    const sections = (body.sections && body.sections[lang]) || [];
+    for (let i = 0; i < sections.length; i++) {
+      const s = sections[i];
+      if (y > PDF_H - PDF_MARGIN_BOTTOM - 20) {
+        doc.addPage();
+        rgb(doc, PDF_COLORS.paper, 'fill');
+        doc.rect(0, 0, PDF_W, PDF_H, 'F');
+        y = PDF_MARGIN_TOP;
+      }
+      y += 5;
+      // h3 in blue, Bebas-style
+      y = writeDisplayTitle(
+        doc, s.h, PDF_MARGIN_X, y, PDF_W - 2 * PDF_MARGIN_X, 14, PDF_COLORS.blue, 6.5,
+      );
+      y += 2;
+      setBody(doc, 10, 'normal');
+      rgb(doc, [40, 40, 40], 'text');
+      y = writeWrapped(doc, s.p, PDF_MARGIN_X, y, PDF_W - 2 * PDF_MARGIN_X, 5.2);
+      y += 3;
+
+      // Drop pull quote roughly in the middle
+      if (body.pullQuote && i === Math.floor(sections.length / 2) - 1) {
+        if (y > PDF_H - PDF_MARGIN_BOTTOM - 40) {
+          doc.addPage();
+          rgb(doc, PDF_COLORS.paper, 'fill');
+          doc.rect(0, 0, PDF_W, PDF_H, 'F');
+          y = PDF_MARGIN_TOP;
+        }
+        y += 4;
+        rgb(doc, PDF_COLORS.red, 'fill');
+        doc.rect(PDF_MARGIN_X, y, 2, 18, 'F');
+        y = writeDisplayTitle(
+          doc, '"' + body.pullQuote[lang] + '"', PDF_MARGIN_X + 6, y + 6,
+          PDF_W - 2 * PDF_MARGIN_X - 6, 16, PDF_COLORS.ink, 7,
+        );
+        y += 6;
+      }
+    }
+
+    // Sources
+    if (body.sources && body.sources.length) {
+      if (y > PDF_H - PDF_MARGIN_BOTTOM - 30) {
+        doc.addPage();
+        rgb(doc, PDF_COLORS.paper, 'fill');
+        doc.rect(0, 0, PDF_W, PDF_H, 'F');
+        y = PDF_MARGIN_TOP;
+      }
+      y += 6;
+      rgb(doc, PDF_COLORS.greyLight, 'draw');
+      doc.line(PDF_MARGIN_X, y, PDF_W - PDF_MARGIN_X, y);
+      y += 6;
+      writeLabel(doc, t.sourcesLabel, PDF_MARGIN_X, y, 8, PDF_COLORS.grey, 1.8);
+      y += 5;
+      setBody(doc, 9, 'normal');
+      rgb(doc, PDF_COLORS.blue, 'text');
+      for (const src of body.sources) {
+        if (y > PDF_H - PDF_MARGIN_BOTTOM) {
+          doc.addPage();
+          rgb(doc, PDF_COLORS.paper, 'fill');
+          doc.rect(0, 0, PDF_W, PDF_H, 'F');
+          y = PDF_MARGIN_TOP;
+        }
+        const lines = doc.splitTextToSize('· ' + src.label, PDF_W - 2 * PDF_MARGIN_X);
+        for (const line of lines) {
+          doc.textWithLink(line, PDF_MARGIN_X, y, { url: src.url });
+          y += 4.5;
+        }
+      }
+    }
+
+    // Footer
+    setBody(doc, 7.5, 'normal');
+    doc.setCharSpace(1.2);
+    rgb(doc, PDF_COLORS.grey, 'text');
+    doc.text(`ASAC  ·  N°46  ·  ${t.issueMonth.toUpperCase()}`, PDF_MARGIN_X, PDF_H - 10);
+    doc.text(String(pageNum).padStart(2, '0'), PDF_W - PDF_MARGIN_X - 6, PDF_H - 10);
+    doc.setCharSpace(0);
+  }
+
+  async function generateMagazinePdf(triggerBtn) {
+    if (!window.jspdf || !window.jspdf.jsPDF) {
+      alert('PDF library not loaded yet — please try again in a moment.');
+      return;
+    }
+    const t = I18N[state.lang];
+    const originalLabel = triggerBtn ? triggerBtn.textContent : '';
+    const setBtnState = (text, disabled) => {
+      if (!triggerBtn) return;
+      triggerBtn.classList.toggle('is-loading', !!disabled);
+      if (triggerBtn.tagName === 'BUTTON') triggerBtn.disabled = disabled;
+      else if (disabled) triggerBtn.setAttribute('aria-disabled', 'true');
+      else triggerBtn.removeAttribute('aria-disabled');
+      triggerBtn.textContent = text;
+    };
+
+    try {
+      setBtnState(t.preparingPdf, true);
+
+      // 1. Collect all images needed up-front, fetch in parallel
+      const heroUrl = CATEGORIES[0].image; // first category image as cover
+      const allImageUrls = new Set();
+      allImageUrls.add(heroUrl);
+      for (const cat of CATEGORIES) allImageUrls.add(cat.image);
+      for (const id of Object.keys(ARTICLE_BODIES)) {
+        if (ARTICLE_BODIES[id].image) allImageUrls.add(ARTICLE_BODIES[id].image);
+      }
+      const urls = Array.from(allImageUrls);
+      const dataUrls = await Promise.all(urls.map(fetchImageAsDataURL));
+      const imgMap = {};
+      urls.forEach((u, i) => { imgMap[u] = dataUrls[i]; });
+
+      // 2. Build doc
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait', compress: true });
+
+      // PASS 1: render all pages to figure out which page each article starts at
+      // (To do this simply, we render twice — first to compute, then re-render with
+      //  correct page numbers on the contents page. Cheaper alternative: collect
+      //  articleStarts on the fly and patch the contents page at the end.)
+
+      const articleList = [];
+      for (const cat of CATEGORIES) {
+        for (const a of cat.articles) {
+          articleList.push({ cat, article: a });
+        }
+      }
+
+      // Cover page (page 1)
+      await renderCoverPage(doc, { data: imgMap[heroUrl] });
+
+      // Reserve contents page (we'll fill it after we know article page numbers)
+      doc.addPage();
+      const contentsPageIndex = doc.internal.getNumberOfPages(); // = 2
+
+      // Render each article, tracking start pages
+      const articleStarts = {};
+      for (const { cat, article } of articleList) {
+        const body = ARTICLE_BODIES[article.id] || makeGenericBody(article, cat);
+        const heroDataUrl = imgMap[body.image] || imgMap[cat.image];
+        // Note: renderArticlePage calls addPage() at the start
+        const pageBefore = doc.internal.getNumberOfPages();
+        await renderArticlePage(
+          doc, article, cat, body, heroDataUrl,
+          pageBefore + 1, 0,
+        );
+        articleStarts[article.id] = pageBefore + 1;
+      }
+
+      // Now fill the contents page: switch to that page and draw
+      doc.setPage(contentsPageIndex);
+      // Re-render contents content on already-existing page (renderContentsPage adds its own page,
+      // so we adapt by inlining the content here without addPage):
+      drawContentsOntoCurrentPage(doc, articleStarts);
+
+      // 3. Save
+      const fname = `ASAC-Magazine-N46-Juin-2026.pdf`;
+      doc.save(fname);
+      setBtnState(originalLabel || t.downloadIssue, false);
+    } catch (err) {
+      console.error('PDF generation failed', err);
+      alert('PDF generation failed: ' + (err && err.message ? err.message : err));
+      setBtnState(originalLabel || t.downloadIssue, false);
+    }
+  }
+
+  function drawContentsOntoCurrentPage(doc, articleStarts) {
+    const t = I18N[state.lang];
+    rgb(doc, PDF_COLORS.paper, 'fill');
+    doc.rect(0, 0, PDF_W, PDF_H, 'F');
+
+    setBody(doc, 9, 'bold');
+    rgb(doc, PDF_COLORS.blue, 'text');
+    doc.setCharSpace(1.8);
+    doc.text('ASAC', PDF_MARGIN_X, 18);
+    doc.setCharSpace(0);
+
+    setBody(doc, 8, 'normal');
+    rgb(doc, PDF_COLORS.grey, 'text');
+    doc.setCharSpace(1.4);
+    doc.text('— 02 —', PDF_W - PDF_MARGIN_X - 14, 18);
+    doc.setCharSpace(0);
+
+    writeDisplayTitle(
+      doc, t.contentsTitle, PDF_MARGIN_X, 48,
+      PDF_W - 2 * PDF_MARGIN_X, 40, PDF_COLORS.blue, 14,
+    );
+    rgb(doc, PDF_COLORS.red, 'fill');
+    doc.rect(PDF_MARGIN_X, 56, 30, 1.2, 'F');
+
+    let y = 72;
+    const colX = PDF_MARGIN_X;
+    const colW = PDF_W - 2 * PDF_MARGIN_X;
+    const lang = state.lang;
+
+    for (const cat of CATEGORIES) {
+      if (y > PDF_H - 50) break; // simple cap: contents stays on one page
+      setBody(doc, 9, 'bold');
+      rgb(doc, PDF_COLORS.blue, 'text');
+      doc.setCharSpace(1.6);
+      doc.text(cat.name[lang].toUpperCase(), colX, y);
+      doc.setCharSpace(0);
+      y += 3.5;
+      rgb(doc, PDF_COLORS.greyLight, 'draw');
+      doc.setLineWidth(0.2);
+      doc.line(colX, y, colX + colW, y);
+      y += 4;
+
+      for (const a of cat.articles) {
+        if (y > PDF_H - 30) break;
+        setBody(doc, 9.5, 'normal');
+        rgb(doc, PDF_COLORS.ink, 'text');
+        const titleLines = doc.splitTextToSize(a.title[lang], colW - 14);
+        for (const line of titleLines) {
+          doc.text(line, colX, y);
+          y += 4.6;
+        }
+        if (articleStarts && articleStarts[a.id]) {
+          setBody(doc, 9, 'bold');
+          rgb(doc, PDF_COLORS.red, 'text');
+          doc.setCharSpace(0.8);
+          const pageStr = String(articleStarts[a.id]).padStart(2, '0');
+          const w = doc.getTextWidth(pageStr);
+          doc.text(pageStr, colX + colW - w, y - 4.6);
+          doc.setCharSpace(0);
+        }
+        y += 1.5;
+      }
+      y += 4;
+    }
+
+    setBody(doc, 7.5, 'normal');
+    doc.setCharSpace(1.2);
+    rgb(doc, PDF_COLORS.grey, 'text');
+    doc.text(`N°46  ·  ${t.issueMonth.toUpperCase()}  ·  ASAC`, PDF_MARGIN_X, PDF_H - 12);
+    doc.setCharSpace(0);
+  }
+
+  /* ---------- FROST-ON-SCROLL NAV (menu page + article page) ---------- */
+  function setupFrostNav() {
+    const nav = document.getElementById('nav');
+    if (!nav) return;
+    const update = () => {
+      // On article page: progress based on window scroll
+      // On home page (menu open): no frost — menu has its own background
+      const y = window.scrollY || 0;
+      const p = Math.max(0, Math.min(1, y / 220));
+      nav.style.setProperty('--frost-p', String(p));
+      nav.classList.toggle('is-frost-on', p > 0.02);
+    };
+    window.addEventListener('scroll', update, { passive: true });
+    update();
+  }
+
+  /* ---------- CMS HYDRATION (Google Drive layer) ----------
+     If /api/categories responds successfully, replace the in-file CATEGORIES
+     with the live folder contents. Articles whose `id` looks like a Google
+     Doc ID (44 chars, /[A-Za-z0-9_-]/) trigger a fetch to /api/article on
+     the article page. Both endpoints are optional: if they 404 or error,
+     the site falls back to the static data baked into this file.
+
+     Frontend i18n names for categories come from CATEGORY_NAME_OVERRIDES
+     keyed by the slugified folder name so French folder names like
+     "Éditorial" still get English labels at runtime.
+  */
+  const CATEGORY_NAME_OVERRIDES = {
+    'editorial': { fr: 'Éditorial', en: 'Editorial' },
+    'actualite': { fr: 'Actualité', en: 'News' },
+    'evenement': { fr: 'Évènement', en: 'Event' },
+    'focus': { fr: 'Focus', en: 'Focus' },
+    'vie-de-l-asac': { fr: "Vie de l'ASAC", en: 'ASAC Life' },
+    'ca-bouge': { fr: 'Ça bouge !', en: 'Moving forward!' },
+    'votre-avis-compte': { fr: 'Votre avis compte', en: 'Your voice matters' },
+    'les-metiers-de-l-assurance': { fr: "Les métiers de l'assurance", en: 'Insurance careers' },
+    'emploi': { fr: 'Emploi', en: 'Careers' },
+    'instant-fun-jeu': { fr: 'Instant fun / Jeu', en: 'Fun break / Game' },
+    'membres-de-l-asac': { fr: "Membres de l'ASAC", en: 'ASAC Members' },
+  };
+
+  // Replace CATEGORIES in place when the live data is available.
+  async function hydrateFromCms() {
+    try {
+      const r = await fetch('/api/categories', { headers: { Accept: 'application/json' } });
+      if (!r.ok) throw new Error('categories endpoint returned ' + r.status);
+      const data = await r.json();
+      if (!Array.isArray(data.categories) || !data.categories.length) return false;
+
+      // Build a fresh CATEGORIES-shaped array
+      const fresh = data.categories.map((c) => {
+        const override = CATEGORY_NAME_OVERRIDES[c.id];
+        const name = override || c.name || { fr: c.id, en: c.id };
+        const placeholderImg = (CATEGORIES.find((x) => x.id === c.id) || {}).image
+          || 'https://images.unsplash.com/photo-1521119989659-a83eee488004?w=1600&q=85&auto=format&fit=crop';
+        return {
+          id: c.id,
+          name,
+          image: placeholderImg,
+          count: c.count,
+          articles: (c.articles || []).map((a) => ({
+            id: a.docId || a.id,
+            docId: a.docId || a.id,
+            title: a.title,
+          })),
+        };
+      });
+
+      // Hot-swap the array contents (keep the reference stable so other code keeps working)
+      CATEGORIES.length = 0;
+      fresh.forEach((c) => CATEGORIES.push(c));
+      // Store issue info if returned
+      if (data.issue) {
+        I18N.fr.issueMonth = data.issue.month.fr || I18N.fr.issueMonth;
+        I18N.en.issueMonth = data.issue.month.en || I18N.en.issueMonth;
+      }
+      return true;
+    } catch (err) {
+      // CMS not configured / network blocked / dev mode -> use baked data
+      console.info('[asac] using baked content (CMS not available):', err.message);
+      return false;
+    }
+  }
+
+  // Fetch one article from /api/article — returns rendered HTML or null.
+  async function fetchArticleFromCms(docId) {
+    try {
+      const r = await fetch(`/api/article?id=${encodeURIComponent(docId)}`, { headers: { Accept: 'application/json' } });
+      if (!r.ok) return null;
+      const data = await r.json();
+      return data;
+    } catch (err) {
+      return null;
+    }
+  }
+
+  // A Google Doc ID is 28–44 chars of [A-Za-z0-9_-]
+  function looksLikeDocId(s) {
+    return typeof s === 'string' && /^[A-Za-z0-9_-]{20,}$/.test(s) && !/^(edito|focus|metiers|emploi|cabouge|vie|avis|actualite|evt|fun|membres)-/.test(s);
+  }
+
+  /* ---------- ARTICLE PAGE RENDER (article.html) ---------- */
+  async function renderArticlePage() {
+    const params = new URLSearchParams(window.location.search);
+    const articleId = params.get('id');
+    const categoryId = params.get('cat');
+
+    const titleEl = document.getElementById('articleTitle');
+    const catEl = document.getElementById('articleCat');
+    const metaEl = document.getElementById('articleMeta');
+    const heroImgEl = document.getElementById('articleHeroImg');
+    const contentEl = document.getElementById('articleContent');
+
+    if (!articleId || !categoryId) {
+      contentEl.innerHTML = '<p style="text-align:center;padding:60px 20px;color:var(--grey-3)">Article introuvable.</p>';
+      return;
+    }
+
+    const cat = CATEGORIES.find((c) => c.id === categoryId);
+    const article = cat && cat.articles.find((a) => a.id === articleId);
+    if (!cat || !article) {
+      // It's possible the user landed here before CATEGORIES was hydrated from the CMS,
+      // OR the id is a Google Doc id from the live folder. Try the CMS path.
+      if (looksLikeDocId(articleId)) {
+        const cms = await fetchArticleFromCms(articleId);
+        if (cms) return renderCmsArticle(cms, cat || { id: categoryId, name: { fr: categoryId, en: categoryId }, image: '' });
+      }
+      contentEl.innerHTML = '<p style="text-align:center;padding:60px 20px;color:var(--grey-3)">Article introuvable.</p>';
+      return;
+    }
+
+    // If the article id IS a Doc ID, prefer the live content over any baked version.
+    if (looksLikeDocId(articleId)) {
+      const cms = await fetchArticleFromCms(articleId);
+      if (cms) return renderCmsArticle(cms, cat);
+    }
+
+    const body = ARTICLE_BODIES[articleId] || makeGenericBody(article, cat);
+    const lang = state.lang;
+    const t = I18N[lang];
+    const heroImg = body.image || cat.image;
+    const lead = body.lead[lang];
+    const paragraphs = (body.paragraphs && body.paragraphs[lang]) || [];
+    const sections = (body.sections && body.sections[lang]) || [];
+    const author = body.author ? body.author[lang] : null;
+    const role = body.role ? body.role[lang] : null;
+    const pullQuote = body.pullQuote ? body.pullQuote[lang] : null;
+    const sources = body.sources || null;
+    const wordCount = [lead, ...paragraphs, ...sections.map((s) => s.p), ...sections.map((s) => s.h)]
+      .join(' ').split(/\s+/).filter(Boolean).length;
+    const readTime = Math.max(3, Math.round(wordCount / 220));
+
+    // Update <title> dynamically
+    document.title = `${article.title[lang]} — ASAC Magazine`;
+
+    // Hero
+    heroImgEl.style.backgroundImage = `url('${heroImg}')`;
+    catEl.textContent = cat.name[lang];
+    titleEl.textContent = article.title[lang];
+    metaEl.innerHTML = `
+      <span>${escapeHtml(t.issueMonth)}</span>
+      <span class="article-page__meta-sep">·</span>
+      <span>${readTime} ${escapeHtml(t.readTime)}</span>
+    `;
+
+    // Body
+    const authorBlock = author ? `
+      <div class="article-page__byline">
+        <span class="article-page__byline-by">${escapeHtml(t.by)}</span>
+        <span class="article-page__byline-name">${escapeHtml(author)}</span>
+        ${role ? `<span class="article-page__byline-role">${escapeHtml(role)}</span>` : ''}
+      </div>` : '';
+
+    const sectionsHtml = sections.map((s, idx) => {
+      const block = `<h3>${escapeHtml(s.h)}</h3><p>${escapeHtml(s.p)}</p>`;
+      if (pullQuote && idx === Math.floor(sections.length / 2) - 1) {
+        return block + `<blockquote class="article-page__pull">${escapeHtml(pullQuote)}</blockquote>`;
+      }
+      return block;
+    }).join('');
+
+    const sourcesHtml = sources && sources.length ? `
+      <aside class="article-page__sources">
+        <span class="article-page__sources-label">${escapeHtml(t.sourcesLabel)}</span>
+        <ul>${sources.map((s) => `<li><a href="${escapeAttr(s.url)}" target="_blank" rel="noopener">${escapeHtml(s.label)}</a></li>`).join('')}</ul>
+      </aside>` : '';
+
+    contentEl.innerHTML = `
+      ${authorBlock}
+      <p class="article-page__lead">${escapeHtml(lead)}</p>
+      ${paragraphs.map((p) => `<p>${escapeHtml(p)}</p>`).join('')}
+      ${paragraphs.length > 0 ? `<div class="article-page__inline-img" style="background-image:url('${escapeAttr(cat.image)}')"></div>` : ''}
+      ${sectionsHtml}
+      ${sourcesHtml}
+    `;
+
+    // Localize back link
+    const backLink = document.querySelector('.article-page__back-link span:last-child');
+    if (backLink) backLink.textContent = t.backToMenu;
+  }
+
+  // Render an article whose body comes from /api/article (live Google Doc).
+  // The API has already given us clean semantic HTML; we just slot it into
+  // the article page chrome (hero, title, byline, content).
+  function renderCmsArticle(cms, cat) {
+    const lang = state.lang;
+    const t = I18N[lang];
+    const titleEl = document.getElementById('articleTitle');
+    const catEl = document.getElementById('articleCat');
+    const metaEl = document.getElementById('articleMeta');
+    const heroImgEl = document.getElementById('articleHeroImg');
+    const contentEl = document.getElementById('articleContent');
+
+    document.title = `${cms.title} — ASAC Magazine`;
+    catEl.textContent = (cat && cat.name && cat.name[lang]) || '';
+    titleEl.textContent = cms.title;
+    metaEl.innerHTML = `<span>${escapeHtml(t.issueMonth)}</span>`;
+    heroImgEl.style.backgroundImage = `url('${(cms.images && cms.images[0]) || (cat && cat.image) || ''}')`;
+
+    contentEl.innerHTML = cms.html || '<p>(empty document)</p>';
+    // Re-localize the back link
+    const backLink = document.querySelector('.article-page__back-link span:last-child');
+    if (backLink) backLink.textContent = t.backToMenu;
+  }
+
+  /* ---------- INIT ---------- */
+  async function init() {
+    const page = document.body.dataset.page || 'home';
     initCursor();
     hideLoader();
+
+    // Try CMS hydration first (non-blocking on failure)
+    await hydrateFromCms();
+
+    if (page === 'home') {
+      renderMenuGrid();
+      setupHomeHeight();
+      bindEvents();
+      updatePanels();
+    } else if (page === 'article') {
+      bindEvents();
+      renderArticlePage();
+      setupFrostNav();
+    }
   }
 
   if (document.readyState === 'loading') {

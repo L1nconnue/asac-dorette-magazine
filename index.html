@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <!-- Set a descriptive tab title with the magazine issue number and month -->
   <title>ASAC - Magazine - Nº46 Juin</title>
-  <meta name="description" content="Le Magazine de l'Association des Sociétés d'Assurance du Cameroun" />
+  <meta name="description" content="Le Magazine de l'Association des Sociétés d'Assurance du Cameroun — N°46, Juin 2026" />
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
   <link rel="icon" type="image/png" href="assets/favicon.png" />
   <link rel="apple-touch-icon" href="assets/favicon.png" />
@@ -15,8 +14,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@200;300;400;500;600;700&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
 </head>
-<body>
+<body data-page="home">
 
   <!-- LOADING SCREEN -->
   <div class="loader" id="loader">
@@ -63,10 +63,7 @@
         <div class="panel__overlay"></div>
       </div>
       <div class="panel__content panel__content--hero">
-        <!-- Small edition label above the hero title -->
-        <div class="hero__edition-block">
-          <span>N°46 — Juin</span>
-        </div>
+        <span class="hero__issue"><span class="hero__issue-no">N°46</span><span class="hero__issue-dot">·</span><span class="hero__issue-month" data-i18n="issueMonth">Juin 2026</span></span>
         <h1 class="hero__title">ASSURANCES<br/>&amp; SÉCURITÉ</h1>
         <p class="hero__sub" data-i18n="heroSub">Le Magazine de l'Association des Sociétés d'Assurance du Cameroun</p>
         <div class="hero__scroll">
@@ -76,8 +73,7 @@
       </div>
       <div class="panel__edition">
         <span data-i18n="editionLabel">Édition</span>
-        <!-- Update issue number and month/year -->
-        <strong>N°46 — Juin 2026</strong>
+        <strong>N°46 — 2026</strong>
       </div>
     </section>
 
@@ -89,7 +85,7 @@
       </div>
       <div class="panel__content panel__content--feature" data-article="focus-0">
         <span class="panel__cat">Focus</span>
-        <h2 class="panel__title">Expérience client et dématérialisation de l'assurance auto</h2>
+        <h2 class="panel__title">La dématérialisation de l'assurance automobile au Cameroun</h2>
         <div class="panel__meta">
           <span data-i18n="readMore">Lire l'article</span>
           <i class="panel__meta-arrow"></i>
@@ -151,15 +147,16 @@
       <!-- Footer at bottom of last panel -->
       <div class="panel__footer">
         <div class="panel__footer-left">
-          <!-- Update copyright year -->
           <span>© 2026 ASAC</span>
           <span>·</span>
           <span data-i18n="allRights">Tous droits réservés</span>
+          <span>—</span>
+          <span class="panel__footer-credit">Made by <a href="#" class="panel__footer-credit-link">MW DDB Cameroon</a></span>
         </div>
         <div class="panel__footer-right">
           <a href="#" data-action="menu" data-i18n="exploreAll">Explorer tous les articles</a>
-          <!-- Download link for the full magazine. Appears at the bottom of the home page. -->
-          <a href="magazine.pdf" download data-i18n="downloadMagazine" class="panel__download">Télécharger le magazine</a>
+          <span class="panel__footer-sep">·</span>
+          <a href="#" data-action="download" data-i18n="downloadIssueShort">Télécharger l'édition</a>
         </div>
       </div>
     </section>
@@ -176,10 +173,6 @@
     </div>
 
     <div class="menu__grid" id="menuGrid"></div>
-    <!-- Download link for the full magazine within the content menu. Appears below the category grid. -->
-    <div class="menu__download">
-      <a href="magazine.pdf" download data-i18n="downloadMagazine" class="menu__download-link">Télécharger le magazine</a>
-    </div>
 
     <div class="menu__masthead">
       <h3 class="masthead__title">Equipe du Journal</h3>
@@ -207,6 +200,20 @@
         </div>
       </div>
     </div>
+
+    <!-- MENU FOOTER -->
+    <div class="menu__footer">
+      <div class="menu__footer-left">
+        <span>© 2026 ASAC</span>
+        <span>·</span>
+        <span data-i18n="allRights">Tous droits réservés</span>
+        <span>—</span>
+        <span>Made by <a href="#" class="menu__footer-credit-link">MW DDB Cameroon</a></span>
+      </div>
+      <div class="menu__footer-right">
+        <a href="#" data-action="download" class="menu__download" data-i18n="downloadIssueShort">Télécharger l'édition</a>
+      </div>
+    </div>
   </div>
 
   <!-- CATEGORY (ARTICLE LIST) OVERLAY -->
@@ -218,17 +225,6 @@
       </button>
     </div>
     <div class="category__list" id="categoryList"></div>
-  </div>
-
-  <!-- ARTICLE POPUP -->
-  <div class="article-modal" id="articleModal" aria-hidden="true">
-    <div class="article-modal__backdrop" id="articleBackdrop"></div>
-    <div class="article-modal__inner">
-      <button class="article-modal__close" id="articleClose" aria-label="Close article">
-        <span></span><span></span>
-      </button>
-      <article class="article" id="articleContent"></article>
-    </div>
   </div>
 
   <script src="script.js"></script>

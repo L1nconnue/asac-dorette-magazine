@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <!-- The tab title is updated dynamically via script.js based on the selected article -->
-  <title>ASAC — Article</title>
-  <meta name="description" content="ASAC Magazine Article" />
+  <title>ASAC - Magazine - Nº46 Juin</title>
+  <meta name="description" content="Le Magazine de l'Association des Sociétés d'Assurance du Cameroun — N°46, Juin 2026" />
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
   <link rel="icon" type="image/png" href="assets/favicon.png" />
   <link rel="apple-touch-icon" href="assets/favicon.png" />
@@ -16,99 +15,55 @@
 
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
+<body data-page="article">
 
-  <!-- LOADING SCREEN -->
+  <!-- LOADING -->
   <div class="loader" id="loader">
-    <div class="loader__logo">
-      <img src="assets/logo-white.png" alt="ASAC" />
-    </div>
-    <div class="loader__bar"><span></span></div>
+    <div class="loader__bar"><i></i></div>
   </div>
 
   <!-- CUSTOM CURSOR -->
   <div class="cursor" id="cursor"></div>
-  <div class="cursor-dot" id="cursorDot"></div>
 
-  <!-- TOP NAVIGATION -->
-  <header class="nav" id="nav">
-    <a href="index.html" class="nav__logo" data-action="home" aria-label="ASAC Accueil">
-      <img class="nav__logo-img nav__logo-img--light" src="assets/logo-white.png" alt="ASAC" />
-      <img class="nav__logo-img nav__logo-img--dark" src="assets/logo-blue.png" alt="ASAC" />
+  <!-- NAV (starts in dark/blue mode + frost-on-scroll) -->
+  <nav class="nav nav--frostable is-dark" id="nav">
+    <a href="/" class="nav__logo">
+      <img src="assets/logo-blue.png" alt="ASAC" class="nav__logo-img nav__logo-img--dark" />
+      <img src="assets/logo-white.png" alt="ASAC" class="nav__logo-img nav__logo-img--light" />
     </a>
-
     <div class="nav__right">
-      <div class="lang-switch" id="langSwitch" role="group" aria-label="Language">
+      <div class="lang">
         <button class="lang-btn is-active" data-lang="fr">FR</button>
-        <span class="lang-divider">/</span>
+        <span class="lang__sep">/</span>
         <button class="lang-btn" data-lang="en">EN</button>
       </div>
-
-      <button class="menu-btn" id="menuBtn" aria-label="Open menu">
-        <span class="menu-btn__label" data-i18n="menuLabel">Sommaire</span>
-        <span class="menu-btn__burger" aria-hidden="true">
-          <i></i><i></i>
-        </span>
-      </button>
+      <a href="/" class="nav__close" aria-label="Close article" id="navClose">
+        <span></span><span></span>
+      </a>
     </div>
-  </header>
+  </nav>
 
-  <!-- ARTICLE CONTENT -->
-  <main id="articlePage" class="article-page"></main>
-
-  <!-- MENU OVERLAY (same structure as index for consistency) -->
-  <div class="menu" id="menu" aria-hidden="true">
-    <div class="menu__header">
-      <div class="menu__title">
-        <h2 class="menu__h2">Assurances &amp; Sécurité</h2>
-        <p class="menu__sub" data-i18n="heroSub">Le Magazine de l'Association des Sociétés d'Assurance du Cameroun</p>
+  <!-- ARTICLE PAGE -->
+  <main class="article-page" id="articlePage">
+    <div class="article-page__hero" id="articleHero">
+      <div class="article-page__hero-img" id="articleHeroImg"></div>
+      <div class="article-page__hero-overlay"></div>
+      <div class="article-page__hero-content">
+        <span class="article-page__cat" id="articleCat"></span>
+        <h1 class="article-page__title" id="articleTitle"></h1>
+        <div class="article-page__meta" id="articleMeta"></div>
       </div>
     </div>
-    <div class="menu__grid" id="menuGrid"></div>
-    <!-- Download link within the content menu -->
-    <div class="menu__download">
-      <a href="magazine.pdf" download data-i18n="downloadMagazine" class="menu__download-link">Télécharger le magazine</a>
+    <article class="article-page__content" id="articleContent">
+      <!-- populated by JS -->
+    </article>
+    <div class="article-page__footer">
+      <a href="/" class="article-page__back-link" data-i18n="backToMenu">
+        <span class="back-arrow">←</span>
+        <span>Retour au sommaire</span>
+      </a>
     </div>
-    <div class="menu__masthead">
-      <h3 class="masthead__title">Equipe du Journal</h3>
-      <div class="masthead__cols">
-        <div class="masthead__col">
-          <p><span class="masthead__role">Directeur de Publication</span> Thierry KEPEDEN</p>
-          <p><span class="masthead__role">Directeur de Publication Délégué</span> Vincent ONGONO</p>
-          <p><span class="masthead__role">Administration</span> Emmanuel EBONGO</p>
-          <p><span class="masthead__role">Comité Editorial</span> Commission Communication de l'ASAC</p>
-          <p><span class="masthead__role">Rédacteur en Chef</span> Fortune NOUKOUA</p>
-        </div>
-        <div class="masthead__col">
-          <p class="masthead__role masthead__role--head" data-i18n="contributors">Ont collaboré</p>
-          <p>Flora BELLE</p>
-          <p>Larissa BONGAM</p>
-          <p>Vanessa MBOULE</p>
-          <p>Felicia NKONDOCK</p>
-          <p>Ahmed YOMBO</p>
-          <p>Christian OMOKO</p>
-          <p>Julien NGUE</p>
-          <p>Pierre MBOUMMA</p>
-          <p>Alfred NKOYOG</p>
-          <p>Daniel DOUALLA</p>
-          <p>Benoit MENDZANA</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- CATEGORY OVERLAY -->
-  <div class="category" id="category" aria-hidden="true">
-    <div class="category__header">
-      <span id="categoryLabel" class="category__label"></span>
-      <button id="categoryClose" class="category__close" aria-label="Fermer">
-        <i></i><i></i>
-      </button>
-    </div>
-    <div class="category__list" id="categoryList"></div>
-  </div>
-
-  <!-- Article modal elements are omitted on this page as articles open directly -->
+  </main>
 
   <script src="script.js"></script>
 </body>
