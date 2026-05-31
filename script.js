@@ -620,6 +620,23 @@
       });
     });
 
+    // Add a scroll listener to the menu overlay to toggle a frosted header
+    const menuEl = document.getElementById('menu');
+    const menuHeader = menuEl.querySelector('.menu__header');
+    if (menuEl && menuHeader) {
+      // Debounce scroll handler to avoid rapid class toggling
+      let lastScrollTop = 0;
+      menuEl.addEventListener('scroll', () => {
+        const st = menuEl.scrollTop;
+        if (st > 0 && lastScrollTop === 0) {
+          menuHeader.classList.add('is-stuck');
+        } else if (st === 0 && lastScrollTop > 0) {
+          menuHeader.classList.remove('is-stuck');
+        }
+        lastScrollTop = st;
+      });
+    }
+
     // Category close
     document.getElementById('categoryClose').addEventListener('click', closeCategory);
 

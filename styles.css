@@ -67,6 +67,10 @@ html.no-scroll, body.no-scroll {
   /* Ensure the fixed elements take up the full viewport so that
      scrolling within the window has no effect on the document. */
   height: 100%;
+  /* Prevent overscroll bounce on mobile devices when the background
+     is locked. Without this, some mobile browsers still allow
+     scrolling gestures to propagate and rubber‑band the page. */
+  overscroll-behavior: contain;
 }
 body.no-scroll {
   position: fixed;
@@ -581,7 +585,25 @@ body.cursor-ready .cursor-dot { opacity: 1; }
 }
 
 .menu__header {
+  /* Stick the menu header below the main navigation so it stays visible
+     when the menu content scrolls. When the user scrolls away from the
+     top, a frosted background is applied via a helper class. */
+  position: sticky;
+  top: var(--nav-h);
+  z-index: 1;
   padding: calc(var(--nav-h) + 30px) var(--pad-x) 32px;
+  transition: background 0.4s ease, backdrop-filter 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* Frosted appearance for the menu header when the menu has been scrolled. */
+.menu__header.is-stuck {
+  /* Semi‑transparent version of the paper colour with blur to create a
+     frosted glass effect. Using both backdrop-filter and its
+     WebKit prefix ensures compatibility across modern browsers. */
+  background: rgba(246, 244, 239, 0.85);
+  backdrop-filter: blur(8px) saturate(1.2);
+  -webkit-backdrop-filter: blur(8px) saturate(1.2);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 .menu__title {
   max-width: 720px;
@@ -956,6 +978,8 @@ body.cursor-ready .cursor-dot { opacity: 1; }
   /* Fill the viewport so the internal article can scroll independently */
   height: 100%;
   padding: 60px 20px 60px;
+  /* Enable smooth momentum scrolling on iOS */
+  -webkit-overflow-scrolling: touch;
 }
 
 .article-modal__close {
@@ -995,9 +1019,9 @@ body.cursor-ready .cursor-dot { opacity: 1; }
   position: relative;
   /* Allow the article content to scroll independently of the page.
      The modal container (.article-modal__inner) centers the article,
-     but the article itself handles vertical scrolling so long
-     pieces can be read. Without this, scrolling only affects the
-     background page. */
+     but the article itself handles vertical scrolling so long pieces
+     can be read. Without this, scrolling only affects the background
+     page. */
   overflow-y: auto;
   max-height: calc(100vh - 120px);
 }
