@@ -2,262 +2,222 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Assurances &amp; Sécurité — Le Magazine de l'ASAC</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>ASAC — Assurances et Sécurité</title>
+  <meta name="description" content="Le Magazine de l'Association des Sociétés d'Assurance du Cameroun" />
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <link rel="apple-touch-icon" href="assets/favicon.png" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
-  <!-- Site favicon -->
-  <link rel="icon" type="image/png" href="favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@200;300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
-  <!-- Top navigation bar: contains logo, language switch and hamburger. This bar sits fixed
-       above the hero. On home page it starts transparent with white elements, then
-       becomes white with blue elements when you scroll. The language switch and
-       hamburger retain the same IDs as before so the existing JS continues to work. -->
-  <div id="topBar" class="top-bar">
-    <a href="#" class="top-logo" onclick="event.preventDefault()">
-      <img src="logo.png" alt="ASAC" />
+  <!-- LOADING SCREEN -->
+  <div class="loader" id="loader">
+    <div class="loader__logo">
+      <img src="assets/logo-white.png" alt="ASAC" />
+    </div>
+    <div class="loader__bar"><span></span></div>
+  </div>
+
+  <!-- CUSTOM CURSOR -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-dot" id="cursorDot"></div>
+
+  <!-- TOP NAVIGATION -->
+  <header class="nav" id="nav">
+    <a href="#" class="nav__logo" data-action="home" aria-label="ASAC Accueil">
+      <img class="nav__logo-img nav__logo-img--light" src="assets/logo-white.png" alt="ASAC" />
+      <img class="nav__logo-img nav__logo-img--dark" src="assets/logo-blue.png" alt="ASAC" />
     </a>
-    <div class="top-right">
-      <!-- Language switcher moved from the floating position into the fixed top bar. -->
-      <button class="lang-switch" onclick="toggleLang()">
-        <span id="langFR" class="lang-opt active">FR</span>
-        <span class="lang-sep">/</span>
-        <span id="langEN" class="lang-opt">EN</span>
+
+    <div class="nav__right">
+      <div class="lang-switch" id="langSwitch" role="group" aria-label="Language">
+        <button class="lang-btn is-active" data-lang="fr">FR</button>
+        <span class="lang-divider">/</span>
+        <button class="lang-btn" data-lang="en">EN</button>
+      </div>
+
+      <button class="menu-btn" id="menuBtn" aria-label="Open menu">
+        <span class="menu-btn__label" data-i18n="menuLabel">Sommaire</span>
+        <span class="menu-btn__burger" aria-hidden="true">
+          <i></i><i></i>
+        </span>
       </button>
-      <!-- Hamburger button retains the same ID so the toggleMenu function still works. -->
-      <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
-        <span></span><span></span><span></span>
+    </div>
+  </header>
+
+  <!-- HOME — STACKED PANELS -->
+  <main class="home" id="home">
+
+    <!-- HERO -->
+    <section class="panel panel--hero" data-panel="0">
+      <div class="panel__media">
+        <div class="panel__img" style="background-image:url('https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=1920&q=85&auto=format&fit=crop')"></div>
+        <div class="panel__overlay"></div>
+      </div>
+      <div class="panel__content panel__content--hero">
+        <h1 class="hero__title">ASSURANCES<br/>&amp; SÉCURITÉ</h1>
+        <p class="hero__sub" data-i18n="heroSub">Le Magazine de l'Association des Sociétés d'Assurance du Cameroun</p>
+        <div class="hero__scroll">
+          <span data-i18n="scroll">Faites défiler</span>
+          <i class="hero__scroll-line"></i>
+        </div>
+      </div>
+      <div class="panel__edition">
+        <span data-i18n="editionLabel">Édition</span>
+        <strong>N°07 — 2025</strong>
+      </div>
+    </section>
+
+    <!-- FOCUS -->
+    <section class="panel panel--feature" data-panel="1" data-category="Focus">
+      <div class="panel__media">
+        <div class="panel__img" style="background-image:url('https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=1920&q=85&auto=format&fit=crop')"></div>
+        <div class="panel__overlay panel__overlay--strong"></div>
+      </div>
+      <div class="panel__content panel__content--feature" data-article="focus-0">
+        <span class="panel__cat">Focus</span>
+        <h2 class="panel__title">La micro-assurance, levier d'inclusion financière au Cameroun</h2>
+        <div class="panel__meta">
+          <span data-i18n="readMore">Lire l'article</span>
+          <i class="panel__meta-arrow"></i>
+        </div>
+      </div>
+      <div class="panel__index"><span>01</span> / <span>04</span></div>
+    </section>
+
+    <!-- EMPLOI -->
+    <section class="panel panel--feature" data-panel="2" data-category="Emploi">
+      <div class="panel__media">
+        <div class="panel__img" style="background-image:url('https://images.unsplash.com/photo-1521119989659-a83eee488004?w=1920&q=85&auto=format&fit=crop')"></div>
+        <div class="panel__overlay panel__overlay--strong"></div>
+      </div>
+      <div class="panel__content panel__content--feature" data-article="emploi-0">
+        <span class="panel__cat">Emploi</span>
+        <h2 class="panel__title">Les nouveaux visages de l'assurance camerounaise</h2>
+        <div class="panel__meta">
+          <span data-i18n="readMore">Lire l'article</span>
+          <i class="panel__meta-arrow"></i>
+        </div>
+      </div>
+      <div class="panel__index"><span>02</span> / <span>04</span></div>
+    </section>
+
+    <!-- ÇA BOUGE -->
+    <section class="panel panel--feature" data-panel="3" data-category="Ça bouge !">
+      <div class="panel__media">
+        <div class="panel__img" style="background-image:url('https://images.unsplash.com/photo-1605000797499-95a51c5269ae?w=1920&q=85&auto=format&fit=crop')"></div>
+        <div class="panel__overlay panel__overlay--strong"></div>
+      </div>
+      <div class="panel__content panel__content--feature" data-article="cabouge-0">
+        <span class="panel__cat">Ça bouge !</span>
+        <h2 class="panel__title">Innovation : la digitalisation accélère le secteur</h2>
+        <div class="panel__meta">
+          <span data-i18n="readMore">Lire l'article</span>
+          <i class="panel__meta-arrow"></i>
+        </div>
+      </div>
+      <div class="panel__index"><span>03</span> / <span>04</span></div>
+    </section>
+
+    <!-- ACTUALITÉ -->
+    <section class="panel panel--feature" data-panel="4" data-category="Actualité">
+      <div class="panel__media">
+        <div class="panel__img" style="background-image:url('https://images.unsplash.com/photo-1507152832244-10d45c7eda7d?w=1920&q=85&auto=format&fit=crop')"></div>
+        <div class="panel__overlay panel__overlay--strong"></div>
+      </div>
+      <div class="panel__content panel__content--feature" data-article="actualite-0">
+        <span class="panel__cat">Actualité</span>
+        <h2 class="panel__title">CIMA : Les nouvelles directives pour 2025</h2>
+        <div class="panel__meta">
+          <span data-i18n="readMore">Lire l'article</span>
+          <i class="panel__meta-arrow"></i>
+        </div>
+      </div>
+      <div class="panel__index"><span>04</span> / <span>04</span></div>
+
+      <!-- Footer at bottom of last panel -->
+      <div class="panel__footer">
+        <div class="panel__footer-left">
+          <span>© 2025 ASAC</span>
+          <span>·</span>
+          <span data-i18n="allRights">Tous droits réservés</span>
+        </div>
+        <div class="panel__footer-right">
+          <a href="#" data-action="menu" data-i18n="exploreAll">Explorer tous les articles</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MENU OVERLAY -->
+  <div class="menu" id="menu" aria-hidden="true">
+    <div class="menu__header">
+      <div class="menu__title">
+        <h2 class="menu__h2">Assurances &amp; Sécurité</h2>
+        <p class="menu__sub" data-i18n="heroSub">Le Magazine de l'Association des Sociétés d'Assurance du Cameroun</p>
+      </div>
+    </div>
+
+    <div class="menu__grid" id="menuGrid"></div>
+
+    <div class="menu__masthead">
+      <h3 class="masthead__title">Equipe du Journal</h3>
+      <div class="masthead__cols">
+        <div class="masthead__col">
+          <p><span class="masthead__role">Directeur de Publication</span> Thierry KEPEDEN</p>
+          <p><span class="masthead__role">Directeur de Publication Délégué</span> Vincent ONGONO</p>
+          <p><span class="masthead__role">Administration</span> Emmanuel EBONGO</p>
+          <p><span class="masthead__role">Comité Editorial</span> Commission Communication de l'ASAC</p>
+          <p><span class="masthead__role">Rédacteur en Chef</span> Fortune NOUKOUA</p>
+        </div>
+        <div class="masthead__col">
+          <p class="masthead__role masthead__role--head" data-i18n="contributors">Ont collaboré</p>
+          <p>Flora BELLE</p>
+          <p>Larissa BONGAM</p>
+          <p>Vanessa MBOULE</p>
+          <p>Felicia NKONDOCK</p>
+          <p>Ahmed YOMBO</p>
+          <p>Christian OMOKO</p>
+          <p>Julien NGUE</p>
+          <p>Pierre MBOUMMA</p>
+          <p>Alfred NKOYOG</p>
+          <p>Daniel DOUALLA</p>
+          <p>Benoit MENDZANA</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CATEGORY (ARTICLE LIST) OVERLAY -->
+  <div class="category" id="category" aria-hidden="true">
+    <div class="category__header">
+      <span class="category__label" id="categoryLabel">Focus</span>
+      <button class="category__close" id="categoryClose" aria-label="Close">
+        <span></span><span></span>
       </button>
     </div>
+    <div class="category__list" id="categoryList"></div>
   </div>
 
-<!-- ========== HOME PAGE ========== -->
-<div id="homePage" class="page active">
-
-  <!-- HERO SLIDER: full-page slideshow of four main articles.  The folder-shaped
-       container leaves a small margin on each side.  Slide 1 displays only
-       the magazine title, description and issue number.  Subsequent slides
-       show the category and a short description along with a smaller
-       magazine title.  Navigation arrows allow moving left or right. -->
-  <div class="hero-slider" id="homeSlider">
-    <!-- Slide captions are now embedded within each slide instead of a global caption -->
-    <div class="slides">
-      <!-- Slide 0: ÉDITORIAL -->
-      <div class="slide" data-index="0">
-        <img src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=1200&q=80" alt="Éditorial" />
-        <div class="slide-overlay"></div>
-        <!-- Slide 1 caption: magazine name, description and issue number -->
-        <div class="slide-caption">
-          <h1 class="title-large" data-fr="ASSURANCES<br>ET SÉCURITÉ" data-en="INSURANCE<br>AND SECURITY">ASSURANCES<br>ET SÉCURITÉ</h1>
-          <p class="caption-desc" data-fr="Le Magazine de l'Association des Sociétés d'Assurance du Cameroun" data-en="The Magazine of the Association of Insurance Companies of Cameroon">Le Magazine de l'Association des Sociétés d'Assurance du Cameroun</p>
-          <span class="issue-number">N° 50 Juin 2026</span>
-        </div>
-      </div>
-      <!-- Slide 1: ACTUALITÉ -->
-      <div class="slide" data-index="1">
-        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&q=80" alt="Actualité" />
-        <div class="slide-overlay"></div>
-        <!-- Smaller magazine title on subsequent slides -->
-        <div class="slide-caption">
-          <h1 class="title-small" data-fr="ASSURANCES<br>ET SÉCURITÉ" data-en="INSURANCE<br>AND SECURITY">ASSURANCES<br>ET SÉCURITÉ</h1>
-        </div>
-        <div class="slide-card" onclick="openArticle('actualite',0)">
-          <div class="card-title" data-fr="ACTUALITÉ" data-en="NEWS">ACTUALITÉ</div>
-          <div class="card-subtitle" data-fr="Fusion approuvée pour Sanlam et Allianz" data-en="Merger approved for Sanlam &amp; Allianz">Fusion approuvée pour Sanlam et Allianz</div>
-          <span class="card-arrow"><img src="arrow_red.svg" alt="→"/></span>
-        </div>
-      </div>
-      <!-- Slide 2: ÉVÈNEMENT -->
-      <div class="slide" data-index="2">
-        <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&q=80" alt="Évènement" />
-        <div class="slide-overlay"></div>
-        <div class="slide-caption">
-          <h1 class="title-small" data-fr="ASSURANCES<br>ET SÉCURITÉ" data-en="INSURANCE<br>AND SECURITY">ASSURANCES<br>ET SÉCURITÉ</h1>
-        </div>
-        <div class="slide-card" onclick="openArticle('evenement',0)">
-          <div class="card-title" data-fr="ÉVÈNEMENT" data-en="EVENT">ÉVÈNEMENT</div>
-          <div class="card-subtitle" data-fr="48ème Assemblée Générale de la FANAF" data-en="48th FANAF General Assembly">48ème Assemblée Générale de la FANAF</div>
-          <span class="card-arrow"><img src="arrow_red.svg" alt="→"/></span>
-        </div>
-      </div>
-      <!-- Slide 3: FOCUS -->
-      <div class="slide" data-index="3">
-        <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1200&q=80" alt="Focus" />
-        <div class="slide-overlay"></div>
-        <div class="slide-caption">
-          <h1 class="title-small" data-fr="ASSURANCES<br>ET SÉCURITÉ" data-en="INSURANCE<br>AND SECURITY">ASSURANCES<br>ET SÉCURITÉ</h1>
-        </div>
-        <div class="slide-card" onclick="openArticle('focus',0)">
-          <div class="card-title">FOCUS</div>
-          <div class="card-subtitle" data-fr="La dématérialisation de l'assurance auto" data-en="Digitalising auto insurance">La dématérialisation de l'assurance auto</div>
-          <span class="card-arrow"><img src="arrow_red.svg" alt="→"/></span>
-        </div>
-      </div>
-    </div>
-    <!-- Arrow navigation buttons for the hero slider.  Each arrow sits on the
-         left or right side of the slider and allows the user to move
-         backward or forward.  The arrows use a white SVG icon and are
-         hidden on very small screens where swipe gestures are available. -->
-    <button class="hero-arrow hero-left" aria-label="Précédent" onclick="prevSlide()">
-      <img src="arrow_white.svg" alt="←" />
-    </button>
-    <button class="hero-arrow hero-right" aria-label="Suivant" onclick="nextSlide()">
-      <img src="arrow_white.svg" alt="→" />
-    </button>
-    <div class="hero-dots">
-      <span class="dot active" data-index="0"></span>
-      <span class="dot" data-index="1"></span>
-      <span class="dot" data-index="2"></span>
-      <span class="dot" data-index="3"></span>
-    </div>
-  </div>
-</div>
-
-<!-- ========== MENU PAGE ========== -->
-<div id="menuPage" class="page">
-  <div class="menu-top">
-    <div>
-      <h2 class="menu-title" data-fr="ASSURANCES<br>ET SÉCURITÉ" data-en="INSURANCE<br>AND SECURITY">ASSURANCES<br>ET SÉCURITÉ</h2>
-      <p class="menu-sub" data-fr="Le Magazine de l'Association des Sociétés d'Assurance du Cameroun" data-en="The Magazine of the Association of Insurance Companies of Cameroon">Le Magazine de l'Association des Sociétés d'Assurance du Cameroun</p>
-    </div>
-    <div class="menu-actions">
-      <!-- Language switcher for the menu page.  This echoes the top bar switch
-           but is styled for a light background.  It calls toggleLang() to
-           change the interface language. -->
-      <button class="lang-switch" onclick="toggleLang()">
-        <span class="lang-opt active">FR</span>
-        <span class="lang-sep">/</span>
-        <span class="lang-opt">EN</span>
+  <!-- ARTICLE POPUP -->
+  <div class="article-modal" id="articleModal" aria-hidden="true">
+    <div class="article-modal__backdrop" id="articleBackdrop"></div>
+    <div class="article-modal__inner">
+      <button class="article-modal__close" id="articleClose" aria-label="Close article">
+        <span></span><span></span>
       </button>
-      <button class="menu-close" onclick="toggleMenu()">✕</button>
+      <article class="article" id="articleContent"></article>
     </div>
   </div>
 
-  <div class="menu-grid">
-    <!-- First menu card: no longer pre-filled image. The image will be revealed on hover via CSS. -->
-    <div class="m-card stagger-1" onclick="openCategory('editorial')" style="--bg:url('https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=700&q=80')">
-      <span class="m-arrow"><img src="arrow_red.svg" alt="→" /></span>
-      <div class="m-card-body"><h3 data-fr="ÉDITORIAL" data-en="EDITORIAL">ÉDITORIAL</h3><p data-fr="L'impératif de l'assainissement de notre marché" data-en="The imperative of cleaning up our market">L'impératif de l'assainissement de notre marché</p></div>
-    </div>
-
-    <div class="m-card stagger-2" onclick="openCategory('actualite')" style="--bg:url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=700&q=80')">
-      <span class="m-arrow red"><img src="arrow_red.svg" alt="" /></span>
-      <div class="m-card-body">
-        <h3 data-fr="ACTUALITÉ" data-en="NEWS">ACTUALITÉ</h3>
-        <div class="m-list">
-          <div class="m-list-item"><span class="m-bar"></span><span data-fr="L'impératif de l'assainissement de notre marché" data-en="The imperative of cleaning up our market">L'impératif de l'assainissement de notre marché</span></div>
-          <div class="m-list-item"><span class="m-bar"></span><span data-fr="L'impératif de l'assainissement de notre marché" data-en="The imperative of cleaning up our market">L'impératif de l'assainissement de notre marché</span></div>
-          <div class="m-list-item"><span class="m-bar"></span><span data-fr="L'impératif de l'assainissement de notre marché" data-en="The imperative of cleaning up our market">L'impératif de l'assainissement de notre marché</span></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="m-card stagger-3" onclick="openCategory('evenement')" style="--bg:url('https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=700&q=80')">
-      <span class="m-arrow red"><img src="arrow_red.svg" alt="" /></span>
-      <div class="m-card-body"><h3 data-fr="EVENEMENT" data-en="EVENT">EVENEMENT</h3><p data-fr="L'impératif de l'assainissement de notre marché" data-en="The imperative of cleaning up our market">L'impératif de l'assainissement de notre marché</p></div>
-    </div>
-
-    <div class="m-card stagger-4" onclick="openCategory('focus')" style="--bg:url('https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=700&q=80')">
-      <span class="m-arrow red"><img src="arrow_red.svg" alt="" /></span>
-      <div class="m-card-body">
-        <h3>FOCUS</h3>
-        <div class="m-list">
-          <div class="m-list-item"><span class="m-bar"></span><span data-fr="L'impératif de l'assainissement de notre marché" data-en="The imperative of cleaning up our market">L'impératif de l'assainissement de notre marché</span></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="m-card stagger-5" onclick="openCategory('vie')" style="--bg:url('https://images.unsplash.com/photo-1556761175-4b46a572b786?w=700&q=80')">
-      <span class="m-arrow red"><img src="arrow_red.svg" alt="" /></span>
-      <div class="m-card-body"><h3 data-fr="VIE DE L'ASAC" data-en="ASAC LIFE">VIE DE L'ASAC</h3><p data-fr="L'impératif de l'assainissement de notre marché" data-en="Strengthening governance">L'impératif de l'assainissement de notre marché</p></div>
-    </div>
-
-    <div class="m-card stagger-6" onclick="openCategory('bouge')" style="--bg:url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=700&q=80')">
-      <span class="m-arrow red"><img src="arrow_red.svg" alt="" /></span>
-      <div class="m-card-body"><h3 data-fr="ÇA BOUGE !" data-en="ON THE MOVE!">ÇA BOUGE !</h3><p data-fr="L'impératif de l'assainissement de notre marché" data-en="News and appointments">L'impératif de l'assainissement de notre marché</p></div>
-    </div>
-
-    <div class="m-card m-wide stagger-7" onclick="openCategory('avis')" style="--bg:url('https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=700&q=80')">
-      <span class="m-arrow red"><img src="arrow_red.svg" alt="" /></span>
-      <div class="m-card-body"><h3 data-fr="EVENEMENT" data-en="EVENT">EVENEMENT</h3><p data-fr="L'impératif de l'assainissement de notre marché" data-en="The imperative">L'impératif de l'assainissement de notre marché</p></div>
-    </div>
-
-    <div class="m-card stagger-8" onclick="openCategory('metiers')" style="--bg:url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=700&q=80')">
-      <span class="m-arrow red"><img src="arrow_red.svg" alt="" /></span>
-      <div class="m-card-body"><h3 data-fr="LES MÉTIERS" data-en="CAREERS">LES MÉTIERS</h3><p data-fr="Portrait d'un actuaire" data-en="Portrait of an actuary">Portrait d'un actuaire</p></div>
-    </div>
-
-    <div class="m-card stagger-9" onclick="openCategory('emploi')" style="--bg:url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=700&q=80')">
-      <span class="m-arrow red"><img src="arrow_red.svg" alt="" /></span>
-      <div class="m-card-body"><h3 data-fr="EMPLOI" data-en="EMPLOYMENT">EMPLOI</h3><p data-fr="Offres d'emploi" data-en="Job offers">Offres d'emploi</p></div>
-    </div>
-
-    <div class="m-card stagger-10" onclick="openCategory('fun')" style="--bg:url('https://images.unsplash.com/photo-1509869175650-a1d97972541a?w=700&q=80')">
-      <span class="m-arrow red"><img src="arrow_red.svg" alt="" /></span>
-      <div class="m-card-body"><h3 data-fr="INSTANT FUN" data-en="FUN TIME">INSTANT FUN</h3><p data-fr="Quiz assurance" data-en="Insurance quiz">Quiz assurance</p></div>
-    </div>
-
-    <div class="m-card stagger-11" onclick="openCategory('membres')" style="--bg:url('https://images.unsplash.com/photo-1560472355-536de3962603?w=700&q=80')">
-      <span class="m-arrow red"><img src="arrow_red.svg" alt="" /></span>
-      <div class="m-card-body"><h3 data-fr="MEMBRES" data-en="MEMBERS">MEMBRES</h3><p data-fr="Compagnies membres" data-en="Member companies">Compagnies membres</p></div>
-    </div>
-  </div>
-
-  <!-- TEAM — directly on gray bg, no white box -->
-  <div class="team-section">
-    <h2 class="team-heading" data-fr="EQUIPE DU<br>JOURNAL" data-en="EDITORIAL<br>TEAM">EQUIPE DU<br>JOURNAL</h2>
-    <div class="team-rule"></div>
-    <div class="team-cols">
-      <div class="team-col">
-        <div class="team-role"><strong data-fr="Directeur de Publication :" data-en="Publishing Director:">Directeur de Publication :</strong><span>Thierry KEPEDEN</span></div>
-        <div class="team-role"><strong data-fr="Directeur de Publication Délégué :" data-en="Deputy Publishing Director:">Directeur de Publication Délégué :</strong><span>Vincent ONGONO</span></div>
-        <div class="team-role"><strong data-fr="Administration :" data-en="Administration:">Administration :</strong><span>Emmanuel EBONGO</span></div>
-        <div class="team-role"><strong data-fr="Comité Editorial :" data-en="Editorial Committee:">Comité Editorial :</strong><span data-fr="Commission Communication de l'ASAC" data-en="ASAC Communication Committee">Commission Communication de l'ASAC</span></div>
-        <div class="team-role"><strong data-fr="Rédacteur en Chef :" data-en="Editor-in-Chief:">Rédacteur en Chef :</strong><span>Fortune NOUKOUA</span></div>
-      </div>
-      <div class="team-col">
-        <strong data-fr="Ont collaboré :" data-en="Contributors:">Ont collaboré :</strong>
-        <ul class="team-names">
-          <li>Flora BELLE</li><li>Larissa BONGAM</li><li>Vanessa MBOULE</li>
-          <li>Felicia NKONDOCK</li><li>Ahmed YOMBO</li><li>Christian OMOKO</li>
-          <li>Julien NGUE</li><li>Pierre MBOUMMA</li><li>Alfred NKOYOG</li>
-          <li>Daniel DOUALLA</li><li>Benoit MENDZANA.</li>
-        </ul>
-      </div>
-    </div>
-    <div class="team-logo"><img src="logo.png" alt="ASAC" /></div>
-  </div>
-</div>
-
-<!-- ========== ARTICLE PAGE ========== -->
-<div id="articlePage" class="page">
-  <div class="art-nav">
-    <button class="art-close" onclick="closeArticle()">✕</button>
-    <span class="art-cat" id="articleCatLabel">ÉDITORIAL</span>
-  </div>
-  <div class="art-hero"><img id="articleHeroImg" src="" alt="" /></div>
-  <div class="art-body">
-    <h1 class="art-title" id="articleTitle"></h1>
-    <div class="art-content" id="articleContent"></div>
-  </div>
-  <div class="art-divider"></div>
-  <div class="art-next"><img id="articleNextImg" src="" alt="" loading="lazy" /></div>
-</div>
-
-<!-- ========== CATEGORY PAGE ========== -->
-<div id="categoryPage" class="page">
-  <div class="art-nav">
-    <button class="art-close gray" onclick="closeCategory()">✕</button>
-    <span class="art-cat" id="catPageLabel"></span>
-  </div>
-  <div class="cat-hero"><img id="catHeroImg" src="" alt="" /><div class="cat-dim"></div><div class="cat-hero-text" id="catHeroText"></div></div>
-  <div class="cat-list" id="categoryList"></div>
-</div>
-
-<script src="app.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
