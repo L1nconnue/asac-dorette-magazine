@@ -1,0 +1,210 @@
+/*
+ * Styles specific to the ASAC Magazine menu page.
+ *
+ * Categories are displayed as adjoining angular boxes without spacing. When
+ * hovered, the box reveals an image with a dark gradient overlay and the
+ * text turns white for legibility. The team information at the bottom is
+ * presented in two columns. Responsive rules ensure the layout adapts to
+ * mobile devices.
+ */
+
+:root {
+  --blue: #004680;
+  --light: #ffffff;
+  --dark: #10141f;
+  --overlay: rgba(0, 0, 0, 0.7);
+  --transition: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: var(--dark);
+  color: var(--light);
+  overflow-x: hidden;
+}
+
+/* Header section */
+.menu-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 2rem;
+  z-index: 50;
+}
+
+.magazine-title {
+  font-family: 'Bebas Neue', cursive;
+  font-size: clamp(1.5rem, 4vw, 3rem);
+  letter-spacing: 0.1rem;
+  margin-bottom: 0.3rem;
+}
+
+.magazine-subtitle {
+  font-size: clamp(0.8rem, 1.5vw, 1rem);
+  max-width: 550px;
+  opacity: 0.85;
+}
+
+#menuLangToggle {
+  align-self: flex-start;
+  margin-top: 0.5rem;
+  background: transparent;
+  border: 1px solid var(--light);
+  color: var(--light);
+  padding: 0.3rem 0.8rem;
+  border-radius: 2rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background 0.3s var(--transition), color 0.3s var(--transition);
+}
+
+#menuLangToggle:hover {
+  background: var(--light);
+  color: var(--dark);
+}
+
+/* Container for category items */
+.menu-container {
+  margin-top: 8rem;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  min-height: calc(100vh - 8rem);
+}
+
+.menu-item {
+  position: relative;
+  flex: 1 0 33.333%;
+  min-height: 220px;
+  background: var(--light);
+  color: var(--blue);
+  padding: 1.5rem;
+  overflow: hidden;
+  border: 0.5px solid #e6e6e6;
+  transition: background 0.4s var(--transition), color 0.4s var(--transition);
+}
+
+.menu-item h3 {
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.menu-item ul {
+  list-style: none;
+  color: #555;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.menu-item li {
+  padding: 0.15rem 0;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.menu-item li:last-child {
+  border-bottom: none;
+}
+
+.menu-item .arrow {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 18px;
+  height: 18px;
+  pointer-events: none;
+  fill: var(--blue);
+  transition: fill 0.4s var(--transition);
+}
+
+/* Image overlay displayed on hover */
+.menu-item .overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1.5rem;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 0.4s var(--transition);
+  color: var(--light);
+}
+
+.menu-item:hover .overlay {
+  opacity: 1;
+}
+
+.menu-item:hover {
+  background: var(--dark);
+  color: var(--light);
+}
+
+.menu-item:hover .arrow {
+  fill: var(--light);
+}
+
+/* Footer */
+.menu-footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 2rem;
+  color: var(--light);
+  flex-wrap: wrap;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--dark);
+}
+
+.team-heading {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 1.5rem;
+  letter-spacing: 0.05rem;
+  color: var(--blue);
+  margin-bottom: 0.5rem;
+}
+
+.team-roles,
+.collaborators {
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.team-left,
+.team-right {
+  flex: 1 1 40%;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+  .menu-container {
+    margin-top: 10rem;
+  }
+  .menu-item {
+    flex: 1 0 100%;
+    min-height: 180px;
+  }
+  .menu-header {
+    padding: 1rem;
+    flex-direction: column;
+  }
+  #menuLangToggle {
+    align-self: flex-start;
+    margin-top: 0.5rem;
+  }
+  .team-left,
+  .team-right {
+    flex: 1 0 100%;
+  }
+}

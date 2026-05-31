@@ -1,0 +1,254 @@
+/*
+ * Global styles for ASAC Magazine website.
+ *
+ * This stylesheet defines a modern, responsive layout inspired by Floema. It
+ * leverages sticky positioning and transforms to create a unique scrolling
+ * experience where each panel slides over the previous. Media queries adjust
+ * the layout for smaller screens and convert the contents button into a
+ * hamburger menu on mobile. Colours and fonts are defined with CSS custom
+ * properties to enable easy theming and dark/light modes in future.
+ */
+
+/* Colour palette */
+:root {
+  --blue: #004680;
+  --light: #ffffff;
+  --dark: #10141f;
+  --gray: #f1f5f8;
+  --overlay: rgba(0, 0, 0, 0.5);
+  --transition: cubic-bezier(0.4, 0, 0.2, 1);
+  --header-height: 64px;
+  font-family: 'Poppins', sans-serif;
+  color: var(--light);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--dark);
+  overflow-x: hidden;
+  line-height: 1.4;
+}
+
+/* Header */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--header-height);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+  z-index: 50;
+  background: transparent;
+}
+
+.site-header .logo-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.site-header img {
+  height: 36px;
+  width: auto;
+  display: none;
+}
+
+.site-header img.logo-dark {
+  display: block;
+}
+
+.header-controls {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.control-btn {
+  background: transparent;
+  border: 1px solid var(--light);
+  color: var(--light);
+  padding: 0.3rem 0.9rem;
+  border-radius: 2rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background 0.3s var(--transition), color 0.3s var(--transition);
+}
+
+.control-btn:hover {
+  background: var(--light);
+  color: var(--dark);
+}
+
+/* Burger icon lines inside the menu toggle. Initially hidden on desktop.
+   We define sizes and spacing for the three bars. */
+#menuToggle .menu-icon {
+  display: none;
+}
+#menuToggle .menu-icon .line {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: currentColor;
+  margin: 3px 0;
+  transition: background 0.3s var(--transition);
+}
+
+/* Scroll container for panels */
+/*
+ * The scroll container hosts all panels. We don't fix the height to
+ * 100vh because that would prevent the browser from showing the later
+ * panels—there simply wouldn't be any extra space to scroll into. Instead
+ * we allow the container to grow naturally with its children and enable
+ * vertical scrolling on overflow. Scroll snapping still applies so each
+ * panel locks neatly into view.
+ */
+.scroll-container {
+  min-height: 100vh;
+  height: auto;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+}
+
+/* Each panel spans the full viewport height. Sticky is avoided here to allow
+ * scroll snapping without locking the first section over the others. */
+.panel {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+  scroll-snap-align: start;
+}
+
+/* Shared overlay for hero and cards */
+.panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--overlay);
+  z-index: 0;
+}
+
+/* Hero section */
+.hero {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding: 3rem;
+  color: var(--light);
+  /* Slight zoom‑in effect on the hero background image. The image
+     gradually enlarges and shrinks to create subtle dynamism similar
+     to the Floema site. */
+  animation: heroZoom 20s ease-in-out infinite alternate;
+}
+
+.hero-overlay {
+  position: relative;
+  z-index: 1;
+}
+
+.magazine-title {
+  font-family: 'Bebas Neue', cursive;
+  font-size: clamp(2rem, 8vw, 6rem);
+  letter-spacing: 0.1rem;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.magazine-subtitle {
+  font-size: clamp(0.8rem, 2vw, 1.2rem);
+  max-width: 600px;
+  opacity: 0.9;
+}
+
+/* Keyframes for hero zoom effect */
+@keyframes heroZoom {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.1);
+  }
+}
+
+/* Feature cards */
+.feature-card {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding: 3rem;
+  color: var(--light);
+  transform: translateY(100%);
+  transition: transform 1s var(--transition);
+}
+
+.feature-card.active {
+  transform: translateY(0);
+}
+
+.card-overlay {
+  position: relative;
+  z-index: 1;
+}
+
+.category-label {
+  background: var(--blue);
+  color: var(--light);
+  padding: 0.2rem 0.6rem;
+  border-radius: 0.2rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  margin-bottom: 0.3rem;
+  display: inline-block;
+}
+
+.card-title {
+  font-size: clamp(1.2rem, 4vw, 2rem);
+  font-weight: 600;
+  max-width: 80%;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  padding-bottom: 0.3rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .site-header {
+    padding: 0 1rem;
+  }
+  .control-btn {
+    font-size: 0.7rem;
+    padding: 0.25rem 0.7rem;
+  }
+  .magazine-title {
+    font-size: clamp(2rem, 10vw, 4rem);
+  }
+  .card-title {
+    font-size: clamp(1rem, 6vw, 1.8rem);
+  }
+
+  /* On smaller screens, the menu button becomes a burger icon. We hide the
+     text label and display the three-line icon instead. The button is
+     square to align the icon properly. */
+  #menuToggle {
+    width: 40px;
+    height: 32px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #menuToggle .menu-label {
+    display: none;
+  }
+  #menuToggle .menu-icon {
+    display: inline-block;
+  }
+}

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<!--
+  Category listing page for ASAC Magazine.
+
+  This page displays all the articles within a selected category. A small
+  category label appears on the left while a close button sits on the top
+  right to return to the previous page. Each article is presented as a
+  full‑width block with its title overlaid on a background image. Clicking on
+  an article opens a modal overlay containing the article content and images
+  with a smooth fade animation. This file relies on category.js for
+  population and interactivity.
+-->
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Catégorie – ASAC Magazine</title>
+    <link rel="icon" href="favicon.png" type="image/png" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/category.css" />
+  </head>
+  <body>
+    <header class="category-header">
+      <span id="categoryLabel" class="category-label">Focus</span>
+      <button id="closeBtn" class="close-btn" aria-label="close">×</button>
+    </header>
+    <main id="articlesContainer" class="articles-container">
+      <!-- Article blocks injected by JS -->
+    </main>
+
+    <!-- Modal for article content -->
+    <div id="articleModal" class="modal hidden">
+      <div class="modal-content">
+        <button id="modalClose" class="close-btn modal-close">×</button>
+        <article id="articleContent">
+          <!-- Article content injected here -->
+        </article>
+      </div>
+    </div>
+
+    <script src="js/category.js"></script>
+  </body>
+</html>
