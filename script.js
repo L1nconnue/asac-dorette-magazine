@@ -199,6 +199,7 @@
       // Update the rights line to include the agency credit
       allRights: 'Tous droits réservés – Made by MW DDB Cameroon',
       exploreAll: 'Explorer tous les articles',
+      downloadMagazine: 'Télécharger le magazine',
       contributors: 'Ont collaboré',
     },
     en: {
@@ -210,6 +211,7 @@
       // Include agency credit in the English rights string
       allRights: 'All rights reserved – Made by MW DDB Cameroon',
       exploreAll: 'Explore all articles',
+      downloadMagazine: 'Download the magazine',
       contributors: 'Also contributed',
     },
   };
@@ -281,12 +283,14 @@
   const panels = Array.from(document.querySelectorAll('.panel'));
 
   function setupHomeHeight() {
-    // Total scrollable height = panels.length * 100vh (one extra to scroll past the last)
+    // Only adjust body height when there are panels on the page. On
+    // dedicated article pages, panels is empty and we let the natural
+    // document height flow.
+    if (!panels || panels.length === 0) return;
     const vh = window.innerHeight;
     // Each subsequent panel needs one viewport of scroll to fully come up
     const totalScroll = (panels.length) * vh;
     document.body.style.height = `${totalScroll}px`;
-
     // Set z-index so later panels stack on top
     panels.forEach((p, i) => {
       p.style.zIndex = String(i + 1);
@@ -330,11 +334,13 @@
 
   function onScroll() {
     requestAnimationFrame(updatePanels);
+    requestAnimationFrame(updateNavFrost);
   }
 
   function onResize() {
     setupHomeHeight();
     updatePanels();
+    updateNavFrost();
   }
 
   /* ---------- MENU ---------- */
@@ -469,53 +475,21 @@
 
   /* ---------- ARTICLE MODAL ---------- */
   function openArticle(articleId, categoryId) {
-    const cat = CATEGORIES.find((c) => c.id === categoryId);
-    if (!cat) return;
-    const article = cat.articles.find((a) => a.id === articleId);
-    if (!article) return;
-
-    const body = ARTICLE_BODIES[articleId] || makeGenericBody(article, cat);
-    const heroImg = body.image || cat.image;
-    const lead = body.lead[state.lang];
-    const paragraphs = body.paragraphs[state.lang];
-    const sections = body.sections[state.lang];
-
-    const content = document.getElementById('articleContent');
-    const bodyHtml = `
-      <span class="article__cat">${escapeHtml(cat.name[state.lang])}</span>
-      <h1 class="article__title">${escapeHtml(article.title[state.lang])}</h1>
-      <div class="article__meta">
-        <span>${state.lang === 'fr' ? 'Juin 2026' : 'June 2026'}</span>
-        <span>${state.lang === 'fr' ? '6 min de lecture' : '6 min read'}</span>
-      </div>
-      <p class="article__lead">${escapeHtml(lead)}</p>
-      ${paragraphs.map((p) => `<p>${escapeHtml(p)}</p>`).join('')}
-      <div class="article__image" style="background-image:url('${cat.image}')"></div>
-      ${sections.map((s) => `<h3>${escapeHtml(s.h)}</h3><p>${escapeHtml(s.p)}</p>`).join('')}
-      <a class="article__download" href="magazine.pdf" download>
-        ${state.lang === 'fr' ? 'Télécharger le magazine' : 'Download the magazine'}
-      </a>
-    `;
-    content.innerHTML = `
-      <div class="article__hero" style="background-image:url('${heroImg}')"></div>
-      <div class="article__body">${bodyHtml}</div>
-    `;
-
-    // Move children up out of nested wrappers for the stagger to work on each piece
-    // (We keep the structure; the CSS stagger targets direct children, but our structure here
-    //  already has hero + body as direct children, which is fine.)
-
-    const modal = document.getElementById('articleModal');
-    state.isArticleOpen = true;
-    modal.classList.add('is-open');
-    modal.setAttribute('aria-hidden', 'false');
-    const scrollY = window.scrollY || window.pageYOffset;
-    document.body.dataset.scrollY = scrollY;
-    document.body.style.top = `-${scrollY}px`;
-    document.body.classList.add('no-scroll');
-    document.documentElement.classList.add('no-scroll');
-    const inner = modal.querySelector('.article-modal__inner');
-    inner.scrollTop = 0;
+    // Instead of opening a modal, redirect to a dedicated article page.
+    // Compose a URL to the article page with query parameters for the id,
+    // category and current language. Using the URL constructor ensures
+    // relative paths resolve correctly regardless of deployment environment.
+    const url = new URL('article.html', window.location.href);
+    url.searchParams.set('id', articleId);
+    url.searchParams.set('cat', categoryId);
+    url.searchParams.set('lang', state.lang);
+    // When navigating away from the overlay we should close any open
+    // menu or category panels to reset the page state. This prevents
+    // locked scrolling on the destination page.
+    closeArticle();
+    closeCategory();
+    closeMenu();
+    window.location.href = url.toString();
   }
 
   function closeArticle() {
@@ -531,6 +505,77 @@
       window.scrollTo(0, y);
       delete document.body.dataset.scrollY;
     }
+  }
+
+  /* ---------- ARTICLE PAGE RENDERING ---------- */
+  /**
+   * If this script is running on the dedicated article page, build the
+   * article content dynamically based on the query parameters. The
+   * expected query string includes an `id` (article id), an optional
+   * `cat` (category id) and an optional `lang` which sets the
+   * language. If no category is provided, the function searches all
+   * categories for an article with the given id. The page must
+   * contain an element with id `articlePage` to receive the output.
+   */
+  function renderArticlePage() {
+    const container = document.getElementById('articlePage');
+    if (!container) return;
+    const params = new URLSearchParams(window.location.search);
+    const articleId = params.get('id');
+    let categoryId = params.get('cat');
+    const langParam = params.get('lang');
+    if (langParam && (langParam === 'fr' || langParam === 'en')) {
+      state.lang = langParam;
+    }
+    // Attempt to find the category by id; if not found search for the article
+    let cat = CATEGORIES.find((c) => c.id === categoryId);
+    if (!cat) {
+      for (const c of CATEGORIES) {
+        if (c.articles.some((a) => a.id === articleId)) {
+          cat = c;
+          categoryId = c.id;
+          break;
+        }
+      }
+    }
+    if (!cat) return;
+    const article = cat.articles.find((a) => a.id === articleId);
+    if (!article) return;
+    // Set the language buttons to the appropriate state
+    applyLang();
+    const body = ARTICLE_BODIES[articleId] || makeGenericBody(article, cat);
+    const heroImg = body.image || cat.image;
+    const lead = body.lead[state.lang];
+    const paragraphs = body.paragraphs[state.lang];
+    const sections = body.sections[state.lang];
+    // Compose HTML for the article page. We use semantic elements for
+    // better accessibility and SEO. The hero section contains the
+    // background image with an overlay; the body section holds the
+    // article metadata and content.
+    const heroHtml = `
+      <section class="article-page__hero" style="background-image:url('${heroImg}')">
+        <div class="article-page__hero-overlay"></div>
+        <div class="article-page__hero-content">
+          <span class="article-page__cat">${escapeHtml(cat.name[state.lang])}</span>
+          <h1 class="article-page__title">${escapeHtml(article.title[state.lang])}</h1>
+          <div class="article-page__meta">
+            <span>${state.lang === 'fr' ? 'Juin 2026' : 'June 2026'}</span>
+            <span>${state.lang === 'fr' ? '6 min de lecture' : '6 min read'}</span>
+          </div>
+        </div>
+      </section>
+    `;
+    const bodyHtml = `
+      <section class="article-page__body">
+        <p class="article-page__lead">${escapeHtml(lead)}</p>
+        ${paragraphs.map((p) => `<p>${escapeHtml(p)}</p>`).join('')}
+        <div class="article-page__image" style="background-image:url('${cat.image}')"></div>
+        ${sections.map((s) => `<h3>${escapeHtml(s.h)}</h3><p>${escapeHtml(s.p)}</p>`).join('')}
+      </section>
+    `;
+    container.innerHTML = heroHtml + bodyHtml;
+    // Ensure the nav is scrolled to top on page load
+    window.scrollTo(0, 0);
   }
 
   function makeGenericBody(article, cat) {
@@ -578,6 +623,60 @@
       .replace(/'/g, '&#039;');
   }
 
+  /**
+   * Update the frosted state of the fixed navigation bar. When the
+   * visitor scrolls down on the home page or the menu overlay, the
+   * nav should gain a translucent background with blur to remain
+   * legible. This function checks both the global scroll position
+   * and the menu scroll. If the menu is open, we base the decision
+   * on the menu's scrollTop. Otherwise, we look at the window's
+   * scrollY. It is called from the global scroll handler and the
+   * menu scroll listener.
+   */
+  function updateNavFrost() {
+    const nav = document.getElementById('nav');
+    const menu = document.getElementById('menu');
+    if (!nav) return;
+    // Determine how far the user has scrolled. When the menu is open
+    // we base the ratio on the menu's scrollTop; otherwise we use
+    // window.scrollY. The ratio is clamped between 0 and 1 over the
+    // first 100 pixels of scroll. As the ratio increases the nav
+    // becomes more opaque and the blur becomes stronger, creating a
+    // progressive frosted effect.
+    let scrollPos = 0;
+    if (state.isMenuOpen && menu) {
+      scrollPos = menu.scrollTop;
+    } else {
+      scrollPos = window.scrollY;
+    }
+    const ratio = Math.min(1, Math.max(0, scrollPos / 100));
+    if (ratio > 0) {
+      nav.classList.add('is-frosted');
+      // Compute opacity and blur based on ratio. Use different base
+      // colours depending on dark/light context (nav.is-dark is set
+      // when the menu is open).
+      if (nav.classList.contains('is-dark')) {
+        const alpha = 0.85 * ratio;
+        nav.style.background = `rgba(246, 244, 239, ${alpha.toFixed(3)})`;
+      } else {
+        const alpha = 0.6 * ratio;
+        nav.style.background = `rgba(10, 10, 10, ${alpha.toFixed(3)})`;
+      }
+      const blur = 2 + ratio * 8;
+      nav.style.backdropFilter = `blur(${blur.toFixed(2)}px) saturate(1.2)`;
+      nav.style.webkitBackdropFilter = `blur(${blur.toFixed(2)}px) saturate(1.2)`;
+      nav.style.boxShadow = nav.classList.contains('is-dark')
+        ? '0 2px 6px rgba(0, 0, 0, 0.05)'
+        : '0 2px 6px rgba(0, 0, 0, 0.4)';
+    } else {
+      nav.classList.remove('is-frosted');
+      nav.style.background = '';
+      nav.style.backdropFilter = '';
+      nav.style.webkitBackdropFilter = '';
+      nav.style.boxShadow = '';
+    }
+  }
+
   /* ---------- EVENT WIRING ---------- */
   function bindEvents() {
     // Language switching
@@ -620,29 +719,28 @@
       });
     });
 
-    // Add a scroll listener to the menu overlay to toggle a frosted header
+    // When the content menu scrolls, update the nav frosted state.
     const menuEl = document.getElementById('menu');
-    const menuHeader = menuEl.querySelector('.menu__header');
-    if (menuEl && menuHeader) {
-      // Debounce scroll handler to avoid rapid class toggling
-      let lastScrollTop = 0;
+    if (menuEl) {
       menuEl.addEventListener('scroll', () => {
-        const st = menuEl.scrollTop;
-        if (st > 0 && lastScrollTop === 0) {
-          menuHeader.classList.add('is-stuck');
-        } else if (st === 0 && lastScrollTop > 0) {
-          menuHeader.classList.remove('is-stuck');
-        }
-        lastScrollTop = st;
+        updateNavFrost();
       });
     }
 
-    // Category close
-    document.getElementById('categoryClose').addEventListener('click', closeCategory);
-
-    // Article close
-    document.getElementById('articleClose').addEventListener('click', closeArticle);
-    document.getElementById('articleBackdrop').addEventListener('click', closeArticle);
+    // Category close (only attach if the element exists)
+    const categoryCloseBtn = document.getElementById('categoryClose');
+    if (categoryCloseBtn) {
+      categoryCloseBtn.addEventListener('click', closeCategory);
+    }
+    // Article modal close buttons are only present on the home page; guard for their presence
+    const articleCloseBtn = document.getElementById('articleClose');
+    if (articleCloseBtn) {
+      articleCloseBtn.addEventListener('click', closeArticle);
+    }
+    const articleBackdrop = document.getElementById('articleBackdrop');
+    if (articleBackdrop) {
+      articleBackdrop.addEventListener('click', closeArticle);
+    }
 
     // ESC key
     document.addEventListener('keydown', (e) => {
@@ -660,6 +758,15 @@
 
   /* ---------- INIT ---------- */
   function init() {
+    // On every page, attempt to render an article. If the page does not
+    // contain an #articlePage element this call does nothing. The
+    // language parameter in the URL (if present) is applied to state.lang.
+    renderArticlePage();
+
+    // The stacked panel and menu functionality is only relevant on
+    // the home page (index.html). The following calls will have no
+    // adverse effect on other pages because they gracefully handle
+    // missing elements.
     renderMenuGrid();
     setupHomeHeight();
     bindEvents();
