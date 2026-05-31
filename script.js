@@ -41,7 +41,8 @@
       name: { fr: 'Focus', en: 'Focus' },
       image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=1600&q=85&auto=format&fit=crop',
       articles: [
-        { id: 'focus-0', title: { fr: "La micro-assurance, levier d'inclusion financière au Cameroun", en: "Micro-insurance, a lever for financial inclusion in Cameroon" } },
+        // Replace the original micro-insurance focus article with the dematerialisation piece
+        { id: 'focus-0', title: { fr: "Expérience client et dématérialisation de l'assurance auto", en: "Customer experience and dematerialisation of auto insurance" } },
         { id: 'focus-1', title: { fr: "L'assurance agricole face aux défis climatiques", en: "Agricultural insurance and climate challenges" } },
       ],
     },
@@ -77,7 +78,8 @@
       name: { fr: "Les métiers de l'assurance", en: "Insurance careers" },
       image: 'https://images.unsplash.com/photo-1521119989659-a83eee488004?w=1600&q=85&auto=format&fit=crop',
       articles: [
-        { id: 'metiers-1', title: { fr: "Portrait : l'actuaire, ce stratège discret", en: "Profile: the actuary, a quiet strategist" } },
+        // Update the first job profile to focus on the technical manager
+        { id: 'metiers-1', title: { fr: "Le responsable technique", en: "The Technical Manager" } },
         { id: 'metiers-2', title: { fr: "Devenir souscripteur : parcours et compétences", en: "Becoming an underwriter: paths and skills" } },
       ],
     },
@@ -112,32 +114,68 @@
 
   // Article bodies (a few are filled out; others use a generic template)
   const ARTICLE_BODIES = {
-    'focus-0': {
+  // Updated content for the Focus article about customer experience and dematerialisation of auto insurance
+  'focus-0': {
       lead: {
-        fr: "Avec un taux de pénétration encore modeste, l'assurance au Cameroun cherche sa voie populaire. La micro-assurance s'impose progressivement comme une réponse adaptée aux réalités sociales et économiques du pays.",
-        en: "With a still modest penetration rate, insurance in Cameroon is searching for a popular path. Micro-insurance is gradually emerging as a fit response to the country's social and economic realities.",
+        fr: "La dématérialisation de l’assurance automobile au Cameroun marque un tournant majeur pour l’expérience client. L’objectif principal est de simplifier l’expérience des assurés en digitalisant les services et en modernisant la relation client.",
+        en: "The dematerialisation of automobile insurance in Cameroon marks a major turning point for customer experience. The main goal is to simplify policyholders' journeys by digitising services and modernising customer relationships.",
       },
       paragraphs: {
         fr: [
-          "Dans un pays où plus de 70% de la population active évolue dans le secteur informel, l'idée même de souscrire une police d'assurance peut paraître lointaine. Pourtant, les besoins sont là, criants : protéger une récolte, sécuriser une moto-taxi, couvrir les frais médicaux d'une famille. Et c'est précisément à cette demande latente que la micro-assurance tente de répondre.",
-          "Les acteurs du secteur l'ont bien compris. En multipliant les partenariats avec les coopératives, les associations communautaires et les opérateurs de téléphonie mobile, ils ont rapproché l'assurance des populations rurales et péri-urbaines. Le résultat ? Des produits simples, abordables, payables au mois ou même à la journée.",
+          "La digitalisation des services d'assurance permet de réduire les longues procédures administratives, les déplacements en agence et les délais de traitement, offrant ainsi un gain de temps considérable et une meilleure accessibilité pour les assurés.",
+          "Elle contribue également à renforcer la confiance en réduisant la fraude documentaire grâce à une meilleure traçabilité des contrats.",
         ],
         en: [
-          "In a country where more than 70% of the active workforce operates in the informal sector, the very idea of subscribing to an insurance policy can feel remote. Yet the needs are pressing: protecting a harvest, securing a motorbike-taxi, covering a family's medical costs. Micro-insurance aims precisely at this latent demand.",
-          "Industry players have understood this. By multiplying partnerships with cooperatives, community associations and mobile operators, they have brought insurance closer to rural and peri-urban populations. The result: simple, affordable products, payable monthly or even daily.",
+          "The digitisation of insurance services reduces long administrative procedures, branch visits and processing times, providing considerable time savings and better accessibility for policyholders.",
+          "It also helps to strengthen trust by reducing document fraud through better contract traceability.",
         ],
       },
       sections: {
         fr: [
-          { h: "Une révolution silencieuse", p: "Loin des projecteurs, des entrepreneurs camerounais réinventent les modèles de distribution. À Douala, Yaoundé, Bafoussam ou Garoua, des plateformes mobiles permettent désormais de souscrire un contrat en quelques minutes, depuis un simple téléphone. Cette accessibilité change profondément le rapport à l'assurance : elle n'est plus un produit réservé à l'élite urbaine, mais un outil du quotidien." },
-          { h: "Les défis qui restent", p: "Le chemin reste cependant long. La culture du risque doit encore être travaillée, la confiance regagnée, les processus de remboursement simplifiés. Mais les premiers résultats sont encourageants : selon les chiffres du secteur, le nombre de micro-assurés a doublé en cinq ans, et plusieurs études anticipent une croissance soutenue à l'horizon 2030." },
+          { h: "Un mouvement inspiré d'ailleurs", p: "L’expérience ivoirienne montre que la digitalisation facilite la vérification des contrats et réduit les fraudes, améliorant ainsi la fluidité des services et la confiance des clients." },
+          { h: "Accompagner tous les assurés", p: "Le succès de cette transformation passe par un accompagnement personnalisé, car certains clients éprouvent des difficultés avec les outils numériques. La proximité humaine reste essentielle, notamment lors des sinistres." },
+          { h: "Une opportunité pour le secteur", p: "En modernisant l’assurance automobile, la dématérialisation améliorera l’expérience client, renforcera la confiance et rapprochera davantage les compagnies d’assurance de leurs clients, contribuant à l’essor du secteur au Cameroun." },
         ],
         en: [
-          { h: "A quiet revolution", p: "Far from the spotlight, Cameroonian entrepreneurs are reinventing distribution models. In Douala, Yaoundé, Bafoussam or Garoua, mobile platforms now make it possible to take out a contract within minutes, from a simple phone. This accessibility profoundly changes the relationship with insurance: it is no longer a product reserved for the urban elite, but a tool of daily life." },
-          { h: "Challenges that remain", p: "The road ahead is still long. Risk culture must be cultivated, trust regained, claims simplified. But early results are encouraging: according to industry figures, the number of micro-insured customers has doubled in five years, and several studies anticipate sustained growth through 2030." },
+          { h: "A movement inspired elsewhere", p: "The Ivorian experience shows that digitisation makes it easier to verify contracts and reduces fraud, thus improving service fluidity and customer trust." },
+          { h: "Supporting all policyholders", p: "The success of this transformation depends on personalised support, as some customers find digital tools challenging. Human proximity remains essential, especially when dealing with claims." },
+          { h: "An opportunity for the sector", p: "By modernising automobile insurance, dematerialisation will improve customer experience, strengthen trust and bring insurance companies closer to their customers, contributing to the growth of the sector in Cameroon." },
         ],
       },
-      image: 'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=1600&q=85&auto=format&fit=crop',
+      // Use the same featured image as the original focus category
+      image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=1600&q=85&auto=format&fit=crop',
+    },
+
+    // New article body for the technical manager profile in the "métiers" section
+    'metiers-1': {
+      lead: {
+        fr: "Longtemps considérés comme les solitaires des chiffres, les responsables techniques occupent aujourd'hui un rôle central dans un environnement économique et climatique changeant. Ils ne se contentent plus de calculer le risque, mais donnent un sens aux chiffres pour orienter l'entreprise.",
+        en: "Long seen as solitary number crunchers, technical managers now play a central role in a changing economic and climatic environment. They no longer just calculate risk but give meaning to the figures to guide the company.",
+      },
+      paragraphs: {
+        fr: [
+          "Le responsable technique jongle entre les lignes Vie et Dommages, tel un sprinteur et un marathonien dans la même journée. En Dommages, il doit réagir rapidement aux tendances d'accidentologie et ajuster les tarifs ; en Vie, il s'engage sur le long terme pour garantir les promesses faites aux clients.",
+          "Au-delà des chiffres, il doit savoir communiquer et vulgariser des concepts techniques afin de devenir un véritable partenaire pour les autres départements et convaincre que la rigueur protège véritablement le client.",
+        ],
+        en: [
+          "The technical manager juggles between Life and Non‑Life lines, like both a sprinter and a marathon runner in the same day. In Non‑Life, he must react quickly to accident trends and adjust rates; in Life, he commits for the long term to ensure the promises made to clients.",
+          "Beyond numbers, he must know how to communicate and simplify technical concepts to become a true partner to other departments and convince that rigour genuinely protects the customer.",
+        ],
+      },
+      sections: {
+        fr: [
+          { h: "Une mission d’équilibriste", p: "Faire de la Vie et du Dommages simultanément exige des compétences multiples : réflexes pour le court terme et vision pour le long terme." },
+          { h: "Un rôle de pédagogue", p: "Convaincre les équipes que la technique n'est pas un frein mais une garantie pour les assurés est devenu essentiel ; le responsable technique doit partager ses convictions et vulgariser des concepts complexes." },
+          { h: "Engagement et convictions", p: "Ce métier repose sur la conviction de protéger des familles et des jeunes : au-delà des probabilités, il s'agit d'un engagement à assurer leur tranquillité d'esprit." },
+        ],
+        en: [
+          { h: "A tightrope mission", p: "Handling both Life and Non‑Life simultaneously requires multiple skills: quick reflexes for the short term and vision for the long term." },
+          { h: "An educational role", p: "Convincing teams that technical rigor is not a hindrance but a guarantee for policyholders has become essential; the technical manager must share his convictions and simplify complex concepts." },
+          { h: "Commitment and convictions", p: "This profession is based on the conviction of protecting families and youth: beyond probabilities, it's a commitment to ensure their peace of mind." },
+        ],
+      },
+      // Use the same illustrative image as the metiers category
+      image: 'https://images.unsplash.com/photo-1521119989659-a83eee488004?w=1600&q=85&auto=format&fit=crop',
     },
   };
 
@@ -158,7 +196,8 @@
       scroll: 'Faites défiler',
       readMore: "Lire l'article",
       editionLabel: 'Édition',
-      allRights: 'Tous droits réservés',
+      // Update the rights line to include the agency credit
+      allRights: 'Tous droits réservés – Made by MW DDB Cameroon',
       exploreAll: 'Explorer tous les articles',
       contributors: 'Ont collaboré',
     },
@@ -168,7 +207,8 @@
       scroll: 'Scroll',
       readMore: 'Read article',
       editionLabel: 'Issue',
-      allRights: 'All rights reserved',
+      // Include agency credit in the English rights string
+      allRights: 'All rights reserved – Made by MW DDB Cameroon',
       exploreAll: 'Explore all articles',
       contributors: 'Also contributed',
     },
@@ -338,7 +378,13 @@
     menu.setAttribute('aria-hidden', 'false');
     btn.classList.add('is-open');
     nav.classList.add('is-dark');
+    // Prevent the page from scrolling when the menu is open
+    // Save the current scroll position and lock the page
+    const scrollY = window.scrollY || window.pageYOffset;
+    document.body.dataset.scrollY = scrollY;
+    document.body.style.top = `-${scrollY}px`;
     document.body.classList.add('no-scroll');
+    document.documentElement.classList.add('no-scroll');
     menu.scrollTop = 0;
   }
 
@@ -351,7 +397,13 @@
     menu.setAttribute('aria-hidden', 'true');
     btn.classList.remove('is-open');
     nav.classList.remove('is-dark');
+    // Restore scroll position and unlock the page
+    const y = parseInt(document.body.dataset.scrollY || '0', 10);
     document.body.classList.remove('no-scroll');
+    document.documentElement.classList.remove('no-scroll');
+    document.body.style.top = '';
+    window.scrollTo(0, y);
+    delete document.body.dataset.scrollY;
   }
 
   function toggleMenu() {
@@ -392,7 +444,11 @@
     state.isCategoryOpen = true;
     overlay.classList.add('is-open');
     overlay.setAttribute('aria-hidden', 'false');
+    const scrollY = window.scrollY || window.pageYOffset;
+    document.body.dataset.scrollY = scrollY;
+    document.body.style.top = `-${scrollY}px`;
     document.body.classList.add('no-scroll');
+    document.documentElement.classList.add('no-scroll');
     overlay.scrollTop = 0;
   }
 
@@ -401,7 +457,14 @@
     const overlay = document.getElementById('category');
     overlay.classList.remove('is-open');
     overlay.setAttribute('aria-hidden', 'true');
-    if (!state.isMenuOpen) document.body.classList.remove('no-scroll');
+    if (!state.isMenuOpen) {
+      const y = parseInt(document.body.dataset.scrollY || '0', 10);
+      document.body.classList.remove('no-scroll');
+      document.documentElement.classList.remove('no-scroll');
+      document.body.style.top = '';
+      window.scrollTo(0, y);
+      delete document.body.dataset.scrollY;
+    }
   }
 
   /* ---------- ARTICLE MODAL ---------- */
@@ -422,13 +485,16 @@
       <span class="article__cat">${escapeHtml(cat.name[state.lang])}</span>
       <h1 class="article__title">${escapeHtml(article.title[state.lang])}</h1>
       <div class="article__meta">
-        <span>${state.lang === 'fr' ? 'Mars 2025' : 'March 2025'}</span>
+        <span>${state.lang === 'fr' ? 'Juin 2026' : 'June 2026'}</span>
         <span>${state.lang === 'fr' ? '6 min de lecture' : '6 min read'}</span>
       </div>
       <p class="article__lead">${escapeHtml(lead)}</p>
       ${paragraphs.map((p) => `<p>${escapeHtml(p)}</p>`).join('')}
       <div class="article__image" style="background-image:url('${cat.image}')"></div>
       ${sections.map((s) => `<h3>${escapeHtml(s.h)}</h3><p>${escapeHtml(s.p)}</p>`).join('')}
+      <a class="article__download" href="magazine.pdf" download>
+        ${state.lang === 'fr' ? 'Télécharger le magazine' : 'Download the magazine'}
+      </a>
     `;
     content.innerHTML = `
       <div class="article__hero" style="background-image:url('${heroImg}')"></div>
@@ -443,7 +509,11 @@
     state.isArticleOpen = true;
     modal.classList.add('is-open');
     modal.setAttribute('aria-hidden', 'false');
+    const scrollY = window.scrollY || window.pageYOffset;
+    document.body.dataset.scrollY = scrollY;
+    document.body.style.top = `-${scrollY}px`;
     document.body.classList.add('no-scroll');
+    document.documentElement.classList.add('no-scroll');
     const inner = modal.querySelector('.article-modal__inner');
     inner.scrollTop = 0;
   }
@@ -454,7 +524,12 @@
     modal.classList.remove('is-open');
     modal.setAttribute('aria-hidden', 'true');
     if (!state.isMenuOpen && !state.isCategoryOpen) {
+      const y = parseInt(document.body.dataset.scrollY || '0', 10);
       document.body.classList.remove('no-scroll');
+      document.documentElement.classList.remove('no-scroll');
+      document.body.style.top = '';
+      window.scrollTo(0, y);
+      delete document.body.dataset.scrollY;
     }
   }
 

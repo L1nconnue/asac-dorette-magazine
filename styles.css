@@ -48,8 +48,31 @@ body {
   min-height: 100vh;
 }
 
-body.no-scroll {
+/*
+  When the menu, category or article modal is open we want to
+  lock the underlying page so the scroll wheel only affects the
+  overlay. Setting the body to fixed prevents the document from
+  scrolling while preserving its position. We also ensure it
+  occupies the full viewport width. Without this, the page keeps
+  scrolling behind the modal and the article content cannot be
+  reached. */
+/*
+  Lock both html and body when the menu, category or article modal is open.
+  We apply the no-scroll class to both the <html> and <body> elements via
+  JavaScript. Setting position: fixed on the body prevents it from
+  scrolling, while hiding overflow ensures the background doesn’t move.
+*/
+html.no-scroll, body.no-scroll {
   overflow: hidden;
+  /* Ensure the fixed elements take up the full viewport so that
+     scrolling within the window has no effect on the document. */
+  height: 100%;
+}
+body.no-scroll {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
 }
 
 img { display: block; max-width: 100%; height: auto; }
@@ -930,6 +953,8 @@ body.cursor-ready .cursor-dot { opacity: 1; }
   display: flex;
   justify-content: center;
   overflow-y: auto;
+  /* Fill the viewport so the internal article can scroll independently */
+  height: 100%;
   padding: 60px 20px 60px;
 }
 
@@ -968,7 +993,13 @@ body.cursor-ready .cursor-dot { opacity: 1; }
   transform: translateY(40px) scale(0.98);
   transition: opacity 0.7s var(--easing-out), transform 0.7s var(--easing-out);
   position: relative;
-  overflow: hidden;
+  /* Allow the article content to scroll independently of the page.
+     The modal container (.article-modal__inner) centers the article,
+     but the article itself handles vertical scrolling so long
+     pieces can be read. Without this, scrolling only affects the
+     background page. */
+  overflow-y: auto;
+  max-height: calc(100vh - 120px);
 }
 .article-modal.is-open .article {
   opacity: 1;
@@ -1095,6 +1126,29 @@ body.cursor-ready .cursor-dot { opacity: 1; }
   font-style: italic;
   margin-top: -28px;
   margin-bottom: 40px;
+}
+
+/*
+  Download button at the end of articles. Uses the magazine’s red colour
+  and uppercase text to stand out. On hover, the colour darkens slightly
+  to indicate interactivity. The button spans just enough to envelop the
+  text and remains legible on both light and dark backgrounds.
+*/
+.article__download {
+  display: inline-block;
+  margin-top: 32px;
+  padding: 14px 32px;
+  background: var(--red);
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  font-weight: 500;
+  border-radius: 2px;
+  transition: background 0.3s ease;
+}
+.article__download:hover {
+  background: #b3181a;
 }
 
 @media (max-width: 600px) {
