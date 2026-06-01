@@ -11,9 +11,17 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@200;300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@200;300;400;500;600;700&display=swap" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@200;300;400;500;600;700&display=swap" /></noscript>
 
   <link rel="stylesheet" href="styles.css" />
+
+  <script>
+    setTimeout(function () {
+      var l = document.getElementById('loader');
+      if (l && l.parentNode) l.parentNode.removeChild(l);
+    }, 4000);
+  </script>
 </head>
 <body data-page="article">
 

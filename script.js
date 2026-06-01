@@ -353,8 +353,9 @@
   /* ---------- LOADER ---------- */
   function hideLoader() {
     const l = document.getElementById('loader');
-    setTimeout(() => l.classList.add('is-hidden'), 1400);
-    setTimeout(() => l.remove(), 2200);
+    if (!l) return;
+    setTimeout(() => { if (l) l.classList.add('is-hidden'); }, 1400);
+    setTimeout(() => { if (l && l.parentNode) l.remove(); }, 2200);
   }
 
   /* ---------- CUSTOM CURSOR ---------- */
@@ -1227,11 +1228,24 @@
     doc.setCharSpace(0);
   }
 
+  // Lazily inject jsPDF only when the user requests a PDF. Keeps it off the
+  // critical path so it can never block page load on slow connections.
+  let _jspdfPromise = null;
+  function loadJsPDF() {
+    if (window.jspdf && window.jspdf.jsPDF) return Promise.resolve(true);
+    if (_jspdfPromise) return _jspdfPromise;
+    _jspdfPromise = new Promise((resolve, reject) => {
+      const s = document.createElement('script');
+      s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+      s.async = true;
+      s.onload = () => resolve(true);
+      s.onerror = () => { _jspdfPromise = null; reject(new Error('Could not load the PDF library. Check your connection and try again.')); };
+      document.head.appendChild(s);
+    });
+    return _jspdfPromise;
+  }
+
   async function generateMagazinePdf(triggerBtn) {
-    if (!window.jspdf || !window.jspdf.jsPDF) {
-      alert('PDF library not loaded yet — please try again in a moment.');
-      return;
-    }
     const t = I18N[state.lang];
     const originalLabel = triggerBtn ? triggerBtn.textContent : '';
     const setBtnState = (text, disabled) => {
@@ -1245,6 +1259,9 @@
 
     try {
       setBtnState(t.preparingPdf, true);
+
+      // Lazy-load the PDF library now (kept off the page's critical path)
+      await loadJsPDF();
 
       // 1. Collect all images needed up-front, fetch in parallel
       const heroUrl = CATEGORIES[0].image; // first category image as cover
@@ -1624,26 +1641,43 @@
 
   /* ---------- INIT ---------- */
   function init() {
-    const page = document.body.dataset.page || 'home';
-    initCursor();
+    // Hide the loader FIRST — before anything that could throw — so the page
+    // can never get stuck on the loading screen.
     hideLoader();
 
-    if (page === 'home') {
-      // Render immediately with baked content — never block on network
-      renderMenuGrid();
-      setupHomeHeight();
-      bindEvents();
-      updatePanels();
-      // Try CMS in background; if it returns data, refresh the menu grid
-      hydrateFromCms().then((didHydrate) => {
-        if (didHydrate) renderMenuGrid();
-      }).catch(() => {});
-    } else if (page === 'article') {
-      bindEvents();
-      renderArticlePage();
-      setupFrostNav();
+    try {
+      const page = document.body.dataset.page || 'home';
+      initCursor();
+
+      if (page === 'home') {
+        // Render immediately with baked content — never block on network
+        renderMenuGrid();
+        setupHomeHeight();
+        bindEvents();
+        updatePanels();
+        // Try CMS in background; if it returns data, refresh the menu grid
+        hydrateFromCms().then((didHydrate) => {
+          if (didHydrate) renderMenuGrid();
+        }).catch(() => {});
+      } else if (page === 'article') {
+        bindEvents();
+        renderArticlePage();
+        setupFrostNav();
+      }
+    } catch (err) {
+      // Never let a JS error leave the page stuck behind the loader
+      console.error('[asac] init error:', err);
+      const l = document.getElementById('loader');
+      if (l && l.parentNode) l.remove();
     }
   }
+
+  // Failsafe: whatever happens, the loader is gone within 3s of the page
+  // becoming interactive (covers any unforeseen mobile-browser edge case).
+  setTimeout(() => {
+    const l = document.getElementById('loader');
+    if (l && l.parentNode) l.remove();
+  }, 3000);
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
