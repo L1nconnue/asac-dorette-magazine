@@ -754,9 +754,7 @@ body.cursor-ready .cursor-dot { opacity: 1; }
 }
 @media (max-width: 420px) {
   .menu__grid { grid-template-columns: 1fr; }
-  .menu__card { aspect-ratio: 3 / 1; min-height: 160px; }
-  .menu__card-cat { font-size: 14px; margin-bottom: 8px; }
-  .menu__card-articles li { font-size: 10px; padding: 5px 0; -webkit-line-clamp: 1; }
+  .menu__card { aspect-ratio: 16 / 11; }
 }
 
 /* MASTHEAD */
