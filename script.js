@@ -1429,7 +1429,13 @@
   // Replace CATEGORIES in place when the live data is available.
   async function hydrateFromCms() {
     try {
-      const r = await fetch('/api/categories', { headers: { Accept: 'application/json' } });
+      const controller = new AbortController();
+      const tid = setTimeout(() => controller.abort(), 4000);
+      const r = await fetch('/api/categories', {
+        headers: { Accept: 'application/json' },
+        signal: controller.signal,
+      });
+      clearTimeout(tid);
       if (!r.ok) throw new Error('categories endpoint returned ' + r.status);
       const data = await r.json();
       if (!Array.isArray(data.categories) || !data.categories.length) return false;
@@ -1472,7 +1478,13 @@
   // Fetch one article from /api/article — returns rendered HTML or null.
   async function fetchArticleFromCms(docId) {
     try {
-      const r = await fetch(`/api/article?id=${encodeURIComponent(docId)}`, { headers: { Accept: 'application/json' } });
+      const controller2 = new AbortController();
+      const tid2 = setTimeout(() => controller2.abort(), 8000);
+      const r = await fetch(`/api/article?id=${encodeURIComponent(docId)}`, {
+        headers: { Accept: 'application/json' },
+        signal: controller2.signal,
+      });
+      clearTimeout(tid2);
       if (!r.ok) return null;
       const data = await r.json();
       return data;
@@ -1611,19 +1623,21 @@
   }
 
   /* ---------- INIT ---------- */
-  async function init() {
+  function init() {
     const page = document.body.dataset.page || 'home';
     initCursor();
     hideLoader();
 
-    // Try CMS hydration first (non-blocking on failure)
-    await hydrateFromCms();
-
     if (page === 'home') {
+      // Render immediately with baked content — never block on network
       renderMenuGrid();
       setupHomeHeight();
       bindEvents();
       updatePanels();
+      // Try CMS in background; if it returns data, refresh the menu grid
+      hydrateFromCms().then((didHydrate) => {
+        if (didHydrate) renderMenuGrid();
+      }).catch(() => {});
     } else if (page === 'article') {
       bindEvents();
       renderArticlePage();
