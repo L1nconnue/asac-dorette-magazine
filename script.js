@@ -639,8 +639,19 @@
     // Language switching
     document.querySelectorAll('.lang-btn').forEach((btn) => {
       btn.addEventListener('click', () => {
+        if (state.lang === btn.dataset.lang) return;
         state.lang = btn.dataset.lang;
         applyLang();
+        const page = document.body.dataset.page || 'home';
+        if (page === 'home') {
+          renderMenuGrid();
+          // Re-hydrate translated titles + cover images in background
+          hydrateFromCms().then((didHydrate) => {
+            if (didHydrate) { renderMenuGrid(); syncHomePanelImages(); }
+          }).catch(() => {});
+        } else if (page === 'article') {
+          renderArticlePage();
+        }
       });
     });
 
@@ -767,6 +778,68 @@
     });
   }
 
+  // Compute image dimensions that COVER a box (fill it, cropping overflow)
+  // — used for hero strips where we want full-bleed art with no whitespace.
+  function fitCover(srcW, srcH, boxW, boxH) {
+    const srcRatio = srcW / srcH;
+    const boxRatio = boxW / boxH;
+    if (srcRatio > boxRatio) {
+      // Source is wider — match box height, crop sides
+      const h = boxH;
+      const w = h * srcRatio;
+      return { x: (boxW - w) / 2, y: 0, w, h };
+    }
+    // Source is taller — match box width, crop top/bottom
+    const w = boxW;
+    const h = w / srcRatio;
+    return { x: 0, y: (boxH - h) / 2, w, h };
+  }
+
+  // Compute image dimensions that CONTAIN within a box (whole image visible, may leave whitespace)
+  // — used for inline body images where we don't want cropping.
+  function fitContain(srcW, srcH, boxW, boxH) {
+    const srcRatio = srcW / srcH;
+    const boxRatio = boxW / boxH;
+    if (srcRatio > boxRatio) {
+      const w = boxW;
+      const h = w / srcRatio;
+      return { x: 0, y: (boxH - h) / 2, w, h };
+    }
+    const h = boxH;
+    const w = h * srcRatio;
+    return { x: (boxW - w) / 2, y: 0, w, h };
+  }
+
+  // Add an image to the doc using "cover" semantics inside a box at (x, y, w, h).
+  // Uses jsPDF's clipping so the cropped portions don't bleed into surrounding content.
+  function addImageCover(doc, dataUrl, x, y, boxW, boxH) {
+    if (!dataUrl) return;
+    try {
+      const props = doc.getImageProperties(dataUrl);
+      const fit = fitCover(props.width, props.height, boxW, boxH);
+      // jsPDF doesn't natively support clipping rect on images, so we use saveGraphicsState + clip
+      doc.saveGraphicsState();
+      doc.rect(x, y, boxW, boxH).clip().discardPath();
+      doc.addImage(dataUrl, undefined, x + fit.x, y + fit.y, fit.w, fit.h, undefined, 'FAST');
+      doc.restoreGraphicsState();
+    } catch (e) { console.warn('addImageCover failed', e); }
+  }
+
+  // Add an image preserving aspect ratio inside the given box, returns the height actually used
+  function addImageContain(doc, dataUrl, x, y, boxW, maxH) {
+    if (!dataUrl) return 0;
+    try {
+      const props = doc.getImageProperties(dataUrl);
+      const ratio = props.width / props.height;
+      let w = boxW;
+      let h = w / ratio;
+      if (h > maxH) { h = maxH; w = h * ratio; }
+      const offsetX = (boxW - w) / 2;
+      doc.addImage(dataUrl, undefined, x + offsetX, y, w, h, undefined, 'FAST');
+      return h;
+    } catch (e) { console.warn('addImageContain failed', e); return 0; }
+  }
+
   // Approximates uppercase Bebas with Helvetica Bold + letter-spacing via spaced chars
   function setDisplay(doc, sizePt) {
     doc.setFont('helvetica', 'bold');
@@ -827,55 +900,68 @@
   // Pill-style category label box (blue background, white text)
   function drawCategoryPill(doc, text, x, y) {
     setBody(doc, 8.5, 'bold');
-    doc.setCharSpace(1.4);
+    const charSpace = 1.4;
+    doc.setCharSpace(charSpace);
     const upper = text.toUpperCase();
-    const w = doc.getTextWidth(upper) + 6;
+    // getTextWidth doesn't include character spacing, so add (n-1) * charSpace manually.
+    // Pad by 8 horizontally so the box visibly contains the text.
+    const textW = doc.getTextWidth(upper) + Math.max(0, upper.length - 1) * charSpace;
+    const w = textW + 8;
     const h = 5.8;
     rgb(doc, PDF_COLORS.blue, 'fill');
     doc.rect(x, y - h + 1.6, w, h, 'F');
     rgb(doc, PDF_COLORS.white, 'text');
-    doc.text(upper, x + 3, y);
+    doc.text(upper, x + 4, y);
     doc.setCharSpace(0);
     return y + 4;
   }
 
   // Renders the cover page (page 1)
-  async function renderCoverPage(doc, coverImg) {
+  async function renderCoverPage(doc, coverImg, logoDataUrl) {
     // Solid dark background
     rgb(doc, PDF_COLORS.ink, 'fill');
     doc.rect(0, 0, PDF_W, PDF_H, 'F');
 
-    // Background image with very dark overlay (if loaded)
-    if (coverImg) {
-      try {
-        doc.addImage(coverImg.data, 'JPEG', 0, 0, PDF_W, PDF_H, undefined, 'FAST');
-      } catch (e) { console.warn('cover image add failed', e); }
-      // Dark overlay
+    // Background image — cover-fit (no stretching), then very dark overlay
+    if (coverImg && coverImg.data) {
+      addImageCover(doc, coverImg.data, 0, 0, PDF_W, PDF_H);
       doc.setFillColor(10, 10, 10);
-      doc.setGState(new doc.GState({ opacity: 0.78 }));
+      doc.setGState(new doc.GState({ opacity: 0.72 }));
       doc.rect(0, 0, PDF_W, PDF_H, 'F');
       doc.setGState(new doc.GState({ opacity: 1 }));
     }
 
-    // ASAC small logo line top-left
-    setBody(doc, 11, 'bold');
-    rgb(doc, PDF_COLORS.white, 'text');
-    doc.setCharSpace(1.8);
-    doc.text('ASAC', PDF_MARGIN_X, 22);
-    doc.setCharSpace(0);
+    // ASAC logo top-left (white version, on the dark cover)
+    if (logoDataUrl) {
+      try {
+        const props = doc.getImageProperties(logoDataUrl);
+        const logoH = 11;
+        const logoW = (props.width / props.height) * logoH;
+        doc.addImage(logoDataUrl, undefined, PDF_MARGIN_X, 16, logoW, logoH, undefined, 'FAST');
+      } catch (e) { console.warn('logo add failed', e); }
+    } else {
+      // Fallback: text wordmark if logo image failed to load
+      setBody(doc, 11, 'bold');
+      rgb(doc, PDF_COLORS.white, 'text');
+      doc.setCharSpace(1.8);
+      doc.text('ASAC', PDF_MARGIN_X, 22);
+      doc.setCharSpace(0);
+    }
 
     // Issue badge (red rectangle) — Poppins-ish small caps
     const t = I18N[state.lang];
     const badgeY = PDF_H / 2 - 50;
     const badgeText = `N°46  ·  ${t.issueMonth.toUpperCase()}`;
     setBody(doc, 9, 'bold');
-    doc.setCharSpace(1.6);
-    const badgeW = doc.getTextWidth(badgeText) + 12;
+    const badgeCharSpace = 1.6;
+    doc.setCharSpace(badgeCharSpace);
+    const badgeTextW = doc.getTextWidth(badgeText) + Math.max(0, badgeText.length - 1) * badgeCharSpace;
+    const badgeW = badgeTextW + 14;
     const badgeH = 8;
     rgb(doc, PDF_COLORS.red, 'fill');
     doc.rect(PDF_MARGIN_X, badgeY, badgeW, badgeH, 'F');
     rgb(doc, PDF_COLORS.white, 'text');
-    doc.text(badgeText, PDF_MARGIN_X + 6, badgeY + 5.6);
+    doc.text(badgeText, PDF_MARGIN_X + 7, badgeY + 5.6);
     doc.setCharSpace(0);
 
     // Big title
@@ -902,22 +988,7 @@
       subY += 5.5;
     }
 
-    // Edition label bottom-right
-    setBody(doc, 8, 'normal');
-    doc.setCharSpace(1.6);
-    rgb(doc, [180, 180, 180], 'text');
-    doc.text(t.editionLabel.toUpperCase(), PDF_W - PDF_MARGIN_X - 24, PDF_H - 24);
-    setBody(doc, 9, 'bold');
-    rgb(doc, PDF_COLORS.white, 'text');
-    doc.text('N°46 — 2026', PDF_W - PDF_MARGIN_X - 24, PDF_H - 18);
-    doc.setCharSpace(0);
-
-    // Footer line
-    setBody(doc, 7.5, 'normal');
-    doc.setCharSpace(1.2);
-    rgb(doc, [180, 180, 180], 'text');
-    doc.text(`© 2026 ASAC  ·  ${t.allRights.toUpperCase()}  —  MADE BY MW DDB CAMEROON`, PDF_MARGIN_X, PDF_H - 12);
-    doc.setCharSpace(0);
+    // No edition label, no footer text — keep the cover clean.
   }
 
   // Renders the contents page (page 2)
@@ -1032,17 +1103,15 @@
     const lang = state.lang;
     const t = I18N[lang];
 
-    // Hero image strip across top (40mm tall)
+    // Hero image strip across top (cover-fit, never stretched)
     const heroH = 70;
     if (heroImgDataUrl) {
-      try {
-        doc.addImage(heroImgDataUrl, 'JPEG', 0, 0, PDF_W, heroH, undefined, 'FAST');
-        // Dark gradient overlay at bottom of hero
-        doc.setGState(new doc.GState({ opacity: 0.5 }));
-        doc.setFillColor(10, 10, 10);
-        doc.rect(0, heroH - 30, PDF_W, 30, 'F');
-        doc.setGState(new doc.GState({ opacity: 1 }));
-      } catch (e) { console.warn('hero image add failed', e); }
+      addImageCover(doc, heroImgDataUrl, 0, 0, PDF_W, heroH);
+      // Dark gradient overlay at bottom of hero
+      doc.setGState(new doc.GState({ opacity: 0.5 }));
+      doc.setFillColor(10, 10, 10);
+      doc.rect(0, heroH - 30, PDF_W, 30, 'F');
+      doc.setGState(new doc.GState({ opacity: 1 }));
     } else {
       rgb(doc, PDF_COLORS.ink, 'fill');
       doc.rect(0, 0, PDF_W, heroH, 'F');
@@ -1148,6 +1217,25 @@
       y += 3.5;
     }
 
+    // Inline article image (mirrors the live site placement: after paragraphs)
+    // For CMS docs we may have several images in body.inlineImages; render the first
+    // here and any remainder between sections below.
+    const inlineImages = (body.inlineImages || []).slice();
+    if (paragraphs.length > 0 && (inlineImages[0] || heroImgDataUrl)) {
+      const imgData = inlineImages.shift() || heroImgDataUrl;
+      const imgW = PDF_W - 2 * PDF_MARGIN_X;
+      const maxH = 95;
+      if (y + 12 > PDF_H - PDF_MARGIN_BOTTOM - 60) {
+        doc.addPage();
+        rgb(doc, PDF_COLORS.paper, 'fill');
+        doc.rect(0, 0, PDF_W, PDF_H, 'F');
+        y = PDF_MARGIN_TOP;
+      }
+      y += 4;
+      const usedH = addImageContain(doc, imgData, PDF_MARGIN_X, y, imgW, maxH);
+      if (usedH > 0) y += usedH + 8;
+    }
+
     // Sections (h3 + p)
     const sections = (body.sections && body.sections[lang]) || [];
     for (let i = 0; i < sections.length; i++) {
@@ -1185,6 +1273,19 @@
           PDF_W - 2 * PDF_MARGIN_X - 6, 16, PDF_COLORS.ink, 7,
         );
         y += 6;
+      }
+
+      // Drop the next inline image between sections if any are left
+      if (inlineImages.length && i < sections.length - 1) {
+        if (y > PDF_H - PDF_MARGIN_BOTTOM - 60) {
+          doc.addPage();
+          rgb(doc, PDF_COLORS.paper, 'fill');
+          doc.rect(0, 0, PDF_W, PDF_H, 'F');
+          y = PDF_MARGIN_TOP;
+        }
+        y += 4;
+        const usedH = addImageContain(doc, inlineImages.shift(), PDF_MARGIN_X, y, PDF_W - 2 * PDF_MARGIN_X, 85);
+        if (usedH > 0) y += usedH + 8;
       }
     }
 
@@ -1231,6 +1332,61 @@
   // Lazily inject jsPDF only when the user requests a PDF. Keeps it off the
   // critical path so it can never block page load on slow connections.
   let _jspdfPromise = null;
+
+  // Resolve a relative URL (e.g. "/api/image?id=…") to an absolute one for
+  // fetchImageAsDataURL on Vercel previews and local dev.
+  function absUrl(u) {
+    if (!u) return u;
+    if (/^https?:\/\//i.test(u)) return u;
+    return new URL(u, window.location.origin).toString();
+  }
+
+  // Convert a CMS API response (rendered HTML) into the same {lead, paragraphs,
+  // sections, pullQuote} shape that ARTICLE_BODIES uses — so the PDF renderer
+  // can produce a consistent layout for both kinds of articles.
+  function bodyFromCms(cms, lang) {
+    const tmp = document.createElement('div');
+    tmp.innerHTML = cms.html || '';
+    const lead = { fr: '', en: '' };
+    const paragraphs = { fr: [], en: [] };
+    const sections = { fr: [], en: [] };
+    let pullQuote = null;
+    let currentH = null;
+    let leadFound = false;
+    const text = (el) => (el.textContent || '').trim();
+    for (const node of Array.from(tmp.children)) {
+      const tag = node.tagName.toLowerCase();
+      if (tag === 'h1') continue; // title is already shown separately
+      if (tag === 'h3') {
+        currentH = text(node);
+        sections[lang].push({ h: currentH, p: '' });
+      } else if (/^h[2-6]$/.test(tag)) {
+        // Treat as section header too
+        currentH = text(node);
+        sections[lang].push({ h: currentH, p: '' });
+      } else if (tag === 'blockquote' && node.classList.contains('pull')) {
+        if (!pullQuote) pullQuote = { fr: text(node), en: text(node) };
+        pullQuote[lang] = text(node);
+      } else if (tag === 'p' || tag === 'blockquote' || tag === 'ul' || tag === 'ol') {
+        const t = text(node);
+        if (!t) continue;
+        if (!leadFound && tag === 'p' && !currentH) {
+          lead[lang] = t;
+          leadFound = true;
+          continue;
+        }
+        if (currentH && sections[lang].length) {
+          const last = sections[lang][sections[lang].length - 1];
+          last.p = last.p ? last.p + '\n\n' + t : t;
+        } else {
+          paragraphs[lang].push(t);
+        }
+      }
+      // <img>, <hr>, <figure> are skipped here — inline images are passed separately
+    }
+    return { lead, paragraphs, sections, pullQuote };
+  }
+
   function loadJsPDF() {
     if (window.jspdf && window.jspdf.jsPDF) return Promise.resolve(true);
     if (_jspdfPromise) return _jspdfPromise;
@@ -1265,25 +1421,48 @@
 
       // 1. Collect all images needed up-front, fetch in parallel
       const heroUrl = CATEGORIES[0].image; // first category image as cover
+      const LOGO_URL = 'assets/logo-white.png';
       const allImageUrls = new Set();
+      allImageUrls.add(LOGO_URL);
       allImageUrls.add(heroUrl);
       for (const cat of CATEGORIES) allImageUrls.add(cat.image);
+      // Also collect any extra inline images per article body
       for (const id of Object.keys(ARTICLE_BODIES)) {
-        if (ARTICLE_BODIES[id].image) allImageUrls.add(ARTICLE_BODIES[id].image);
+        const ab = ARTICLE_BODIES[id];
+        if (ab.image) allImageUrls.add(ab.image);
+        if (Array.isArray(ab.inlineImages)) ab.inlineImages.forEach((u) => allImageUrls.add(u));
       }
       const urls = Array.from(allImageUrls);
       const dataUrls = await Promise.all(urls.map(fetchImageAsDataURL));
       const imgMap = {};
       urls.forEach((u, i) => { imgMap[u] = dataUrls[i]; });
 
+      // 1b. For any article whose id is a Google Doc id, fetch its /api/article
+      //     response so we can embed its inline images in the PDF too.
+      const cmsArticleData = {};
+      const cmsFetches = [];
+      for (const cat of CATEGORIES) {
+        for (const a of cat.articles) {
+          if (looksLikeDocId(a.id)) {
+            cmsFetches.push(
+              fetchArticleFromCms(a.id).then((data) => { if (data) cmsArticleData[a.id] = data; })
+            );
+          }
+        }
+      }
+      await Promise.all(cmsFetches);
+      // Fetch any CMS image data URLs we didn't already grab
+      const extraCmsImages = new Set();
+      for (const data of Object.values(cmsArticleData)) {
+        for (const url of data.images || []) extraCmsImages.add(absUrl(url));
+      }
+      const extraList = Array.from(extraCmsImages).filter((u) => !imgMap[u]);
+      const extraData = await Promise.all(extraList.map(fetchImageAsDataURL));
+      extraList.forEach((u, i) => { imgMap[u] = extraData[i]; });
+
       // 2. Build doc
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait', compress: true });
-
-      // PASS 1: render all pages to figure out which page each article starts at
-      // (To do this simply, we render twice — first to compute, then re-render with
-      //  correct page numbers on the contents page. Cheaper alternative: collect
-      //  articleStarts on the fly and patch the contents page at the end.)
 
       const articleList = [];
       for (const cat of CATEGORIES) {
@@ -1292,8 +1471,8 @@
         }
       }
 
-      // Cover page (page 1)
-      await renderCoverPage(doc, { data: imgMap[heroUrl] });
+      // Cover page (page 1) — pass the logo so we can render it instead of "ASAC" text
+      await renderCoverPage(doc, { data: imgMap[heroUrl] }, imgMap[LOGO_URL]);
 
       // Reserve contents page (we'll fill it after we know article page numbers)
       doc.addPage();
@@ -1302,9 +1481,25 @@
       // Render each article, tracking start pages
       const articleStarts = {};
       for (const { cat, article } of articleList) {
-        const body = ARTICLE_BODIES[article.id] || makeGenericBody(article, cat);
-        const heroDataUrl = imgMap[body.image] || imgMap[cat.image];
-        // Note: renderArticlePage calls addPage() at the start
+        // For CMS articles, build a "synthetic" body from the API HTML so the
+        // PDF renderer can show paragraphs, sections AND inline images.
+        let body;
+        let heroDataUrl;
+        if (cmsArticleData[article.id]) {
+          body = bodyFromCms(cmsArticleData[article.id], state.lang);
+          // Inline images become absolute URLs we've already fetched
+          body.inlineImages = (cmsArticleData[article.id].images || [])
+            .map((u) => imgMap[absUrl(u)])
+            .filter(Boolean);
+          heroDataUrl = body.inlineImages[0] || imgMap[cat.image];
+        } else {
+          body = ARTICLE_BODIES[article.id] || makeGenericBody(article, cat);
+          heroDataUrl = imgMap[body.image] || imgMap[cat.image];
+          // Resolve inline image URLs (if a baked article specified any) to data URLs
+          if (Array.isArray(body.inlineImages)) {
+            body.inlineImages = body.inlineImages.map((u) => imgMap[u]).filter(Boolean);
+          }
+        }
         const pageBefore = doc.internal.getNumberOfPages();
         await renderArticlePdfPage(
           doc, article, cat, body, heroDataUrl,
@@ -1484,7 +1679,7 @@
     try {
       const controller = new AbortController();
       const tid = setTimeout(() => controller.abort(), 4000);
-      const r = await fetch('/api/categories', {
+      const r = await fetch(`/api/categories?lang=${encodeURIComponent(state.lang)}`, {
         headers: { Accept: 'application/json' },
         signal: controller.signal,
       });
@@ -1540,7 +1735,7 @@
     try {
       const controller2 = new AbortController();
       const tid2 = setTimeout(() => controller2.abort(), 8000);
-      const r = await fetch(`/api/article?id=${encodeURIComponent(docId)}`, {
+      const r = await fetch(`/api/article?id=${encodeURIComponent(docId)}&lang=${encodeURIComponent(state.lang)}`, {
         headers: { Accept: 'application/json' },
         signal: controller2.signal,
       });

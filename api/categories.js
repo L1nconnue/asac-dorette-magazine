@@ -7,7 +7,7 @@
 // so a Docs edit shows up on the site within ~1 minute without hammering
 // the Drive API.
 
-const { getDrive, getRootFolderId, parseOrderedName, slugify } = require('../lib/google');
+const { getDrive, getRootFolderId, parseOrderedName, slugify, translate } = require('../lib/google');
 
 module.exports = async function handler(req, res) {
   try {
@@ -64,7 +64,33 @@ module.exports = async function handler(req, res) {
 
     categories.sort((a, b) => a.order - b.order);
 
-    res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300');
+    // If the client asks for English, translate names + titles in one batch.
+    const lang = (req.query && req.query.lang) || 'fr';
+    if (lang === 'en') {
+      try {
+        // Build a single flat list to translate in one API call
+        const strings = [];
+        const slots = []; // [{kind, catIdx, artIdx?}]
+        categories.forEach((c, ci) => {
+          strings.push(c.name.fr);
+          slots.push({ kind: 'cat', ci });
+          c.articles.forEach((a, ai) => {
+            strings.push(a.title.fr);
+            slots.push({ kind: 'art', ci, ai });
+          });
+        });
+        const translated = await translate(strings, { source: 'fr', target: 'en', format: 'text' });
+        translated.forEach((t, i) => {
+          const slot = slots[i];
+          if (slot.kind === 'cat') categories[slot.ci].name.en = t;
+          else categories[slot.ci].articles[slot.ai].title.en = t;
+        });
+      } catch (err) {
+        console.warn('[api/categories] translation failed:', err.message);
+      }
+    }
+
+    res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=900');
     res.setHeader('Content-Type', 'application/json; charset=utf-8');
     res.status(200).json({
       issue: {
@@ -72,6 +98,7 @@ module.exports = async function handler(req, res) {
         month: { fr: process.env.ASAC_ISSUE_MONTH_FR || 'Juin 2026', en: process.env.ASAC_ISSUE_MONTH_EN || 'June 2026' },
         heroImage,
       },
+      lang,
       categories,
     });
   } catch (err) {

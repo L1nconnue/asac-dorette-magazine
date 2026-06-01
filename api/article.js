@@ -12,7 +12,7 @@
 // expire after ~30 min, so the client should re-fetch the article rather
 // than caching the HTML for long. Edge cache is 60s by default.
 
-const { getDocs, getDrive } = require('../lib/google');
+const { getDocs, getDrive, parseOrderedName, translate } = require('../lib/google');
 
 module.exports = async function handler(req, res) {
   try {
@@ -35,14 +35,37 @@ module.exports = async function handler(req, res) {
     }
 
     const { html, images, plainTitle } = convertDocToHtml(doc.data);
+    // Clean any "01-" style prefix from fallback titles
+    const cleanDocTitle = doc.data.title ? parseOrderedName(doc.data.title).name : null;
+    const cleanFileName = file.data.name ? parseOrderedName(file.data.name).name : null;
+    let title = plainTitle || cleanDocTitle || cleanFileName || 'Untitled';
+    let outHtml = html;
 
-    res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300');
+    // Optional on-the-fly translation. Default source is French.
+    const lang = (req.query && req.query.lang) || 'fr';
+    const source = (req.query && req.query.source) || 'fr';
+    if (lang && lang !== source) {
+      try {
+        const [translatedTitle, translatedHtml] = await Promise.all([
+          translate(title, { source, target: lang, format: 'text' }),
+          translate(outHtml, { source, target: lang, format: 'html' }),
+        ]);
+        title = translatedTitle || title;
+        outHtml = translatedHtml || outHtml;
+      } catch (translateErr) {
+        console.warn('[api/article] translation failed, returning source:', translateErr.message);
+      }
+    }
+
+    // Cache per-language at the edge
+    res.setHeader('Cache-Control', 's-maxage=120, stale-while-revalidate=600');
     res.setHeader('Content-Type', 'application/json; charset=utf-8');
     res.status(200).json({
       docId,
-      title: plainTitle || doc.data.title || file.data.name,
+      title,
+      lang,
       modifiedTime: file.data.modifiedTime,
-      html,
+      html: outHtml,
       images,
     });
   } catch (err) {

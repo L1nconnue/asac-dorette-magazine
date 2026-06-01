@@ -160,6 +160,50 @@ When both endpoints return real data, the homepage and contents page will automa
 
 ---
 
+## Part F — Enable automatic French → English translation (optional)
+
+The site can auto-translate every article into English without you doing anything in Drive. Write articles in French; the English version is generated on demand by Google Cloud Translation and cached at the edge.
+
+### F1. Turn on the Cloud Translation API
+
+Open this URL — it goes straight to the API page for your project:
+
+```
+https://console.cloud.google.com/apis/library/translate.googleapis.com
+```
+
+Click **Enable**. Same project, same service account — no extra credentials needed. (You already granted the translation scope when you created the service account; the code requests it automatically.)
+
+### F2. That's it
+
+There are no new env vars. The next time the site fetches `/api/categories?lang=en` or `/api/article?id=...&lang=en`, the response comes back translated.
+
+### F3. Pricing reality-check
+
+Cloud Translation charges $20 per million characters with a 500K free tier per month. A typical article is 3–5K characters → roughly 100–150 free article translations per issue. The site caches translations for 2–5 minutes at the edge, so visitors switching FR/EN repeatedly don't keep hitting the API.
+
+### F4. Killswitch
+
+If you want to disable translation temporarily (e.g. during a hot edit cycle or to debug the source content), set an env var:
+
+```
+ASAC_DISABLE_TRANSLATION=1
+```
+
+Redeploy. The English toggle on the site will then just show the French content with English UI chrome around it.
+
+### F5. Hand-edited overrides (optional)
+
+The auto-translation is good but not perfect. If you want full editorial control over the English version of a specific article, the cleanest path is:
+
+1. In your Drive folder, alongside `01-La sentinelle et l'architecte`, create a sibling doc `01-La sentinelle et l'architecte.en`
+2. Write your hand-edited English in that doc
+3. When the site fetches the article with `?lang=en`, the API will prefer the `.en` sibling if it exists, and fall back to auto-translation otherwise
+
+(This `.en` fallback is on the roadmap — for now, every English version is auto-generated. Tell me when you want it and I'll add the override path.)
+
+---
+
 ## Troubleshooting
 
 | Symptom                                                | Likely cause                                                                                                       |
