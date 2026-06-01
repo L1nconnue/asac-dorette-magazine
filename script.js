@@ -1024,7 +1024,7 @@
   }
 
   // Renders one article — handles multi-page flow
-  async function renderArticlePage(doc, article, cat, body, heroImgDataUrl, pageNum, totalPages) {
+  async function renderArticlePdfPage(doc, article, cat, body, heroImgDataUrl, pageNum, totalPages) {
     doc.addPage();
     rgb(doc, PDF_COLORS.paper, 'fill');
     doc.rect(0, 0, PDF_W, PDF_H, 'F');
@@ -1306,7 +1306,7 @@
         const heroDataUrl = imgMap[body.image] || imgMap[cat.image];
         // Note: renderArticlePage calls addPage() at the start
         const pageBefore = doc.internal.getNumberOfPages();
-        await renderArticlePage(
+        await renderArticlePdfPage(
           doc, article, cat, body, heroDataUrl,
           pageBefore + 1, 0,
         );
@@ -1418,6 +1418,42 @@
     update();
   }
 
+  // After CMS hydration, swap the hero + feature-panel background images
+  // and the menu-grid card backgrounds to use whatever the API returned.
+  function syncHomePanelImages() {
+    try {
+      // Hero (panel 0)
+      if (state.cmsHeroImage) {
+        const heroImg = document.querySelector('.panel[data-panel="0"] .panel__img');
+        if (heroImg) heroImg.style.backgroundImage = `url('${state.cmsHeroImage}')`;
+      }
+      // Featured panels — match by their data-category attribute against the slugified id
+      document.querySelectorAll('.panel--feature').forEach((p) => {
+        const wanted = (p.dataset.category || '').toLowerCase();
+        const cat = CATEGORIES.find((c) =>
+          c.name.fr.toLowerCase() === wanted ||
+          c.name.en.toLowerCase() === wanted ||
+          c.id === slugifyLite(wanted)
+        );
+        if (cat && cat.image) {
+          const img = p.querySelector('.panel__img');
+          if (img) img.style.backgroundImage = `url('${cat.image}')`;
+          // Also update the first article id so clicks go to the right doc
+          const featContent = p.querySelector('.panel__content--feature');
+          if (featContent && cat.articles[0]) {
+            featContent.dataset.article = cat.articles[0].id;
+          }
+        }
+      });
+    } catch (err) {
+      console.warn('[asac] panel sync failed', err);
+    }
+  }
+  function slugifyLite(s) {
+    return String(s).normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+  }
+
   /* ---------- CMS HYDRATION (Google Drive layer) ----------
      If /api/categories responds successfully, replace the in-file CATEGORIES
      with the live folder contents. Articles whose `id` looks like a Google
@@ -1461,12 +1497,17 @@
       const fresh = data.categories.map((c) => {
         const override = CATEGORY_NAME_OVERRIDES[c.id];
         const name = override || c.name || { fr: c.id, en: c.id };
-        const placeholderImg = (CATEGORIES.find((x) => x.id === c.id) || {}).image
+        // Priority for the cover image: 1) Drive cover.jpg in folder
+        //                                2) image baked into script.js
+        //                                3) generic fallback
+        const cmsCover = c.coverImage || null;
+        const bakedImg = (CATEGORIES.find((x) => x.id === c.id) || {}).image;
+        const image = cmsCover || bakedImg
           || 'https://images.unsplash.com/photo-1521119989659-a83eee488004?w=1600&q=85&auto=format&fit=crop';
         return {
           id: c.id,
           name,
-          image: placeholderImg,
+          image,
           count: c.count,
           articles: (c.articles || []).map((a) => ({
             id: a.docId || a.id,
@@ -1483,6 +1524,8 @@
       if (data.issue) {
         I18N.fr.issueMonth = data.issue.month.fr || I18N.fr.issueMonth;
         I18N.en.issueMonth = data.issue.month.en || I18N.en.issueMonth;
+        // Stash hero image on a global so the home page can swap it in
+        if (data.issue.heroImage) state.cmsHeroImage = data.issue.heroImage;
       }
       return true;
     } catch (err) {
@@ -1655,9 +1698,12 @@
         setupHomeHeight();
         bindEvents();
         updatePanels();
-        // Try CMS in background; if it returns data, refresh the menu grid
+        // Try CMS in background; if it returns data, refresh the menu + panels
         hydrateFromCms().then((didHydrate) => {
-          if (didHydrate) renderMenuGrid();
+          if (didHydrate) {
+            renderMenuGrid();
+            syncHomePanelImages();
+          }
         }).catch(() => {});
       } else if (page === 'article') {
         bindEvents();

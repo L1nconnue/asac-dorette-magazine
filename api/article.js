@@ -110,6 +110,20 @@ function convertDocToHtml(doc) {
       }
       closeList();
 
+      // Markdown-ish shortcuts that work inside Google Docs:
+      //   "---" or "***"   on its own line → horizontal rule
+      //   "> something"    at the start    → blockquote
+      const plain = stripTags(trimmed).trim();
+      if (/^([-*]\s*){3,}$/.test(plain) || plain === '---' || plain === '***') {
+        out.push('<hr>');
+        continue;
+      }
+      if (style === 'NORMAL_TEXT' && /^&gt;\s/.test(inner.trimStart())) {
+        const stripped = inner.replace(/^\s*&gt;\s?/, '');
+        out.push(`<blockquote>${stripped}</blockquote>`);
+        continue;
+      }
+
       switch (style) {
         case 'TITLE':
         case 'HEADING_1':
@@ -124,6 +138,9 @@ function convertDocToHtml(doc) {
           out.push(`<h3>${inner}</h3>`);
           break;
         case 'HEADING_4':
+          // Heading 4 is repurposed as "pull quote" — see cheatsheet
+          out.push(`<blockquote class="pull">${inner}</blockquote>`);
+          break;
         case 'HEADING_5':
         case 'HEADING_6':
           out.push(`<h4>${inner}</h4>`);
@@ -135,6 +152,9 @@ function convertDocToHtml(doc) {
     } else if (el.table) {
       closeList();
       out.push(renderTable(el.table, imageById, images));
+    } else if (el.horizontalRule || (el.sectionBreak && el.sectionBreak.sectionStyle)) {
+      closeList();
+      out.push('<hr>');
     }
     // SectionBreak and TableOfContents are skipped on purpose.
   }
