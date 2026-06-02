@@ -625,6 +625,14 @@
         menu: state.isMenuOpen, category: state.isCategoryOpen ? state.currentCategoryId : null,
       }));
     } catch (e) {}
+    // CRITICAL: unwind any scroll lock before leaving the page. Some browsers
+    // bfcache the home page in its locked state and restore body{position:fixed},
+    // which leaves the user unable to scroll on return.
+    while (lockCount > 0) unlockScroll();
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.documentElement.classList.remove('no-scroll');
+    document.body.classList.remove('no-scroll');
     window.location.href = `article.html?id=${encodeURIComponent(articleId)}&cat=${encodeURIComponent(categoryId)}`;
   }
 
@@ -850,18 +858,63 @@
     return { x: (boxW - w) / 2, y: 0, w, h };
   }
 
-  // Add an image to the doc using "cover" semantics inside a box at (x, y, w, h).
-  // Uses jsPDF's clipping so the cropped portions don't bleed into surrounding content.
-  function addImageCover(doc, dataUrl, x, y, boxW, boxH) {
+  // Crop a data URL on a canvas to the requested aspect ratio (centred crop).
+  // Returns a new JPEG data URL whose dimensions exactly match the target ratio,
+  // so jsPDF can drop it into a same-ratio box with zero stretching and zero
+  // clipping tricks. This is the bulletproof way to fit images to fixed boxes
+  // across every PDF viewer.
+  function cropToAspect(dataUrl, aspectRatio, maxOutW = 1600) {
+    if (!dataUrl) return Promise.resolve(null);
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => {
+        try {
+          const outW = Math.max(400, Math.min(maxOutW, img.width));
+          const outH = Math.max(200, Math.round(outW / aspectRatio));
+          const canvas = document.createElement('canvas');
+          canvas.width = outW;
+          canvas.height = outH;
+          const ctx = canvas.getContext('2d');
+          // High-quality resampling
+          ctx.imageSmoothingEnabled = true;
+          ctx.imageSmoothingQuality = 'high';
+
+          const srcRatio = img.width / img.height;
+          let sx, sy, sw, sh;
+          if (srcRatio > aspectRatio) {
+            // Source is wider than the target box — crop sides
+            sh = img.height;
+            sw = sh * aspectRatio;
+            sx = (img.width - sw) / 2;
+            sy = 0;
+          } else {
+            // Source is taller than the target — crop top/bottom
+            sw = img.width;
+            sh = sw / aspectRatio;
+            sx = 0;
+            sy = (img.height - sh) / 2;
+          }
+          ctx.drawImage(img, sx, sy, sw, sh, 0, 0, outW, outH);
+          resolve(canvas.toDataURL('image/jpeg', 0.86));
+        } catch (e) {
+          console.warn('cropToAspect failed', e);
+          resolve(dataUrl);
+        }
+      };
+      img.onerror = () => resolve(dataUrl);
+      img.src = dataUrl;
+    });
+  }
+
+  // Add an image to the doc using "cover" semantics: pre-crop to the target
+  // aspect ratio on a canvas, then place at the box dimensions. The image
+  // ALWAYS fills the box exactly with no stretching and no overflow.
+  async function addImageCover(doc, dataUrl, x, y, boxW, boxH) {
     if (!dataUrl) return;
+    const cropped = await cropToAspect(dataUrl, boxW / boxH, 1800);
+    if (!cropped) return;
     try {
-      const props = doc.getImageProperties(dataUrl);
-      const fit = fitCover(props.width, props.height, boxW, boxH);
-      // jsPDF doesn't natively support clipping rect on images, so we use saveGraphicsState + clip
-      doc.saveGraphicsState();
-      doc.rect(x, y, boxW, boxH).clip().discardPath();
-      doc.addImage(dataUrl, undefined, x + fit.x, y + fit.y, fit.w, fit.h, undefined, 'FAST');
-      doc.restoreGraphicsState();
+      doc.addImage(cropped, 'JPEG', x, y, boxW, boxH, undefined, 'FAST');
     } catch (e) { console.warn('addImageCover failed', e); }
   }
 
@@ -967,7 +1020,7 @@
 
     // Background image — cover-fit (no stretching), then very dark overlay
     if (coverImg && coverImg.data) {
-      addImageCover(doc, coverImg.data, 0, 0, PDF_W, PDF_H);
+      await addImageCover(doc, coverImg.data, 0, 0, PDF_W, PDF_H);
       doc.setFillColor(10, 10, 10);
       doc.setGState(new doc.GState({ opacity: 0.72 }));
       doc.rect(0, 0, PDF_W, PDF_H, 'F');
@@ -1150,7 +1203,7 @@
     // Exactly one quarter of the A4 page, never stretched.
     const heroH = PDF_H / 4; // ≈ 74.25mm
     if (heroImgDataUrl) {
-      addImageCover(doc, heroImgDataUrl, 0, 0, PDF_W, heroH);
+      await addImageCover(doc, heroImgDataUrl, 0, 0, PDF_W, heroH);
       // Dark gradient: heavier at bottom so the white title stays legible
       doc.setGState(new doc.GState({ opacity: 0.35 }));
       doc.setFillColor(10, 10, 10);
@@ -1991,6 +2044,42 @@
     const l = document.getElementById('loader');
     if (l && l.parentNode) l.remove();
   }, 3000);
+
+  // When the page is restored from the back/forward cache (e.g. user taps Back
+  // from article.html), the browser keeps the previous DOM state — including
+  // any open menu overlay, the position:fixed body, and our internal state
+  // variables. Wipe everything so the home page behaves like a fresh load.
+  window.addEventListener('pageshow', (event) => {
+    if (!event.persisted) return;
+    try {
+      document.documentElement.classList.remove('no-scroll');
+      document.body.classList.remove('no-scroll');
+      document.body.style.position = '';
+      document.body.style.top = '';
+      lockCount = 0;
+      state.isMenuOpen = false;
+      state.isCategoryOpen = false;
+      state.currentCategoryId = null;
+
+      const menu = document.getElementById('menu');
+      if (menu) { menu.classList.remove('is-open'); menu.setAttribute('aria-hidden', 'true'); }
+      const category = document.getElementById('category');
+      if (category) { category.classList.remove('is-open'); category.setAttribute('aria-hidden', 'true'); }
+      const menuBtn = document.getElementById('menuBtn');
+      if (menuBtn) menuBtn.classList.remove('is-open');
+      const nav = document.getElementById('nav');
+      if (nav) {
+        nav.classList.remove('is-dark', 'nav--frostable', 'is-frost-on');
+        nav.style.removeProperty('--frost-p');
+      }
+
+      // Re-run panel layout in case the viewport size changed since last visit
+      setupHomeHeight();
+      updatePanels();
+    } catch (err) {
+      console.warn('[asac] pageshow reset failed', err);
+    }
+  });
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
