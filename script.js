@@ -308,6 +308,7 @@
       contentsTitle: 'Sommaire',
       issuePrefix: 'Édition',
       backToMenu: 'Retour au sommaire',
+      mastheadTitle: 'Équipe du Journal',
     },
     en: {
       menuLabel: 'Contents',
@@ -328,6 +329,7 @@
       contentsTitle: 'Contents',
       issuePrefix: 'Issue',
       backToMenu: 'Back to contents',
+      mastheadTitle: 'Editorial Team',
     },
   };
 
@@ -344,10 +346,29 @@
 
     // Re-render category cards & list if needed
     renderMenuGrid();
+    syncHomePanelText();
     if (state.isCategoryOpen) {
       const curr = document.getElementById('category').dataset.current;
       if (curr) openCategory(curr, true);
     }
+  }
+
+  // Update the hardcoded panel category labels + article titles on the home page
+  // whenever the language flips. Works against either baked or CMS-hydrated CATEGORIES.
+  function syncHomePanelText() {
+    document.querySelectorAll('.panel__content--feature').forEach((el) => {
+      const artId = el.dataset.article;
+      if (!artId) return;
+      const cat = CATEGORIES.find((c) => c.articles.some((a) => a.id === artId));
+      if (!cat) return;
+      const article = cat.articles.find((a) => a.id === artId);
+      const catEl = el.querySelector('.panel__cat');
+      const titleEl = el.querySelector('.panel__title');
+      if (catEl && cat.name && cat.name[state.lang]) catEl.textContent = cat.name[state.lang];
+      if (titleEl && article && article.title && article.title[state.lang]) {
+        titleEl.textContent = article.title[state.lang];
+      }
+    });
   }
 
   /* ---------- LOADER ---------- */
@@ -437,6 +458,14 @@
       const eased = easeInOutCubic(p);
       const ty = (1 - eased) * 100; // 100 -> 0
       panel.style.transform = `translate3d(0, ${ty}%, 0)`;
+      // Promote to a compositor layer only while mid-transition (0 < p < 1).
+      // Idle panels (fully covered or fully hidden) release their GPU layer.
+      const animating = p > 0 && p < 1;
+      if (animating) {
+        if (!panel.classList.contains('is-animating')) panel.classList.add('is-animating');
+      } else if (panel.classList.contains('is-animating')) {
+        panel.classList.remove('is-animating');
+      }
     });
 
     // Determine active panel index for nav state, scroll progress, etc.
@@ -446,8 +475,19 @@
     }
   }
 
+  let scrollRafPending = false;
+  let lastScrollY = -1;
   function onScroll() {
-    requestAnimationFrame(updatePanels);
+    if (scrollRafPending) return;
+    scrollRafPending = true;
+    requestAnimationFrame(() => {
+      scrollRafPending = false;
+      const y = window.scrollY;
+      // Skip work when the scroll position hasn't changed (covers iOS rubber-band)
+      if (y === lastScrollY) return;
+      lastScrollY = y;
+      updatePanels();
+    });
   }
 
   function onResize() {
@@ -647,7 +687,7 @@
           renderMenuGrid();
           // Re-hydrate translated titles + cover images in background
           hydrateFromCms().then((didHydrate) => {
-            if (didHydrate) { renderMenuGrid(); syncHomePanelImages(); }
+            if (didHydrate) { renderMenuGrid(); syncHomePanelImages(); syncHomePanelText(); }
           }).catch(() => {});
         } else if (page === 'article') {
           renderArticlePage();
@@ -825,17 +865,20 @@
     } catch (e) { console.warn('addImageCover failed', e); }
   }
 
-  // Add an image preserving aspect ratio inside the given box, returns the height actually used
+  // Add an image preserving aspect ratio inside the given box, returns the height actually used.
+  // The height is clipped to the remaining space on the page so an image never overlaps the footer.
   function addImageContain(doc, dataUrl, x, y, boxW, maxH) {
     if (!dataUrl) return 0;
     try {
       const props = doc.getImageProperties(dataUrl);
       const ratio = props.width / props.height;
+      const roomBelow = PDF_H - PDF_MARGIN_BOTTOM - y;
+      const cap = Math.max(20, Math.min(maxH, roomBelow));
       let w = boxW;
       let h = w / ratio;
-      if (h > maxH) { h = maxH; w = h * ratio; }
-      const offsetX = (boxW - w) / 2;
-      doc.addImage(dataUrl, undefined, x + offsetX, y, w, h, undefined, 'FAST');
+      if (h > cap) { h = cap; w = h * ratio; }
+      const offsetX = (boxW - w) / 2 + x;
+      doc.addImage(dataUrl, undefined, offsetX, y, w, h, undefined, 'FAST');
       return h;
     } catch (e) { console.warn('addImageContain failed', e); return 0; }
   }
@@ -1103,21 +1146,24 @@
     const lang = state.lang;
     const t = I18N[lang];
 
-    // Hero image strip across top (cover-fit, never stretched)
-    const heroH = 70;
+    // ===== HERO =====
+    // Exactly one quarter of the A4 page, never stretched.
+    const heroH = PDF_H / 4; // ≈ 74.25mm
     if (heroImgDataUrl) {
       addImageCover(doc, heroImgDataUrl, 0, 0, PDF_W, heroH);
-      // Dark gradient overlay at bottom of hero
-      doc.setGState(new doc.GState({ opacity: 0.5 }));
+      // Dark gradient: heavier at bottom so the white title stays legible
+      doc.setGState(new doc.GState({ opacity: 0.35 }));
       doc.setFillColor(10, 10, 10);
-      doc.rect(0, heroH - 30, PDF_W, 30, 'F');
+      doc.rect(0, 0, PDF_W, heroH, 'F');
+      doc.setGState(new doc.GState({ opacity: 0.55 }));
+      doc.rect(0, heroH * 0.45, PDF_W, heroH * 0.55, 'F');
       doc.setGState(new doc.GState({ opacity: 1 }));
     } else {
       rgb(doc, PDF_COLORS.ink, 'fill');
       doc.rect(0, 0, PDF_W, heroH, 'F');
     }
 
-    // Top page header line (white, on hero)
+    // Top corner — ASAC wordmark + page number (white on hero)
     setBody(doc, 8, 'bold');
     rgb(doc, PDF_COLORS.white, 'text');
     doc.setCharSpace(1.8);
@@ -1125,25 +1171,49 @@
     doc.text(`— ${String(pageNum).padStart(2, '0')} —`, PDF_W - PDF_MARGIN_X - 14, 12);
     doc.setCharSpace(0);
 
-    // Body starts below hero
-    let y = heroH + 14;
+    // Title (white) anchored to the BOTTOM of the hero. We size it down for very
+    // long titles so it never overlaps the top wordmark.
+    const titleMaxW = PDF_W - 2 * PDF_MARGIN_X;
+    const titleChoices = [22, 19, 16, 14]; // pt — pick the largest that fits in ≤4 lines
+    let chosenSize = 14;
+    let chosenLines = [];
+    for (const sz of titleChoices) {
+      setDisplay(doc, sz);
+      doc.setCharSpace(0.4);
+      const lines = doc.splitTextToSize((article.title[lang] || '').toUpperCase(), titleMaxW);
+      doc.setCharSpace(0);
+      // mm per line at ~0.95 line-height: pt / 2.835 * 0.95
+      const lineHmm = sz / 2.835 * 0.95;
+      const totalH = lines.length * lineHmm;
+      // Reserve room for: top wordmark (≈18mm), category pill (8mm), gap (4mm), bottom padding (8mm)
+      if (totalH <= heroH - 38 || sz === titleChoices[titleChoices.length - 1]) {
+        chosenSize = sz;
+        chosenLines = lines;
+        break;
+      }
+    }
+    const lineHmm = chosenSize / 2.835 * 0.95;
+    const titleBlockH = chosenLines.length * lineHmm;
+    const titleBottomY = heroH - 10;            // 10mm padding from hero bottom
+    const titleTopY = titleBottomY - titleBlockH;
 
-    // Category pill
-    drawCategoryPill(doc, cat.name[lang], PDF_MARGIN_X, y);
-    y += 8;
+    // Category pill — just above the title
+    const pillY = titleTopY - 4;
+    drawCategoryPill(doc, cat.name[lang], PDF_MARGIN_X, pillY);
 
-    // Article title (large, Bebas-styled)
-    y = writeDisplayTitle(
-      doc,
-      article.title[lang],
-      PDF_MARGIN_X,
-      y,
-      PDF_W - 2 * PDF_MARGIN_X,
-      22,
-      PDF_COLORS.ink,
-      8.5,
-    );
-    y += 4;
+    // Title lines (white, Bebas-style)
+    setDisplay(doc, chosenSize);
+    rgb(doc, PDF_COLORS.white, 'text');
+    doc.setCharSpace(0.4);
+    let ty = titleTopY + lineHmm * 0.85; // first line baseline
+    for (const line of chosenLines) {
+      doc.text(line, PDF_MARGIN_X, ty);
+      ty += lineHmm;
+    }
+    doc.setCharSpace(0);
+
+    // ===== BODY (paper background, starts below hero) =====
+    let y = heroH + 12;
 
     // Byline (author + role)
     if (body.author) {
@@ -1223,17 +1293,18 @@
     const inlineImages = (body.inlineImages || []).slice();
     if (paragraphs.length > 0 && (inlineImages[0] || heroImgDataUrl)) {
       const imgData = inlineImages.shift() || heroImgDataUrl;
-      const imgW = PDF_W - 2 * PDF_MARGIN_X;
-      const maxH = 95;
-      if (y + 12 > PDF_H - PDF_MARGIN_BOTTOM - 60) {
+      // Full A4 page width, never stretched. Height computed from aspect ratio.
+      const imgW = PDF_W;
+      const maxH = 110;
+      if (y + 16 > PDF_H - PDF_MARGIN_BOTTOM - 60) {
         doc.addPage();
         rgb(doc, PDF_COLORS.paper, 'fill');
         doc.rect(0, 0, PDF_W, PDF_H, 'F');
         y = PDF_MARGIN_TOP;
       }
-      y += 4;
-      const usedH = addImageContain(doc, imgData, PDF_MARGIN_X, y, imgW, maxH);
-      if (usedH > 0) y += usedH + 8;
+      y += 6;
+      const usedH = addImageContain(doc, imgData, 0, y, imgW, maxH);
+      if (usedH > 0) y += usedH + 10;
     }
 
     // Sections (h3 + p)
@@ -1283,9 +1354,9 @@
           doc.rect(0, 0, PDF_W, PDF_H, 'F');
           y = PDF_MARGIN_TOP;
         }
-        y += 4;
-        const usedH = addImageContain(doc, inlineImages.shift(), PDF_MARGIN_X, y, PDF_W - 2 * PDF_MARGIN_X, 85);
-        if (usedH > 0) y += usedH + 8;
+        y += 6;
+        const usedH = addImageContain(doc, inlineImages.shift(), 0, y, PDF_W, 100);
+        if (usedH > 0) y += usedH + 10;
       }
     }
 
@@ -1898,6 +1969,7 @@
           if (didHydrate) {
             renderMenuGrid();
             syncHomePanelImages();
+            syncHomePanelText();
           }
         }).catch(() => {});
       } else if (page === 'article') {

@@ -306,9 +306,9 @@ body.cursor-ready .cursor-dot { opacity: 1; }
   height: 100vh;
   height: 100dvh;
   overflow: hidden;
-  will-change: transform;
   transform: translate3d(0, 100%, 0);
 }
+.panel.is-animating { will-change: transform; }
 .panel[data-panel="0"] {
   transform: translate3d(0, 0, 0);
 }
@@ -325,7 +325,6 @@ body.cursor-ready .cursor-dot { opacity: 1; }
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
-  will-change: transform;
 }
 .panel--hero .panel__img {
   animation: zoomBg 18s ease-in-out infinite alternate;
