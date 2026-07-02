@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>ASAC - Magazine - Nº46 Juin</title>
+  <meta name="description" content="Le Magazine de l'Association des Sociétés d'Assurance du Cameroun — N°46, Juin 2026" />
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <link rel="apple-touch-icon" href="assets/favicon.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@200;300;400;500;600;700&display=swap" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@200;300;400;500;600;700&display=swap" /></noscript>
+
+  <link rel="stylesheet" href="styles.css" />
+
+  <script>
+    setTimeout(function () {
+      var l = document.getElementById('loader');
+      if (l && l.parentNode) l.parentNode.removeChild(l);
+    }, 4000);
+  </script>
+</head>
+<body data-page="article">
+
+  <!-- LOADING -->
+  <div class="loader" id="loader">
+    <div class="loader__bar"><i></i></div>
+  </div>
+
+  <!-- CUSTOM CURSOR -->
+  <div class="cursor" id="cursor"></div>
+
+  <!-- NAV (starts in dark/blue mode + frost-on-scroll) -->
+  <nav class="nav nav--frostable is-dark" id="nav">
+    <a href="/" class="nav__logo">
+      <img src="assets/logo-blue.png" alt="ASAC" class="nav__logo-img nav__logo-img--dark" />
+      <img src="assets/logo-white.png" alt="ASAC" class="nav__logo-img nav__logo-img--light" />
+    </a>
+    <div class="nav__right">
+      <div class="lang">
+        <button class="lang-btn is-active" data-lang="fr">FR</button>
+        <span class="lang__sep">/</span>
+        <button class="lang-btn" data-lang="en">EN</button>
+      </div>
+      <a href="/" class="nav__close" aria-label="Close article" id="navClose">
+        <span></span><span></span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- ARTICLE PAGE -->
+  <main class="article-page" id="articlePage">
+    <div class="article-page__hero" id="articleHero">
+      <div class="article-page__hero-img" id="articleHeroImg"></div>
+      <div class="article-page__hero-overlay"></div>
+      <div class="article-page__hero-content">
+        <span class="article-page__cat" id="articleCat"></span>
+        <h1 class="article-page__title" id="articleTitle"></h1>
+        <div class="article-page__meta" id="articleMeta"></div>
+      </div>
+    </div>
+    <article class="article-page__content" id="articleContent">
+      <!-- populated by JS -->
+    </article>
+    <div class="article-page__footer">
+      <a href="/" class="article-page__back-link" data-i18n="backToMenu">
+        <span class="back-arrow">←</span>
+        <span>Retour au sommaire</span>
+      </a>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
