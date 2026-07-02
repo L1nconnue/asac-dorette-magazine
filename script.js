@@ -11,7 +11,7 @@
     {
       id: 'editorial',
       name: { fr: 'Éditorial', en: 'Editorial' },
-      image: 'https://images.unsplash.com/photo-1542178243-bc20204b769f?w=1600&q=85&auto=format&fit=crop',
+      image: 'https://images.unsplash.com/photo-1542178243-bc20204b769f?w=1200&q=70&auto=format&fit=crop',
       articles: [
         { id: 'edito-1', title: { fr: "La sentinelle et l'architecte", en: "The sentinel and the architect" } },
         { id: 'edito-2', title: { fr: "On ne pilote pas une compagnie avec une calculatrice", en: "You don't run a company with a calculator" } },
@@ -20,7 +20,7 @@
     {
       id: 'actualite',
       name: { fr: 'Actualité', en: 'News' },
-      image: 'https://images.unsplash.com/photo-1507152832244-10d45c7eda7d?w=1600&q=85&auto=format&fit=crop',
+      image: 'https://images.unsplash.com/photo-1507152832244-10d45c7eda7d?w=1200&q=70&auto=format&fit=crop',
       articles: [
         { id: 'actualite-0', title: { fr: "CIMA : Les nouvelles directives pour 2025", en: "CIMA: New 2025 guidelines" } },
         { id: 'actualite-1', title: { fr: "L'assurance santé en pleine mutation", en: "Health insurance is transforming" } },
@@ -30,7 +30,7 @@
     {
       id: 'evenement',
       name: { fr: 'Évènement', en: 'Event' },
-      image: 'https://images.unsplash.com/photo-1559223607-a43c990c692c?w=1600&q=85&auto=format&fit=crop',
+      image: 'https://images.unsplash.com/photo-1559223607-a43c990c692c?w=1200&q=70&auto=format&fit=crop',
       articles: [
         { id: 'evt-1', title: { fr: "Journée Africaine de l'Assurance 2025", en: "African Insurance Day 2025" } },
         { id: 'evt-2', title: { fr: "Forum National des Assureurs : retour sur l'édition 2024", en: "National Insurers Forum: 2024 recap" } },
@@ -39,7 +39,7 @@
     {
       id: 'focus',
       name: { fr: 'Focus', en: 'Focus' },
-      image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=1600&q=85&auto=format&fit=crop',
+      image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=1200&q=70&auto=format&fit=crop',
       articles: [
         { id: 'focus-0', title: { fr: "La dématérialisation de l'assurance automobile au Cameroun : un tournant majeur pour l'expérience client", en: "The dematerialization of motor insurance in Cameroon: a major turning point for the customer experience" } },
         { id: 'focus-1', title: { fr: "L'assurance agricole face aux défis climatiques", en: "Agricultural insurance and climate challenges" } },
@@ -48,7 +48,7 @@
     {
       id: 'vie-asac',
       name: { fr: "Vie de l'ASAC", en: "ASAC Life" },
-      image: 'https://images.unsplash.com/photo-1556157382-97eda2d62296?w=1600&q=85&auto=format&fit=crop',
+      image: 'https://images.unsplash.com/photo-1556157382-97eda2d62296?w=1200&q=70&auto=format&fit=crop',
       articles: [
         { id: 'vie-1', title: { fr: "Assemblée Générale 2025 : les temps forts", en: "2025 General Assembly: highlights" } },
         { id: 'vie-2', title: { fr: "Nos commissions à l'œuvre", en: "Our commissions at work" } },
@@ -57,7 +57,7 @@
     {
       id: 'cabouge',
       name: { fr: 'Ça bouge !', en: 'Moving forward!' },
-      image: 'https://images.unsplash.com/photo-1605000797499-95a51c5269ae?w=1600&q=85&auto=format&fit=crop',
+      image: 'https://images.unsplash.com/photo-1605000797499-95a51c5269ae?w=1200&q=70&auto=format&fit=crop',
       articles: [
         { id: 'cabouge-0', title: { fr: "Innovation : la digitalisation accélère le secteur", en: "Innovation: digital is reshaping the sector" } },
         { id: 'cabouge-1', title: { fr: "Insurtech : les startups qui transforment le marché", en: "Insurtech: startups changing the market" } },
@@ -66,7 +66,7 @@
     {
       id: 'avis',
       name: { fr: 'Votre avis compte', en: 'Your voice matters' },
-      image: 'https://images.unsplash.com/photo-1573497019418-b400bb3ab074?w=1600&q=85&auto=format&fit=crop',
+      image: 'https://images.unsplash.com/photo-1573497019418-b400bb3ab074?w=1200&q=70&auto=format&fit=crop',
       articles: [
         { id: 'avis-1', title: { fr: "Sondage : la perception de l'assurance au Cameroun", en: "Survey: the perception of insurance in Cameroon" } },
         { id: 'avis-2', title: { fr: "Témoignages d'assurés", en: "Policyholder stories" } },
@@ -75,7 +75,7 @@
     {
       id: 'metiers',
       name: { fr: "Les métiers de l'assurance", en: "Insurance careers" },
-      image: 'https://images.unsplash.com/photo-1521119989659-a83eee488004?w=1600&q=85&auto=format&fit=crop',
+      image: 'https://images.unsplash.com/photo-1521119989659-a83eee488004?w=1200&q=70&auto=format&fit=crop',
       articles: [
         { id: 'metiers-1', title: { fr: "Le Responsable Technique : on sort enfin de l'ombre", en: "The Technical Manager: finally stepping out of the shadows" } },
         { id: 'metiers-2', title: { fr: "Devenir souscripteur : parcours et compétences", en: "Becoming an underwriter: paths and skills" } },
@@ -84,7 +84,7 @@
     {
       id: 'emploi',
       name: { fr: 'Emploi', en: 'Careers' },
-      image: 'https://images.unsplash.com/photo-1521119989659-a83eee488004?w=1600&q=85&auto=format&fit=crop',
+      image: 'https://images.unsplash.com/photo-1521119989659-a83eee488004?w=1200&q=70&auto=format&fit=crop',
       articles: [
         { id: 'emploi-0', title: { fr: "Les nouveaux visages de l'assurance camerounaise", en: "The new faces of Cameroonian insurance" } },
         { id: 'emploi-1', title: { fr: "Recrutement : les compétences les plus recherchées", en: "Hiring: the most sought-after skills" } },
@@ -93,7 +93,7 @@
     {
       id: 'fun',
       name: { fr: 'Instant fun / Jeu', en: 'Fun & Games' },
-      image: 'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=1600&q=85&auto=format&fit=crop',
+      image: 'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=1200&q=70&auto=format&fit=crop',
       articles: [
         { id: 'fun-1', title: { fr: "Le grand quiz de l'assurance", en: "The big insurance quiz" } },
         { id: 'fun-2', title: { fr: "Mots croisés : à vos crayons !", en: "Crossword: grab your pencils!" } },
@@ -102,7 +102,7 @@
     {
       id: 'membres',
       name: { fr: "Membres de l'ASAC", en: "ASAC Members" },
-      image: 'https://images.unsplash.com/photo-1559223607-a43c990c692c?w=1600&q=85&auto=format&fit=crop',
+      image: 'https://images.unsplash.com/photo-1559223607-a43c990c692c?w=1200&q=70&auto=format&fit=crop',
       articles: [
         { id: 'membres-1', title: { fr: "Annuaire des sociétés membres", en: "Directory of member companies" } },
         { id: 'membres-2', title: { fr: "Les nouveaux membres de l'année", en: "This year's new members" } },
@@ -385,15 +385,17 @@
     const d = document.getElementById('cursorDot');
     if (!c || !d) return;
 
+    // Only run the follower on devices with a real mouse. On touch / coarse
+    // pointers the cursor is hidden by CSS anyway, and running a perpetual
+    // requestAnimationFrame loop there just wastes battery and main-thread time.
+    const finePointer = window.matchMedia &&
+      window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    if (!finePointer) return;
+
     let mx = window.innerWidth / 2, my = window.innerHeight / 2;
     let cx = mx, cy = my;
     let dx = mx, dy = my;
-
-    document.addEventListener('mousemove', (e) => {
-      mx = e.clientX;
-      my = e.clientY;
-      document.body.classList.add('cursor-ready');
-    }, { passive: true });
+    let running = false;
 
     function tick() {
       cx += (mx - cx) * 0.15;
@@ -402,9 +404,26 @@
       dy += (my - dy) * 0.5;
       c.style.transform = `translate3d(${cx}px, ${cy}px, 0) translate(-50%, -50%)`;
       d.style.transform = `translate3d(${dx}px, ${dy}px, 0) translate(-50%, -50%)`;
+      // Idle the loop once we've essentially caught up to the pointer, so the
+      // browser isn't repainting two elements 60×/s while the mouse sits still.
+      // A fresh mousemove restarts it.
+      const settled = Math.abs(mx - cx) < 0.1 && Math.abs(my - cy) < 0.1 &&
+        Math.abs(mx - dx) < 0.1 && Math.abs(my - dy) < 0.1;
+      if (settled) { running = false; return; }
       requestAnimationFrame(tick);
     }
-    tick();
+    function start() {
+      if (running) return;
+      running = true;
+      requestAnimationFrame(tick);
+    }
+
+    document.addEventListener('mousemove', (e) => {
+      mx = e.clientX;
+      my = e.clientY;
+      document.body.classList.add('cursor-ready');
+      start();
+    }, { passive: true });
 
     // hover state for interactive elements
     const hoverSel = 'a, button, .panel__content--feature, .menu__card, .category__item';
@@ -496,16 +515,42 @@
   }
 
   /* ---------- MENU ---------- */
+  // Rewrite an Unsplash URL to a smaller variant for on-screen thumbnails, so the
+  // menu cards and category list don't each pull a full 1600px hero. Non-Unsplash
+  // URLs (e.g. CMS/Drive images) are returned unchanged.
+  function displayImg(url, w) {
+    if (typeof url !== 'string' || url.indexOf('images.unsplash.com') === -1) return url;
+    return url
+      .replace(/([?&])w=\d+/,  `$1w=${w}`)
+      .replace(/([?&])q=\d+/,  '$1q=62');
+  }
+
+  // Set the background-image on any menu card that hasn't loaded yet. Called when
+  // the menu opens so these six images stay off the initial page load entirely.
+  function hydrateMenuBackgrounds() {
+    document.querySelectorAll('.menu__card-bg[data-bg]').forEach((el) => {
+      const url = el.getAttribute('data-bg');
+      if (url) el.style.backgroundImage = `url('${displayImg(url, 900)}')`;
+      el.removeAttribute('data-bg');
+    });
+  }
+
   function renderMenuGrid() {
     const grid = document.getElementById('menuGrid');
     if (!grid) return;
+    const menuOpen = state.isMenuOpen;
     grid.innerHTML = CATEGORIES.map((cat, i) => {
       const articles = cat.articles
         .map((a) => `<li>${escapeHtml(a.title[state.lang])}</li>`)
         .join('');
+      // Defer the background until the menu is opened (data-bg). If the menu is
+      // already open (e.g. re-render after a language switch), load right away.
+      const bgAttr = menuOpen
+        ? `style="background-image:url('${displayImg(cat.image, 900)}')"`
+        : `data-bg="${escapeHtml(cat.image)}"`;
       return `
         <div class="menu__card" data-cat="${cat.id}" style="transition-delay:${0.2 + i * 0.05}s">
-          <div class="menu__card-bg" style="background-image:url('${cat.image}')"></div>
+          <div class="menu__card-bg" ${bgAttr}></div>
           <div class="menu__card-overlay"></div>
           <div class="menu__card-arrow">
             <img class="arrow-red" src="assets/arrow_red.svg" alt="" />
@@ -527,12 +572,35 @@
     });
   }
 
+  // Applies the frost progression to the nav using CONCRETE style values (not
+  // calc(var()) in CSS) so it works consistently across every browser. The
+  // solid rgba background keeps the logo, language switch and menu icon visible
+  // even where backdrop-filter isn't supported.
+  function applyNavFrost(nav, p) {
+    const prog = Math.max(0, Math.min(1, p));
+    const alpha = (prog * 0.92).toFixed(3);
+    const blurPx = (prog * 16).toFixed(2);
+    nav.style.setProperty('--frost-p', String(prog));
+    nav.style.backgroundColor = `rgba(246, 244, 239, ${alpha})`;
+    const filter = prog > 0.001 ? `blur(${blurPx}px) saturate(1.2)` : '';
+    nav.style.backdropFilter = filter;
+    nav.style.webkitBackdropFilter = filter;
+    nav.classList.toggle('is-frost-on', prog > 0.02);
+  }
+
+  function clearNavFrost(nav) {
+    nav.style.removeProperty('--frost-p');
+    nav.style.backgroundColor = '';
+    nav.style.backdropFilter = '';
+    nav.style.webkitBackdropFilter = '';
+    nav.classList.remove('is-frost-on');
+  }
+
   let menuScrollHandler = null;
   function applyMenuFrost(menu, nav) {
     const y = menu.scrollTop || 0;
-    const p = Math.max(0, Math.min(1, y / 200));
-    nav.style.setProperty('--frost-p', String(p));
-    nav.classList.toggle('is-frost-on', p > 0.02);
+    const p = y / 200;
+    applyNavFrost(nav, p);
   }
 
   function openMenu() {
@@ -546,6 +614,8 @@
     nav.classList.add('is-dark', 'nav--frostable');
     lockScroll();
     menu.scrollTop = 0;
+    // Trigger deferred menu-card background images now that the menu is visible
+    hydrateMenuBackgrounds();
     // Frost on scroll inside the menu overlay
     menuScrollHandler = () => applyMenuFrost(menu, nav);
     menu.addEventListener('scroll', menuScrollHandler, { passive: true });
@@ -561,7 +631,7 @@
     menu.setAttribute('aria-hidden', 'true');
     btn.classList.remove('is-open');
     nav.classList.remove('is-dark', 'nav--frostable', 'is-frost-on');
-    nav.style.removeProperty('--frost-p');
+    clearNavFrost(nav);
     if (menuScrollHandler) { menu.removeEventListener('scroll', menuScrollHandler); menuScrollHandler = null; }
     unlockScroll();
   }
@@ -582,7 +652,7 @@
 
     list.innerHTML = cat.articles.map((a, i) => `
       <a class="category__item" data-art="${a.id}" data-cat="${cat.id}" style="transition-delay:${0.1 + i * 0.08}s">
-        <div class="category__item-img" style="background-image:url('${cat.image}')"></div>
+        <div class="category__item-img" style="background-image:url('${displayImg(cat.image, 900)}')"></div>
         <div class="category__item-overlay"></div>
         <div class="category__item-content">
           <h3 class="category__item-title">${escapeHtml(a.title[state.lang])}</h3>
@@ -1073,10 +1143,10 @@
       16,
     );
 
-    // Subtitle
+    // Subtitle — fixed French line as required, regardless of UI language
     setBody(doc, 10, 'normal');
     rgb(doc, [220, 220, 220], 'text');
-    const sub = t.heroSub;
+    const sub = "Le Magazine de l\u2019Association des Soci\u00e9t\u00e9s d\u2019Assurances du Cameroun";
     const subLines = doc.splitTextToSize(sub, PDF_W - 2 * PDF_MARGIN_X - 40);
     let subY = titleY + 24;
     for (const line of subLines) {
@@ -1191,20 +1261,36 @@
   }
 
   // Renders one article — handles multi-page flow
-  async function renderArticlePdfPage(doc, article, cat, body, heroImgDataUrl, pageNum, totalPages) {
-    doc.addPage();
-    rgb(doc, PDF_COLORS.paper, 'fill');
-    doc.rect(0, 0, PDF_W, PDF_H, 'F');
+  // ── Column-layout helpers ─────────────────────────────────────────────────
+  //
+  // The body text area runs from PDF_MARGIN_X to PDF_W - PDF_MARGIN_X.
+  // We divide it into 3 equal columns with a small gutter between them.
+  // Images may occupy 1, 2 or 3 column slots (≈ 1/3, 2/3, 3/3 of the type area).
+  //
+  // N_COLS   = 3
+  // COL_GAP  = 5 mm  (between columns)
+  // TYPE_W   = PDF_W - 2 × PDF_MARGIN_X
+  // COL_W    = (TYPE_W - (N_COLS - 1) × COL_GAP) / N_COLS
 
+  const PDF_N_COLS  = 3;
+  const PDF_COL_GAP = 5;   // mm between columns
+  const PDF_TYPE_W  = PDF_W - 2 * PDF_MARGIN_X;
+  const PDF_COL_W   = (PDF_TYPE_W - (PDF_N_COLS - 1) * PDF_COL_GAP) / PDF_N_COLS;
+  // x offset for column i (0-based)
+  function colX(i) { return PDF_MARGIN_X + i * (PDF_COL_W + PDF_COL_GAP); }
+  // width spanning `span` columns (1, 2 or 3)
+  function spanW(span) { return span * PDF_COL_W + (span - 1) * PDF_COL_GAP; }
+
+  // Renders an article header on the CURRENT page (no addPage). Returns the y
+  // position where the body should start. Call addPage + paper fill before this.
+  async function renderArticleHeader(doc, article, cat, body, heroImgDataUrl, pageNum) {
     const lang = state.lang;
     const t = I18N[lang];
 
-    // ===== HERO =====
-    // Exactly one quarter of the A4 page, never stretched.
-    const heroH = PDF_H / 4; // ≈ 74.25mm
+    // ── Hero image (full page width, 1/4 page height) ──────────────────────
+    const heroH = PDF_H / 4;   // ≈ 74.25 mm
     if (heroImgDataUrl) {
       await addImageCover(doc, heroImgDataUrl, 0, 0, PDF_W, heroH);
-      // Dark gradient: heavier at bottom so the white title stays legible
       doc.setGState(new doc.GState({ opacity: 0.35 }));
       doc.setFillColor(10, 10, 10);
       doc.rect(0, 0, PDF_W, heroH, 'F');
@@ -1216,59 +1302,44 @@
       doc.rect(0, 0, PDF_W, heroH, 'F');
     }
 
-    // Top corner — ASAC wordmark + page number (white on hero)
+    // ASAC wordmark + page number (white on hero)
     setBody(doc, 8, 'bold');
     rgb(doc, PDF_COLORS.white, 'text');
     doc.setCharSpace(1.8);
     doc.text('ASAC', PDF_MARGIN_X, 12);
-    doc.text(`— ${String(pageNum).padStart(2, '0')} —`, PDF_W - PDF_MARGIN_X - 14, 12);
+    doc.text(`\u2014 ${String(pageNum).padStart(2, '0')} \u2014`, PDF_W - PDF_MARGIN_X - 14, 12);
     doc.setCharSpace(0);
 
-    // Title (white) anchored to the BOTTOM of the hero. We size it down for very
-    // long titles so it never overlaps the top wordmark.
+    // Title anchored to the bottom of the hero; shrink size until it fits
     const titleMaxW = PDF_W - 2 * PDF_MARGIN_X;
-    const titleChoices = [22, 19, 16, 14]; // pt — pick the largest that fits in ≤4 lines
+    const titleSizes = [22, 19, 16, 14];
     let chosenSize = 14;
     let chosenLines = [];
-    for (const sz of titleChoices) {
+    for (const sz of titleSizes) {
       setDisplay(doc, sz);
       doc.setCharSpace(0.4);
       const lines = doc.splitTextToSize((article.title[lang] || '').toUpperCase(), titleMaxW);
       doc.setCharSpace(0);
-      // mm per line at ~0.95 line-height: pt / 2.835 * 0.95
-      const lineHmm = sz / 2.835 * 0.95;
-      const totalH = lines.length * lineHmm;
-      // Reserve room for: top wordmark (≈18mm), category pill (8mm), gap (4mm), bottom padding (8mm)
-      if (totalH <= heroH - 38 || sz === titleChoices[titleChoices.length - 1]) {
-        chosenSize = sz;
-        chosenLines = lines;
-        break;
+      const lineH = sz / 2.835 * 0.95;
+      if (lines.length * lineH <= heroH - 38 || sz === titleSizes[titleSizes.length - 1]) {
+        chosenSize = sz; chosenLines = lines; break;
       }
     }
-    const lineHmm = chosenSize / 2.835 * 0.95;
-    const titleBlockH = chosenLines.length * lineHmm;
-    const titleBottomY = heroH - 10;            // 10mm padding from hero bottom
-    const titleTopY = titleBottomY - titleBlockH;
+    const titleLineH = chosenSize / 2.835 * 0.95;
+    const titleTopY = heroH - 10 - chosenLines.length * titleLineH;
 
-    // Category pill — just above the title
-    const pillY = titleTopY - 4;
-    drawCategoryPill(doc, cat.name[lang], PDF_MARGIN_X, pillY);
+    drawCategoryPill(doc, cat.name[lang], PDF_MARGIN_X, titleTopY - 4);
 
-    // Title lines (white, Bebas-style)
     setDisplay(doc, chosenSize);
     rgb(doc, PDF_COLORS.white, 'text');
     doc.setCharSpace(0.4);
-    let ty = titleTopY + lineHmm * 0.85; // first line baseline
-    for (const line of chosenLines) {
-      doc.text(line, PDF_MARGIN_X, ty);
-      ty += lineHmm;
-    }
+    let ty = titleTopY + titleLineH * 0.85;
+    for (const line of chosenLines) { doc.text(line, PDF_MARGIN_X, ty); ty += titleLineH; }
     doc.setCharSpace(0);
 
-    // ===== BODY (paper background, starts below hero) =====
-    let y = heroH + 12;
+    // ── Byline + separator + lead (full width, below hero) ─────────────────
+    let y = heroH + 10;
 
-    // Byline (author + role)
     if (body.author) {
       setBody(doc, 8, 'bold');
       doc.setCharSpace(1.6);
@@ -1285,33 +1356,29 @@
       if (body.role) {
         setBody(doc, 8.5, 'italic');
         rgb(doc, PDF_COLORS.grey, 'text');
-        const roleLines = doc.splitTextToSize(body.role[lang], PDF_W - 2 * PDF_MARGIN_X);
-        for (const line of roleLines) {
-          doc.text(line, PDF_MARGIN_X, y);
-          y += 4.2;
-        }
+        const roleLines = doc.splitTextToSize(body.role[lang], titleMaxW);
+        for (const line of roleLines) { doc.text(line, PDF_MARGIN_X, y); y += 4.2; }
       }
       y += 3;
     }
 
-    // Thin separator
     rgb(doc, PDF_COLORS.greyLight, 'draw');
     doc.setLineWidth(0.3);
     doc.line(PDF_MARGIN_X, y, PDF_W - PDF_MARGIN_X, y);
     y += 7;
 
-    // Lead paragraph (left-bordered, slightly larger)
     if (body.lead) {
-      // Blue left bar
-      rgb(doc, PDF_COLORS.blue, 'fill');
       const leadX = PDF_MARGIN_X + 3;
       const leadStartY = y;
       setBody(doc, 11, 'normal');
       rgb(doc, PDF_COLORS.ink, 'text');
-      const leadLines = doc.splitTextToSize(body.lead[lang], PDF_W - 2 * PDF_MARGIN_X - 6);
+      const leadLines = doc.splitTextToSize(body.lead[lang], titleMaxW - 6);
       let leadY = y + 4;
       for (const line of leadLines) {
         if (leadY > PDF_H - PDF_MARGIN_BOTTOM) {
+          // Lead is very long — page break; blue bar covers what we have so far
+          rgb(doc, PDF_COLORS.blue, 'fill');
+          doc.rect(leadX, leadStartY + 1, 1.4, leadY - leadStartY - 4, 'F');
           doc.addPage();
           rgb(doc, PDF_COLORS.paper, 'fill');
           doc.rect(0, 0, PDF_W, PDF_H, 'F');
@@ -1320,114 +1387,213 @@
         doc.text(line, leadX + 4, leadY);
         leadY += 5.4;
       }
-      // Draw the blue bar over the lead height
+      rgb(doc, PDF_COLORS.blue, 'fill');
       doc.rect(leadX, leadStartY + 1, 1.4, leadY - leadStartY - 4, 'F');
-      y = leadY + 5;
+      y = leadY + 6;
     }
 
-    // Body paragraphs
-    setBody(doc, 10, 'normal');
+    return y;  // caller continues body layout from here
+  }
+
+  // ── Multi-column text cursor ───────────────────────────────────────────────
+  // Tracks the current position (column index + y within that column).
+  // When a column overflows, it advances to the next; when all 3 are full,
+  // a new page is added and we restart from column 0.
+  function makeColCursor(startY, bottomY) {
+    return {
+      col: 0,     // 0, 1, 2
+      y: startY,  // current y in this column
+      bottom: bottomY,  // page bottom boundary
+    };
+  }
+
+  // Advance cursor to the start of the next column (or new page if on col 2).
+  // `doc` is needed only if we must add a page. `startY` = top of body column area.
+  function nextCol(cursor, doc, startY) {
+    if (cursor.col < PDF_N_COLS - 1) {
+      cursor.col += 1;
+      cursor.y = startY;
+    } else {
+      doc.addPage();
+      rgb(doc, PDF_COLORS.paper, 'fill');
+      doc.rect(0, 0, PDF_W, PDF_H, 'F');
+      cursor.col = 0;
+      cursor.y = PDF_MARGIN_TOP;
+    }
+  }
+
+  // Write one paragraph into the cursor column, advancing columns/pages as needed.
+  function writeColParagraph(doc, text, cursor, bodyStartY, fontSize, lineH) {
+    setBody(doc, fontSize, 'normal');
     rgb(doc, [40, 40, 40], 'text');
-    const paragraphs = (body.paragraphs && body.paragraphs[lang]) || [];
-    for (const p of paragraphs) {
-      if (y > PDF_H - PDF_MARGIN_BOTTOM - 10) {
-        doc.addPage();
-        rgb(doc, PDF_COLORS.paper, 'fill');
-        doc.rect(0, 0, PDF_W, PDF_H, 'F');
-        y = PDF_MARGIN_TOP;
-      }
-      y = writeWrapped(doc, p, PDF_MARGIN_X, y, PDF_W - 2 * PDF_MARGIN_X, 5.2);
-      y += 3.5;
+    const lines = doc.splitTextToSize(text, PDF_COL_W);
+    for (const line of lines) {
+      if (cursor.y > cursor.bottom) nextCol(cursor, doc, bodyStartY);
+      doc.text(line, colX(cursor.col), cursor.y);
+      cursor.y += lineH;
     }
+    cursor.y += 2.5;  // paragraph gap
+  }
 
-    // Inline article image (mirrors the live site placement: after paragraphs)
-    // For CMS docs we may have several images in body.inlineImages; render the first
-    // here and any remainder between sections below.
+  // Write a section heading (blue, Bebas-style) spanning the current column.
+  function writeColHeading(doc, text, cursor, bodyStartY) {
+    const sz = 11;
+    setDisplay(doc, sz);
+    rgb(doc, PDF_COLORS.blue, 'text');
+    doc.setCharSpace(0.4);
+    const lines = doc.splitTextToSize(text.toUpperCase(), PDF_COL_W);
+    const lineH = sz / 2.835 * 0.95;
+    for (const line of lines) {
+      if (cursor.y > cursor.bottom) nextCol(cursor, doc, bodyStartY);
+      doc.text(line, colX(cursor.col), cursor.y);
+      cursor.y += lineH;
+    }
+    doc.setCharSpace(0);
+    cursor.y += 1.5;
+  }
+
+  // Place an image that spans `colSpan` columns (1, 2, or 3) starting at colX(cursor.col).
+  // The image is inserted at the top of the current cursor position. If it won't fit
+  // in the remaining column height, we flush to the next column / next page first.
+  async function writeColImage(doc, dataUrl, cursor, bodyStartY, colSpan, maxH) {
+    if (!dataUrl) return;
+    try {
+      const props = doc.getImageProperties(dataUrl);
+      const imgAspect = props.width / props.height;
+      const imgW = spanW(colSpan);
+      let imgH = Math.min(imgW / imgAspect, maxH || 80);
+
+      // If the image would overflow this column, move to next first
+      // (for 1-col images). For multi-col images start fresh at new column 0.
+      if (colSpan > 1 && cursor.col !== 0) {
+        // Multi-col image needs to start at col 0
+        while (cursor.col !== 0) nextCol(cursor, doc, bodyStartY);
+      }
+      if (cursor.y + imgH > cursor.bottom) {
+        nextCol(cursor, doc, bodyStartY);
+        if (colSpan > 1 && cursor.col !== 0) {
+          while (cursor.col !== 0) nextCol(cursor, doc, bodyStartY);
+        }
+      }
+
+      // Centre image within its span (left-align for col-span images)
+      const ix = colX(cursor.col);
+      const cropped = await cropToAspect(dataUrl, imgW / imgH, 1600);
+      doc.addImage(cropped || dataUrl, 'JPEG', ix, cursor.y, imgW, imgH, undefined, 'FAST');
+      cursor.y += imgH + 4;
+
+      // After a multi-col image, advance all occupied columns to after the image
+      if (colSpan > 1) {
+        // Treat the columns spanned as if they've been consumed up to cursor.y
+        // We don't actually track each column independently, so we just advance
+        // the cursor past the image; the text flow continues below it.
+        // Jump to col 0 on the same level (below the image) so the next text
+        // block starts below the image rather than beside it.
+        cursor.col = 0;
+        cursor.y += 2;
+      }
+    } catch (e) {
+      console.warn('writeColImage failed', e);
+    }
+  }
+
+  // Renders one article. The hero/title/byline/lead always occupy the first page
+  // (full width). Body paragraphs and sections then flow across up to 3 columns,
+  // with images snapping to 1/3, 2/3 or 3/3 of the type area.
+  async function renderArticlePdfPage(doc, article, cat, body, heroImgDataUrl, pageNum) {
+    doc.addPage();
+    rgb(doc, PDF_COLORS.paper, 'fill');
+    doc.rect(0, 0, PDF_W, PDF_H, 'F');
+
+    const lang = state.lang;
+    const t    = I18N[lang];
+
+    // Header block: hero + title + byline + lead
+    const bodyTop = await renderArticleHeader(doc, article, cat, body, heroImgDataUrl, pageNum);
+
+    // ── Multi-column body ─────────────────────────────────────────────────
+    const bodyBottom = PDF_H - PDF_MARGIN_BOTTOM - 6;  // keep clear of footer
+    const cursor     = makeColCursor(bodyTop, bodyBottom);
+
+    // Collect all text content items in order, interspersed with image hints
+    // so we can decide span based on position (first image = 2/3, subsequent = 1/3)
+    const paragraphs  = (body.paragraphs  && body.paragraphs[lang])  || [];
+    const sections    = (body.sections    && body.sections[lang])    || [];
     const inlineImages = (body.inlineImages || []).slice();
-    if (paragraphs.length > 0 && (inlineImages[0] || heroImgDataUrl)) {
-      const imgData = inlineImages.shift() || heroImgDataUrl;
-      // Full A4 page width, never stretched. Height computed from aspect ratio.
-      const imgW = PDF_W;
-      const maxH = 110;
-      if (y + 16 > PDF_H - PDF_MARGIN_BOTTOM - 60) {
-        doc.addPage();
-        rgb(doc, PDF_COLORS.paper, 'fill');
-        doc.rect(0, 0, PDF_W, PDF_H, 'F');
-        y = PDF_MARGIN_TOP;
-      }
-      y += 6;
-      const usedH = addImageContain(doc, imgData, 0, y, imgW, maxH);
-      if (usedH > 0) y += usedH + 10;
+
+    // Write body paragraphs (single-column, flow naturally)
+    for (const p of paragraphs) {
+      writeColParagraph(doc, p, cursor, bodyTop, 9.5, 5.0);
     }
 
-    // Sections (h3 + p)
-    const sections = (body.sections && body.sections[lang]) || [];
+    // After paragraphs, insert first inline image (2/3 width = 2 columns)
+    if (inlineImages.length > 0 || heroImgDataUrl) {
+      const imgData = inlineImages.length > 0 ? inlineImages.shift() : heroImgDataUrl;
+      if (imgData) {
+        // 2-column wide (2/3 of type area), max 72 mm tall — prominent but not full-bleed
+        await writeColImage(doc, imgData, cursor, bodyTop, 2, 72);
+      }
+    }
+
+    // Sections flow through columns
     for (let i = 0; i < sections.length; i++) {
       const s = sections[i];
-      if (y > PDF_H - PDF_MARGIN_BOTTOM - 20) {
-        doc.addPage();
-        rgb(doc, PDF_COLORS.paper, 'fill');
-        doc.rect(0, 0, PDF_W, PDF_H, 'F');
-        y = PDF_MARGIN_TOP;
-      }
-      y += 5;
-      // h3 in blue, Bebas-style
-      y = writeDisplayTitle(
-        doc, s.h, PDF_MARGIN_X, y, PDF_W - 2 * PDF_MARGIN_X, 14, PDF_COLORS.blue, 6.5,
-      );
-      y += 2;
-      setBody(doc, 10, 'normal');
-      rgb(doc, [40, 40, 40], 'text');
-      y = writeWrapped(doc, s.p, PDF_MARGIN_X, y, PDF_W - 2 * PDF_MARGIN_X, 5.2);
-      y += 3;
 
-      // Drop pull quote roughly in the middle
+      // Ensure there's at least 18 mm for the heading + first line before wrapping
+      if (cursor.y + 18 > cursor.bottom) nextCol(cursor, doc, bodyTop);
+
+      writeColHeading(doc, s.h, cursor, bodyTop);
+      writeColParagraph(doc, s.p, cursor, bodyTop, 9.5, 5.0);
+
+      // Pull quote at the midpoint — full width (3/3)
       if (body.pullQuote && i === Math.floor(sections.length / 2) - 1) {
-        if (y > PDF_H - PDF_MARGIN_BOTTOM - 40) {
-          doc.addPage();
-          rgb(doc, PDF_COLORS.paper, 'fill');
-          doc.rect(0, 0, PDF_W, PDF_H, 'F');
-          y = PDF_MARGIN_TOP;
-        }
-        y += 4;
+        // Advance to col 0 to start a full-width block
+        while (cursor.col !== 0) nextCol(cursor, doc, bodyTop);
+        if (cursor.y + 26 > cursor.bottom) nextCol(cursor, doc, bodyTop);
+        const qY = cursor.y;
         rgb(doc, PDF_COLORS.red, 'fill');
-        doc.rect(PDF_MARGIN_X, y, 2, 18, 'F');
-        y = writeDisplayTitle(
-          doc, '"' + body.pullQuote[lang] + '"', PDF_MARGIN_X + 6, y + 6,
-          PDF_W - 2 * PDF_MARGIN_X - 6, 16, PDF_COLORS.ink, 7,
-        );
-        y += 6;
+        doc.rect(PDF_MARGIN_X, qY, 2, 18, 'F');
+        // Render quote text using the full type width
+        setDisplay(doc, 13);
+        rgb(doc, PDF_COLORS.ink, 'text');
+        doc.setCharSpace(0.4);
+        const qLines = doc.splitTextToSize(('\u201c' + body.pullQuote[lang] + '\u201d').toUpperCase(), PDF_TYPE_W - 6);
+        const qLineH = 13 / 2.835 * 0.95;
+        let qy = qY + 6;
+        for (const line of qLines) { doc.text(line, PDF_MARGIN_X + 6, qy); qy += qLineH; }
+        doc.setCharSpace(0);
+        cursor.y = qy + 6;
+        // Reset to col 0 so next sections start fresh
+        cursor.col = 0;
       }
 
-      // Drop the next inline image between sections if any are left
+      // Remaining inline images: 1-col (1/3) or 2-col (2/3)
       if (inlineImages.length && i < sections.length - 1) {
-        if (y > PDF_H - PDF_MARGIN_BOTTOM - 60) {
-          doc.addPage();
-          rgb(doc, PDF_COLORS.paper, 'fill');
-          doc.rect(0, 0, PDF_W, PDF_H, 'F');
-          y = PDF_MARGIN_TOP;
-        }
-        y += 6;
-        const usedH = addImageContain(doc, inlineImages.shift(), 0, y, PDF_W, 100);
-        if (usedH > 0) y += usedH + 10;
+        const imgData = inlineImages.shift();
+        const span = inlineImages.length > 0 ? 1 : 2;  // last remaining → 2-col
+        await writeColImage(doc, imgData, cursor, bodyTop, span, 60);
       }
     }
 
-    // Sources
+    // ── Sources (full width, always below body columns) ────────────────────
     if (body.sources && body.sources.length) {
-      if (y > PDF_H - PDF_MARGIN_BOTTOM - 30) {
+      // Flush to page bottom area; add page if too close to footer
+      const srcY = Math.max(cursor.y, bodyBottom - 30);
+      let y = srcY;
+      if (y + 20 > PDF_H - PDF_MARGIN_BOTTOM) {
         doc.addPage();
         rgb(doc, PDF_COLORS.paper, 'fill');
         doc.rect(0, 0, PDF_W, PDF_H, 'F');
         y = PDF_MARGIN_TOP;
       }
-      y += 6;
+      y += 4;
       rgb(doc, PDF_COLORS.greyLight, 'draw');
+      doc.setLineWidth(0.3);
       doc.line(PDF_MARGIN_X, y, PDF_W - PDF_MARGIN_X, y);
-      y += 6;
+      y += 5;
       writeLabel(doc, t.sourcesLabel, PDF_MARGIN_X, y, 8, PDF_COLORS.grey, 1.8);
       y += 5;
-      setBody(doc, 9, 'normal');
+      setBody(doc, 8.5, 'normal');
       rgb(doc, PDF_COLORS.blue, 'text');
       for (const src of body.sources) {
         if (y > PDF_H - PDF_MARGIN_BOTTOM) {
@@ -1436,19 +1602,20 @@
           doc.rect(0, 0, PDF_W, PDF_H, 'F');
           y = PDF_MARGIN_TOP;
         }
-        const lines = doc.splitTextToSize('· ' + src.label, PDF_W - 2 * PDF_MARGIN_X);
-        for (const line of lines) {
+        const srcLines = doc.splitTextToSize('\u00b7 ' + src.label, PDF_TYPE_W);
+        for (const line of srcLines) {
           doc.textWithLink(line, PDF_MARGIN_X, y, { url: src.url });
-          y += 4.5;
+          y += 4.2;
         }
       }
     }
 
-    // Footer
+    // ── Footer rule: page number on the first (hero) page ──────────────────
+    // (additional pages generated by cursor don't get footers to keep it clean)
     setBody(doc, 7.5, 'normal');
     doc.setCharSpace(1.2);
     rgb(doc, PDF_COLORS.grey, 'text');
-    doc.text(`ASAC  ·  N°46  ·  ${t.issueMonth.toUpperCase()}`, PDF_MARGIN_X, PDF_H - 10);
+    doc.text(`ASAC  \u00b7  N\u00b046  \u00b7  ${t.issueMonth.toUpperCase()}`, PDF_MARGIN_X, PDF_H - 10);
     doc.text(String(pageNum).padStart(2, '0'), PDF_W - PDF_MARGIN_X - 6, PDF_H - 10);
     doc.setCharSpace(0);
   }
@@ -1627,7 +1794,7 @@
         const pageBefore = doc.internal.getNumberOfPages();
         await renderArticlePdfPage(
           doc, article, cat, body, heroDataUrl,
-          pageBefore + 1, 0,
+          pageBefore + 1,
         );
         articleStarts[article.id] = pageBefore + 1;
       }
@@ -1725,15 +1892,23 @@
   function setupFrostNav() {
     const nav = document.getElementById('nav');
     if (!nav) return;
+    let rafPending = false;
     const update = () => {
-      // On article page: progress based on window scroll
-      // On home page (menu open): no frost — menu has its own background
-      const y = window.scrollY || 0;
-      const p = Math.max(0, Math.min(1, y / 220));
-      nav.style.setProperty('--frost-p', String(p));
-      nav.classList.toggle('is-frost-on', p > 0.02);
+      rafPending = false;
+      // Article page: progress based on window scroll. The concrete rgba/blur
+      // values (set in applyNavFrost) guarantee the frost engages on every
+      // browser — including ones that drop calc(var()) inside color/filter.
+      const y = window.scrollY || window.pageYOffset ||
+        (document.documentElement && document.documentElement.scrollTop) || 0;
+      applyNavFrost(nav, y / 220);
     };
-    window.addEventListener('scroll', update, { passive: true });
+    const onScroll = () => {
+      if (rafPending) return;
+      rafPending = true;
+      requestAnimationFrame(update);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
     update();
   }
 
@@ -2071,6 +2246,9 @@
       if (nav) {
         nav.classList.remove('is-dark', 'nav--frostable', 'is-frost-on');
         nav.style.removeProperty('--frost-p');
+        nav.style.backgroundColor = '';
+        nav.style.backdropFilter = '';
+        nav.style.webkitBackdropFilter = '';
       }
 
       // Re-run panel layout in case the viewport size changed since last visit

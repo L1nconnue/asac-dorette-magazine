@@ -75,20 +75,25 @@ button { font-family: inherit; cursor: pointer; border: 0; background: none; col
   pointer-events: none;
   z-index: 9999;
   border-radius: 50%;
-  transition: transform 0.18s var(--easing-out), width 0.25s var(--easing-out), height 0.25s var(--easing-out), background 0.2s ease, opacity 0.25s ease;
-  mix-blend-mode: difference;
+  transition: width 0.25s var(--easing-out), height 0.25s var(--easing-out), background 0.2s ease, opacity 0.25s ease, border-color 0.2s ease;
   opacity: 0;
 }
 .cursor {
   width: 38px;
   height: 38px;
-  border: 1.5px solid #fff;
+  /* Semi-transparent white ring + faint dark outline reads on both the dark hero
+     art and the light paper sections, WITHOUT mix-blend-mode: difference — which
+     forced the browser to recomposite the whole viewport on every cursor move and
+     was the main cause of scroll lag on some machines. */
+  border: 1.5px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 0 1px rgba(10, 10, 10, 0.18);
   transform: translate(-50%, -50%);
 }
 .cursor-dot {
   width: 5px;
   height: 5px;
   background: #fff;
+  box-shadow: 0 0 0 1px rgba(10, 10, 10, 0.18);
   transform: translate(-50%, -50%);
 }
 body.cursor-ready .cursor,
@@ -956,16 +961,23 @@ body.cursor-ready .cursor-dot { opacity: 1; }
    FROST-ON-SCROLL NAV
    Applied on menu overlay scroll and article page scroll.
 =========================== */
+/* The frost background + blur are set as CONCRETE inline values by JS on scroll
+   (see setupFrostNav / applyMenuFrost in script.js). We deliberately avoid
+   calc(var(--frost-p) * …) inside rgba()/blur() here because several browsers
+   (older WebKit/Safari, some mobile engines) fail to parse a unitless custom
+   property multiplied inside a color or filter function — when that happens the
+   whole declaration is dropped and the nav stays fully transparent on scroll.
+   Driving it from JS with real rgba()/blur(px) values is parsed everywhere, and
+   the solid rgba background alone keeps the logo, language switch and menu icon
+   readable even on browsers with no backdrop-filter support at all. */
 .nav.nav--frostable {
-  background: rgba(246, 244, 239, calc(var(--frost-p, 0) * 0.88));
-  backdrop-filter: blur(calc(var(--frost-p, 0) * 18px)) saturate(1.2);
-  -webkit-backdrop-filter: blur(calc(var(--frost-p, 0) * 18px)) saturate(1.2);
-  transition: background 0.25s ease, backdrop-filter 0.25s ease;
-  border-bottom: 1px solid rgba(10, 10, 10, calc(var(--frost-p, 0) * 0.06));
+  background-color: rgba(246, 244, 239, 0); /* JS raises the alpha on scroll */
+  border-bottom: 1px solid rgba(10, 10, 10, 0);
+  will-change: background-color, backdrop-filter;
 }
 .nav.nav--frostable.is-frost-on {
-  /* Subtle drop shadow once frost is meaningfully visible */
-  box-shadow: 0 1px 30px rgba(10, 10, 10, calc(var(--frost-p, 0) * 0.05));
+  border-bottom-color: rgba(10, 10, 10, 0.06);
+  box-shadow: 0 1px 30px rgba(10, 10, 10, 0.05);
 }
 /* Nav close button (article page) */
 .nav__close {
