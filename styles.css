@@ -48,6 +48,17 @@ body {
   min-height: 100vh;
 }
 
+/* Article pages are normal document-flow pages. The !important height guard is
+   deliberate: it prevents a stale stacked-home inline height (including 0px
+   after a mobile viewport resize) from disabling vertical scrolling. */
+body[data-page="article"] {
+  height: auto !important;
+  min-height: 100vh;
+  overflow-y: visible;
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
+}
+
 html.no-scroll, body.no-scroll {
   overflow: hidden;
 }
@@ -122,6 +133,11 @@ body.cursor-ready .cursor-dot { opacity: 1; }
   justify-content: center;
   gap: 28px;
   transition: opacity 0.6s ease, visibility 0.6s ease;
+  /* Never intercept touch/pointer events — the article page beneath must remain
+     scrollable while the loading bar animates. Without this, mobile browsers
+     (iOS Safari in particular) treat the first touch as "consumed" by the
+     fixed overlay and the user cannot scroll until they tap a second time. */
+  pointer-events: none;
 }
 .loader__logo img { height: 48px; opacity: 0.95; }
 .loader__bar {
@@ -960,24 +976,36 @@ body.cursor-ready .cursor-dot { opacity: 1; }
 /* ===========================
    FROST-ON-SCROLL NAV
    Applied on menu overlay scroll and article page scroll.
+
+   APPROACH: JS toggles .is-frost-on (a simple class). CSS owns all visual
+   values — no calc(var()) inside color/blur, no per-frame inline styles.
+   Every browser parses plain rgba() and blur() values in ordinary class rules.
+   The CSS transition handles the smooth animation between transparent and frosted.
 =========================== */
-/* The frost background + blur are set as CONCRETE inline values by JS on scroll
-   (see setupFrostNav / applyMenuFrost in script.js). We deliberately avoid
-   calc(var(--frost-p) * …) inside rgba()/blur() here because several browsers
-   (older WebKit/Safari, some mobile engines) fail to parse a unitless custom
-   property multiplied inside a color or filter function — when that happens the
-   whole declaration is dropped and the nav stays fully transparent on scroll.
-   Driving it from JS with real rgba()/blur(px) values is parsed everywhere, and
-   the solid rgba background alone keeps the logo, language switch and menu icon
-   readable even on browsers with no backdrop-filter support at all. */
 .nav.nav--frostable {
-  background-color: rgba(246, 244, 239, 0); /* JS raises the alpha on scroll */
-  border-bottom: 1px solid rgba(10, 10, 10, 0);
-  will-change: background-color, backdrop-filter;
+  background-color: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-bottom: 1px solid transparent;
+  transition:
+    background-color 0.35s ease,
+    backdrop-filter  0.35s ease,
+    -webkit-backdrop-filter 0.35s ease,
+    border-color     0.35s ease,
+    box-shadow       0.35s ease;
 }
 .nav.nav--frostable.is-frost-on {
-  border-bottom-color: rgba(10, 10, 10, 0.06);
-  box-shadow: 0 1px 30px rgba(10, 10, 10, 0.05);
+  background-color: rgba(246, 244, 239, 0.92);
+  backdrop-filter: blur(18px) saturate(1.3);
+  -webkit-backdrop-filter: blur(18px) saturate(1.3);
+  border-bottom-color: rgba(10, 10, 10, 0.07);
+  box-shadow: 0 1px 24px rgba(10, 10, 10, 0.06);
+}
+/* Keep the article header deterministic on mobile Safari: animating
+   backdrop-filter can leave a fixed layer visually transparent until the next
+   compositing pass. The contents overlay retains the transition above. */
+body[data-page="article"] .nav.nav--frostable {
+  transition: none;
 }
 /* Nav close button (article page) */
 .nav__close {

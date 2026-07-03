@@ -372,9 +372,13 @@
   }
 
   /* ---------- LOADER ---------- */
-  function hideLoader() {
+  function hideLoader(immediate) {
     const l = document.getElementById('loader');
     if (!l) return;
+    if (immediate) {
+      l.remove();
+      return;
+    }
     setTimeout(() => { if (l) l.classList.add('is-hidden'); }, 1400);
     setTimeout(() => { if (l && l.parentNode) l.remove(); }, 2200);
   }
@@ -510,6 +514,11 @@
   }
 
   function onResize() {
+    // Mobile browsers resize the viewport as their address bar collapses.
+    // setupHomeHeight() is only meaningful on the stacked-panel home page;
+    // running it on an article (where `panels` is empty) sets body height to
+    // 0px and makes the article appear scroll-locked.
+    if (document.body.dataset.page !== 'home' || panels.length === 0) return;
     setupHomeHeight();
     updatePanels();
   }
@@ -572,35 +581,21 @@
     });
   }
 
-  // Applies the frost progression to the nav using CONCRETE style values (not
-  // calc(var()) in CSS) so it works consistently across every browser. The
-  // solid rgba background keeps the logo, language switch and menu icon visible
-  // even where backdrop-filter isn't supported.
-  function applyNavFrost(nav, p) {
-    const prog = Math.max(0, Math.min(1, p));
-    const alpha = (prog * 0.92).toFixed(3);
-    const blurPx = (prog * 16).toFixed(2);
-    nav.style.setProperty('--frost-p', String(prog));
-    nav.style.backgroundColor = `rgba(246, 244, 239, ${alpha})`;
-    const filter = prog > 0.001 ? `blur(${blurPx}px) saturate(1.2)` : '';
-    nav.style.backdropFilter = filter;
-    nav.style.webkitBackdropFilter = filter;
-    nav.classList.toggle('is-frost-on', prog > 0.02);
+  // Toggle the frost class. CSS (not JS inline styles) owns the visual values so
+  // there is zero risk of browser-specific parsing failures inside rgba()/blur().
+  // The CSS transition on .nav--frostable handles the smooth animation.
+  function applyNavFrost(nav, scrollY) {
+    nav.classList.toggle('is-frost-on', scrollY > 20);
   }
 
   function clearNavFrost(nav) {
-    nav.style.removeProperty('--frost-p');
-    nav.style.backgroundColor = '';
-    nav.style.backdropFilter = '';
-    nav.style.webkitBackdropFilter = '';
     nav.classList.remove('is-frost-on');
+    // Inline styles are no longer used; nothing to clear.
   }
 
   let menuScrollHandler = null;
   function applyMenuFrost(menu, nav) {
-    const y = menu.scrollTop || 0;
-    const p = y / 200;
-    applyNavFrost(nav, p);
+    applyNavFrost(nav, menu.scrollTop || 0);
   }
 
   function openMenu() {
@@ -834,9 +829,12 @@
       }
     });
 
-    // Scroll
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onResize);
+    // The stacked-panel listeners belong to the home page only. Article pages
+    // have their own lightweight scroll listener in setupFrostNav().
+    if ((document.body.dataset.page || 'home') === 'home') {
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onResize);
+    }
   }
 
   /* ---------- PDF GENERATION ----------
@@ -1261,34 +1259,284 @@
   }
 
   // Renders one article — handles multi-page flow
-  // ── Column-layout helpers ─────────────────────────────────────────────────
+  // ── PDF multi-column helpers ──────────────────────────────────────────────
   //
-  // The body text area runs from PDF_MARGIN_X to PDF_W - PDF_MARGIN_X.
-  // We divide it into 3 equal columns with a small gutter between them.
-  // Images may occupy 1, 2 or 3 column slots (≈ 1/3, 2/3, 3/3 of the type area).
+  // Layout model
+  // ────────────
+  // The body text area (from bodyTop to bodyBottom) is divided into N equal
+  // columns (N = 1 for short copy or 3 for substantial copy) with a small gutter.
+  // Text fills column 0 from top to bottom, then column 1, then column 2,
+  // then wraps to a new page starting again at column 0.
   //
-  // N_COLS   = 3
-  // COL_GAP  = 5 mm  (between columns)
-  // TYPE_W   = PDF_W - 2 × PDF_MARGIN_X
-  // COL_W    = (TYPE_W - (N_COLS - 1) × COL_GAP) / N_COLS
+  // Images are rendered in a SEPARATE PHASE after all text has been committed.
+  // They are placed in the vertical space that is guaranteed to be empty:
+  //   • If text ended in column 0 with room below → images go there, full-width.
+  //   • Otherwise → images go on a fresh page.
+  // This strict phase separation guarantees zero overlap between text and images.
+  //
+  // Justified text
+  // ──────────────
+  // Every non-last line of a paragraph is justified by computing the gap between
+  // each pair of words so the line exactly reaches the column edge.  Last lines
+  // and headings are left-aligned.
 
-  const PDF_N_COLS  = 3;
-  const PDF_COL_GAP = 5;   // mm between columns
-  const PDF_TYPE_W  = PDF_W - 2 * PDF_MARGIN_X;
-  const PDF_COL_W   = (PDF_TYPE_W - (PDF_N_COLS - 1) * PDF_COL_GAP) / PDF_N_COLS;
-  // x offset for column i (0-based)
-  function colX(i) { return PDF_MARGIN_X + i * (PDF_COL_W + PDF_COL_GAP); }
-  // width spanning `span` columns (1, 2 or 3)
-  function spanW(span) { return span * PDF_COL_W + (span - 1) * PDF_COL_GAP; }
+  // Column geometry — computed once per article call (N may vary)
+  function makeColGeometry(nCols) {
+    const typeW  = PDF_W - 2 * PDF_MARGIN_X;
+    const colGap = 4.5; // mm between columns
+    const colW   = (typeW - (nCols - 1) * colGap) / nCols;
+    return {
+      nCols,
+      typeW,
+      colGap,
+      colW,
+      colX: (i) => PDF_MARGIN_X + i * (colW + colGap),
+      spanW: (span) => span * colW + (span - 1) * colGap,
+    };
+  }
 
-  // Renders an article header on the CURRENT page (no addPage). Returns the y
-  // position where the body should start. Call addPage + paper fill before this.
+  // Estimate how tall the body copy would be in a single full-width column.
+  // This lets genuinely short articles stay readable as one column while all
+  // substantial articles use the requested three-column magazine layout.
+  function estimateSingleColumnHeight(doc, body, lang) {
+    const geom = makeColGeometry(1);
+    const paragraphs = (body.paragraphs && body.paragraphs[lang]) || [];
+    const sections   = (body.sections   && body.sections[lang])   || [];
+    const BODY_LH = 5.0;
+    const HEAD_PT = 11;
+    const HEAD_LH = (HEAD_PT / 2.835) * 1.05;
+    let height = 0;
+
+    setBody(doc, 9.5, 'normal');
+    for (const p of paragraphs) {
+      height += doc.splitTextToSize(p, geom.colW).length * BODY_LH + 2.5;
+    }
+
+    for (let si = 0; si < sections.length; si++) {
+      const section = sections[si];
+      setDisplay(doc, HEAD_PT);
+      height += doc.splitTextToSize((section.h || '').toUpperCase(), geom.colW).length * HEAD_LH + 1.5;
+      setBody(doc, 9.5, 'normal');
+      height += doc.splitTextToSize(section.p || '', geom.colW).length * BODY_LH + 2.5;
+
+      if (body.pullQuote && si === Math.floor(sections.length / 2) - 1) {
+        setDisplay(doc, 10);
+        const quote = '\u201c' + (body.pullQuote[lang] || '') + '\u201d';
+        height += 10 + doc.splitTextToSize(quote.toUpperCase(), geom.colW - 5).length * ((10 / 2.835) * 1.05);
+      }
+    }
+
+    doc.setCharSpace(0);
+    return height;
+  }
+
+  function chooseArticleColumnCount(doc, body, lang) {
+    // Roughly half an A4 text area is intentionally conservative: it keeps a
+    // compact article as one comfortable measure, but switches longer copy to
+    // the full three-column editorial layout regardless of paragraph count.
+    return estimateSingleColumnHeight(doc, body, lang) <= 125 ? 1 : 3;
+  }
+
+  // Write one line of text, justified to maxW (skipped for last lines / headings).
+  function writeLine(doc, line, x, y, maxW, justify) {
+    if (!justify) { doc.text(line, x, y); return; }
+    const words = line.replace(/\s+/g, ' ').trim().split(' ').filter(Boolean);
+    if (words.length < 2) { doc.text(line, x, y); return; }
+    const rawW = words.reduce((s, w) => s + doc.getTextWidth(w), 0);
+    const gap  = Math.max(doc.getTextWidth(' '), (maxW - rawW) / (words.length - 1));
+    // Cap gap to avoid rivers on short lines
+    if (gap > doc.getTextWidth(' ') * 4) { doc.text(line, x, y); return; }
+    let wx = x;
+    for (let i = 0; i < words.length; i++) {
+      doc.text(words[i], wx, y);
+      if (i < words.length - 1) wx += doc.getTextWidth(words[i]) + gap;
+    }
+  }
+
+  // Two-phase column renderer.
+  // Phase 1 (renderTextInColumns): renders paragraphs + sections, returns endState.
+  // Phase 2 (renderImagesAfterText): places images using endState.
+
+  function renderTextInColumns(doc, body, lang, t, geom, bodyTop, bodyBottom) {
+    const { nCols, colW, colX } = geom;
+    const paragraphs = (body.paragraphs && body.paragraphs[lang]) || [];
+    const sections   = (body.sections   && body.sections[lang])   || [];
+
+    // Per-column minimum y — when we advance to column i, start at minY[i]
+    // (usually bodyTop, except when a wide image has been placed above text in that col)
+    const minY = new Array(nCols).fill(bodyTop);
+
+    let col = 0;
+    let cy  = minY[0];
+
+    const BODY_PT  = 9.5;
+    const BODY_LH  = 5.0;
+    const HEAD_PT  = 11;
+    const HEAD_LH  = (HEAD_PT / 2.835) * 1.05;
+
+    // Advance to next column or new page
+    function advance() {
+      col++;
+      if (col >= nCols) {
+        doc.addPage();
+        rgb(doc, PDF_COLORS.paper, 'fill');
+        doc.rect(0, 0, PDF_W, PDF_H, 'F');
+        col = 0;
+        for (let i = 0; i < nCols; i++) minY[i] = PDF_MARGIN_TOP;
+      }
+      cy = minY[col];
+    }
+
+    // Write text (paragraph or heading) into the current column stream
+    function writeBlock(text, isHeading) {
+      if (isHeading) {
+        setDisplay(doc, HEAD_PT);
+        rgb(doc, PDF_COLORS.blue, 'text');
+        doc.setCharSpace(0.3);
+      } else {
+        setBody(doc, BODY_PT, 'normal');
+        rgb(doc, [40, 40, 40], 'text');
+      }
+      const lh    = isHeading ? HEAD_LH : BODY_LH;
+      const lines = doc.splitTextToSize(isHeading ? text.toUpperCase() : text, colW);
+      doc.setCharSpace(0);
+
+      for (let li = 0; li < lines.length; li++) {
+        if (cy > bodyBottom) advance();
+        const isLastLine = li === lines.length - 1;
+        writeLine(doc, lines[li], colX(col), cy, colW, !isHeading && !isLastLine);
+        cy += lh;
+      }
+      cy += isHeading ? 1.5 : 2.5;
+    }
+
+    // Body paragraphs
+    for (const p of paragraphs) {
+      writeBlock(p, false);
+    }
+
+    // Sections + optional pull quote
+    for (let si = 0; si < sections.length; si++) {
+      const s = sections[si];
+      // Prevent orphaned heading: if ≤ heading + 2 body lines remain, advance
+      if (cy + HEAD_LH + BODY_LH * 2 > bodyBottom) advance();
+      writeBlock(s.h, true);
+      writeBlock(s.p, false);
+
+      // Pull quote at the mid-point — rendered full-column-width in current col
+      if (body.pullQuote && si === Math.floor(sections.length / 2) - 1) {
+        setDisplay(doc, 10);
+        const qlh = (10 / 2.835) * 1.05;
+        const qText = '\u201c' + body.pullQuote[lang] + '\u201d';
+        const qLines = doc.splitTextToSize(qText.toUpperCase(), colW - 5);
+        const quoteContentH = 4 + qLines.length * qlh + 3;
+        const quoteBarH = Math.max(12, quoteContentH);
+        if (cy + 3 + quoteBarH + 3 > bodyBottom) advance();
+
+        cy += 3;
+        const qX = colX(col);
+        const quoteTop = cy;
+        rgb(doc, PDF_COLORS.red, 'fill');
+        doc.rect(qX, quoteTop, 1.5, quoteBarH, 'F');
+        rgb(doc, PDF_COLORS.ink, 'text');
+        doc.setCharSpace(0.3);
+        cy = quoteTop + 4;
+        for (const ql of qLines) {
+          if (cy > bodyBottom) advance();
+          doc.text(ql, qX + 4, cy);
+          cy += qlh;
+        }
+        doc.setCharSpace(0);
+        // writeBlock() positions heading text on its baseline, so reserve one
+        // heading line of clearance below the accent bar before the next block.
+        cy = Math.max(cy + 3, quoteTop + quoteBarH + HEAD_LH + 2);
+      }
+    }
+
+    return { col, cy, minY, currentPage: doc.internal.getCurrentPageInfo().pageNumber };
+  }
+
+  // Phase 2: place images in the vertical space guaranteed to be below all text.
+  async function renderImagesAfterText(doc, imgList, endState, geom, bodyBottom) {
+    if (!imgList || imgList.length === 0) return;
+    const { nCols, colW, colX, spanW, typeW } = geom;
+    const { col: endCol, cy: endY } = endState;
+
+    // Determine starting position for images.
+    // Safe rule: images go on a fresh area if text reached col > 0
+    // (meaning cols 0..endCol-1 are fully written to bodyBottom).
+    // If text ended in col 0 with ≥ 60 mm free, place images there (full-width).
+    let imgY;
+    if (endCol === 0 && endY + 60 < bodyBottom) {
+      imgY = endY + 10;
+    } else {
+      // Need a fresh page — cols before endCol have text all the way to bodyBottom
+      doc.addPage();
+      rgb(doc, PDF_COLORS.paper, 'fill');
+      doc.rect(0, 0, PDF_W, PDF_H, 'F');
+      imgY = PDF_MARGIN_TOP;
+    }
+
+    for (let ii = 0; ii < imgList.length; ii++) {
+      const imgData = imgList[ii];
+      if (!imgData) continue;
+
+      // Span: single image → full type width (3/3).
+      // Multiple images: first gets 2/3 of type width, rest get 1/3, centred.
+      const isOnly   = imgList.length === 1;
+      const isFirst  = ii === 0;
+      const spanCols = isOnly ? nCols : (isFirst ? Math.min(2, nCols) : 1);
+      const iW = spanW(spanCols);
+
+      try {
+        const props  = doc.getImageProperties(imgData);
+        const aspect = props.width / props.height;
+        // Cap height: single image 90 mm, others 70 mm
+        const maxH = isOnly ? 90 : 70;
+        const iH   = Math.min(iW / aspect, maxH);
+
+        if (imgY + iH > PDF_H - PDF_MARGIN_BOTTOM) {
+          doc.addPage();
+          rgb(doc, PDF_COLORS.paper, 'fill');
+          doc.rect(0, 0, PDF_W, PDF_H, 'F');
+          imgY = PDF_MARGIN_TOP;
+        }
+
+        // Centre image horizontally within the type area
+        const iX = PDF_MARGIN_X + (typeW - iW) / 2;
+        const cropped = await cropToAspect(imgData, iW / iH, 1600);
+        doc.addImage(cropped || imgData, 'JPEG', iX, imgY, iW, iH, undefined, 'FAST');
+        imgY += iH + 8;
+      } catch (e) {
+        console.warn('[pdf] image render failed', e);
+      }
+    }
+
+    return imgY;
+  }
+
+  // Return a safe full-width cursor after a column stream. If text has entered
+  // column 2 or 3, earlier columns already contain copy below the current Y, so
+  // full-width material must start on a fresh page to avoid covering it.
+  function startFullWidthAfterText(doc, endState, bodyBottom, requiredHeight) {
+    if (endState.col === 0 && endState.cy + requiredHeight <= bodyBottom) {
+      return endState.cy;
+    }
+    doc.addPage();
+    rgb(doc, PDF_COLORS.paper, 'fill');
+    doc.rect(0, 0, PDF_W, PDF_H, 'F');
+    return PDF_MARGIN_TOP;
+  }
+
+  // ── Article page header: hero, title, byline, lead (full width) ─────────
+  // Rendered on the CURRENT page. Caller must have called addPage + paper fill.
+  // Returns the y position where the multi-column body should start.
   async function renderArticleHeader(doc, article, cat, body, heroImgDataUrl, pageNum) {
     const lang = state.lang;
-    const t = I18N[lang];
+    const t    = I18N[lang];
 
-    // ── Hero image (full page width, 1/4 page height) ──────────────────────
-    const heroH = PDF_H / 4;   // ≈ 74.25 mm
+    // Hero (full page width, ¼ page height)
+    const heroH = PDF_H / 4;
     if (heroImgDataUrl) {
       await addImageCover(doc, heroImgDataUrl, 0, 0, PDF_W, heroH);
       doc.setGState(new doc.GState({ opacity: 0.35 }));
@@ -1307,29 +1555,26 @@
     rgb(doc, PDF_COLORS.white, 'text');
     doc.setCharSpace(1.8);
     doc.text('ASAC', PDF_MARGIN_X, 12);
-    doc.text(`\u2014 ${String(pageNum).padStart(2, '0')} \u2014`, PDF_W - PDF_MARGIN_X - 14, 12);
+    doc.text('\u2014 ' + String(pageNum).padStart(2, '0') + ' \u2014', PDF_W - PDF_MARGIN_X - 14, 12);
     doc.setCharSpace(0);
 
-    // Title anchored to the bottom of the hero; shrink size until it fits
+    // Title anchored to hero bottom; shrink font until it fits in ≤4 lines
     const titleMaxW = PDF_W - 2 * PDF_MARGIN_X;
     const titleSizes = [22, 19, 16, 14];
-    let chosenSize = 14;
-    let chosenLines = [];
+    let chosenSize = 14, chosenLines = [];
     for (const sz of titleSizes) {
       setDisplay(doc, sz);
       doc.setCharSpace(0.4);
       const lines = doc.splitTextToSize((article.title[lang] || '').toUpperCase(), titleMaxW);
       doc.setCharSpace(0);
-      const lineH = sz / 2.835 * 0.95;
-      if (lines.length * lineH <= heroH - 38 || sz === titleSizes[titleSizes.length - 1]) {
+      const lh = sz / 2.835 * 0.95;
+      if (lines.length * lh <= heroH - 38 || sz === titleSizes[titleSizes.length - 1]) {
         chosenSize = sz; chosenLines = lines; break;
       }
     }
     const titleLineH = chosenSize / 2.835 * 0.95;
-    const titleTopY = heroH - 10 - chosenLines.length * titleLineH;
-
+    const titleTopY  = heroH - 10 - chosenLines.length * titleLineH;
     drawCategoryPill(doc, cat.name[lang], PDF_MARGIN_X, titleTopY - 4);
-
     setDisplay(doc, chosenSize);
     rgb(doc, PDF_COLORS.white, 'text');
     doc.setCharSpace(0.4);
@@ -1337,9 +1582,8 @@
     for (const line of chosenLines) { doc.text(line, PDF_MARGIN_X, ty); ty += titleLineH; }
     doc.setCharSpace(0);
 
-    // ── Byline + separator + lead (full width, below hero) ─────────────────
+    // Byline + separator + lead (full width, below hero)
     let y = heroH + 10;
-
     if (body.author) {
       setBody(doc, 8, 'bold');
       doc.setCharSpace(1.6);
@@ -1347,28 +1591,25 @@
       doc.text(t.by.toUpperCase(), PDF_MARGIN_X, y);
       const byW = doc.getTextWidth(t.by.toUpperCase()) + 3;
       doc.setCharSpace(0);
-
       setBody(doc, 9.5, 'bold');
       rgb(doc, PDF_COLORS.blue, 'text');
       doc.text(body.author[lang], PDF_MARGIN_X + byW, y);
       y += 5;
-
       if (body.role) {
         setBody(doc, 8.5, 'italic');
         rgb(doc, PDF_COLORS.grey, 'text');
-        const roleLines = doc.splitTextToSize(body.role[lang], titleMaxW);
-        for (const line of roleLines) { doc.text(line, PDF_MARGIN_X, y); y += 4.2; }
+        const rls = doc.splitTextToSize(body.role[lang], titleMaxW);
+        for (const l of rls) { doc.text(l, PDF_MARGIN_X, y); y += 4.2; }
       }
       y += 3;
     }
-
     rgb(doc, PDF_COLORS.greyLight, 'draw');
     doc.setLineWidth(0.3);
     doc.line(PDF_MARGIN_X, y, PDF_W - PDF_MARGIN_X, y);
     y += 7;
 
     if (body.lead) {
-      const leadX = PDF_MARGIN_X + 3;
+      const leadX      = PDF_MARGIN_X + 3;
       const leadStartY = y;
       setBody(doc, 11, 'normal');
       rgb(doc, PDF_COLORS.ink, 'text');
@@ -1376,7 +1617,6 @@
       let leadY = y + 4;
       for (const line of leadLines) {
         if (leadY > PDF_H - PDF_MARGIN_BOTTOM) {
-          // Lead is very long — page break; blue bar covers what we have so far
           rgb(doc, PDF_COLORS.blue, 'fill');
           doc.rect(leadX, leadStartY + 1, 1.4, leadY - leadStartY - 4, 'F');
           doc.addPage();
@@ -1391,115 +1631,9 @@
       doc.rect(leadX, leadStartY + 1, 1.4, leadY - leadStartY - 4, 'F');
       y = leadY + 6;
     }
-
-    return y;  // caller continues body layout from here
+    return y;
   }
-
-  // ── Multi-column text cursor ───────────────────────────────────────────────
-  // Tracks the current position (column index + y within that column).
-  // When a column overflows, it advances to the next; when all 3 are full,
-  // a new page is added and we restart from column 0.
-  function makeColCursor(startY, bottomY) {
-    return {
-      col: 0,     // 0, 1, 2
-      y: startY,  // current y in this column
-      bottom: bottomY,  // page bottom boundary
-    };
-  }
-
-  // Advance cursor to the start of the next column (or new page if on col 2).
-  // `doc` is needed only if we must add a page. `startY` = top of body column area.
-  function nextCol(cursor, doc, startY) {
-    if (cursor.col < PDF_N_COLS - 1) {
-      cursor.col += 1;
-      cursor.y = startY;
-    } else {
-      doc.addPage();
-      rgb(doc, PDF_COLORS.paper, 'fill');
-      doc.rect(0, 0, PDF_W, PDF_H, 'F');
-      cursor.col = 0;
-      cursor.y = PDF_MARGIN_TOP;
-    }
-  }
-
-  // Write one paragraph into the cursor column, advancing columns/pages as needed.
-  function writeColParagraph(doc, text, cursor, bodyStartY, fontSize, lineH) {
-    setBody(doc, fontSize, 'normal');
-    rgb(doc, [40, 40, 40], 'text');
-    const lines = doc.splitTextToSize(text, PDF_COL_W);
-    for (const line of lines) {
-      if (cursor.y > cursor.bottom) nextCol(cursor, doc, bodyStartY);
-      doc.text(line, colX(cursor.col), cursor.y);
-      cursor.y += lineH;
-    }
-    cursor.y += 2.5;  // paragraph gap
-  }
-
-  // Write a section heading (blue, Bebas-style) spanning the current column.
-  function writeColHeading(doc, text, cursor, bodyStartY) {
-    const sz = 11;
-    setDisplay(doc, sz);
-    rgb(doc, PDF_COLORS.blue, 'text');
-    doc.setCharSpace(0.4);
-    const lines = doc.splitTextToSize(text.toUpperCase(), PDF_COL_W);
-    const lineH = sz / 2.835 * 0.95;
-    for (const line of lines) {
-      if (cursor.y > cursor.bottom) nextCol(cursor, doc, bodyStartY);
-      doc.text(line, colX(cursor.col), cursor.y);
-      cursor.y += lineH;
-    }
-    doc.setCharSpace(0);
-    cursor.y += 1.5;
-  }
-
-  // Place an image that spans `colSpan` columns (1, 2, or 3) starting at colX(cursor.col).
-  // The image is inserted at the top of the current cursor position. If it won't fit
-  // in the remaining column height, we flush to the next column / next page first.
-  async function writeColImage(doc, dataUrl, cursor, bodyStartY, colSpan, maxH) {
-    if (!dataUrl) return;
-    try {
-      const props = doc.getImageProperties(dataUrl);
-      const imgAspect = props.width / props.height;
-      const imgW = spanW(colSpan);
-      let imgH = Math.min(imgW / imgAspect, maxH || 80);
-
-      // If the image would overflow this column, move to next first
-      // (for 1-col images). For multi-col images start fresh at new column 0.
-      if (colSpan > 1 && cursor.col !== 0) {
-        // Multi-col image needs to start at col 0
-        while (cursor.col !== 0) nextCol(cursor, doc, bodyStartY);
-      }
-      if (cursor.y + imgH > cursor.bottom) {
-        nextCol(cursor, doc, bodyStartY);
-        if (colSpan > 1 && cursor.col !== 0) {
-          while (cursor.col !== 0) nextCol(cursor, doc, bodyStartY);
-        }
-      }
-
-      // Centre image within its span (left-align for col-span images)
-      const ix = colX(cursor.col);
-      const cropped = await cropToAspect(dataUrl, imgW / imgH, 1600);
-      doc.addImage(cropped || dataUrl, 'JPEG', ix, cursor.y, imgW, imgH, undefined, 'FAST');
-      cursor.y += imgH + 4;
-
-      // After a multi-col image, advance all occupied columns to after the image
-      if (colSpan > 1) {
-        // Treat the columns spanned as if they've been consumed up to cursor.y
-        // We don't actually track each column independently, so we just advance
-        // the cursor past the image; the text flow continues below it.
-        // Jump to col 0 on the same level (below the image) so the next text
-        // block starts below the image rather than beside it.
-        cursor.col = 0;
-        cursor.y += 2;
-      }
-    } catch (e) {
-      console.warn('writeColImage failed', e);
-    }
-  }
-
-  // Renders one article. The hero/title/byline/lead always occupy the first page
-  // (full width). Body paragraphs and sections then flow across up to 3 columns,
-  // with images snapping to 1/3, 2/3 or 3/3 of the type area.
+  // ── Main article renderer ─────────────────────────────────────────────────
   async function renderArticlePdfPage(doc, article, cat, body, heroImgDataUrl, pageNum) {
     doc.addPage();
     rgb(doc, PDF_COLORS.paper, 'fill');
@@ -1508,85 +1642,41 @@
     const lang = state.lang;
     const t    = I18N[lang];
 
-    // Header block: hero + title + byline + lead
-    const bodyTop = await renderArticleHeader(doc, article, cat, body, heroImgDataUrl, pageNum);
+    // ── 1. Header: full-width hero, title, byline, lead ───────────────────
+    const bodyTop    = await renderArticleHeader(doc, article, cat, body, heroImgDataUrl, pageNum);
+    const bodyBottom = PDF_H - PDF_MARGIN_BOTTOM - 6;
 
-    // ── Multi-column body ─────────────────────────────────────────────────
-    const bodyBottom = PDF_H - PDF_MARGIN_BOTTOM - 6;  // keep clear of footer
-    const cursor     = makeColCursor(bodyTop, bodyBottom);
+    // ── 2. Short copy is one column; substantial copy is three columns ────
+    const paragraphs  = (body.paragraphs && body.paragraphs[lang]) || [];
+    const sections    = (body.sections   && body.sections[lang])   || [];
+    const nCols       = chooseArticleColumnCount(doc, body, lang);
+    const geom        = makeColGeometry(nCols);
 
-    // Collect all text content items in order, interspersed with image hints
-    // so we can decide span based on position (first image = 2/3, subsequent = 1/3)
-    const paragraphs  = (body.paragraphs  && body.paragraphs[lang])  || [];
-    const sections    = (body.sections    && body.sections[lang])    || [];
+    // ── 3. Phase 1 — text in columns (justified) ─────────────────────────
+    const endState = renderTextInColumns(doc, body, lang, t, geom, bodyTop, bodyBottom);
+
+    // ── 4. Phase 2 — images AFTER text, never overlapping ────────────────
     const inlineImages = (body.inlineImages || []).slice();
+    const imgList = inlineImages.length > 0
+      ? inlineImages
+      : (heroImgDataUrl && paragraphs.length + sections.length > 0 ? [heroImgDataUrl] : []);
 
-    // Write body paragraphs (single-column, flow naturally)
-    for (const p of paragraphs) {
-      writeColParagraph(doc, p, cursor, bodyTop, 9.5, 5.0);
-    }
+    let afterImgY = await renderImagesAfterText(doc, imgList, endState, geom, bodyBottom);
 
-    // After paragraphs, insert first inline image (2/3 width = 2 columns)
-    if (inlineImages.length > 0 || heroImgDataUrl) {
-      const imgData = inlineImages.length > 0 ? inlineImages.shift() : heroImgDataUrl;
-      if (imgData) {
-        // 2-column wide (2/3 of type area), max 72 mm tall — prominent but not full-bleed
-        await writeColImage(doc, imgData, cursor, bodyTop, 2, 72);
-      }
-    }
-
-    // Sections flow through columns
-    for (let i = 0; i < sections.length; i++) {
-      const s = sections[i];
-
-      // Ensure there's at least 18 mm for the heading + first line before wrapping
-      if (cursor.y + 18 > cursor.bottom) nextCol(cursor, doc, bodyTop);
-
-      writeColHeading(doc, s.h, cursor, bodyTop);
-      writeColParagraph(doc, s.p, cursor, bodyTop, 9.5, 5.0);
-
-      // Pull quote at the midpoint — full width (3/3)
-      if (body.pullQuote && i === Math.floor(sections.length / 2) - 1) {
-        // Advance to col 0 to start a full-width block
-        while (cursor.col !== 0) nextCol(cursor, doc, bodyTop);
-        if (cursor.y + 26 > cursor.bottom) nextCol(cursor, doc, bodyTop);
-        const qY = cursor.y;
-        rgb(doc, PDF_COLORS.red, 'fill');
-        doc.rect(PDF_MARGIN_X, qY, 2, 18, 'F');
-        // Render quote text using the full type width
-        setDisplay(doc, 13);
-        rgb(doc, PDF_COLORS.ink, 'text');
-        doc.setCharSpace(0.4);
-        const qLines = doc.splitTextToSize(('\u201c' + body.pullQuote[lang] + '\u201d').toUpperCase(), PDF_TYPE_W - 6);
-        const qLineH = 13 / 2.835 * 0.95;
-        let qy = qY + 6;
-        for (const line of qLines) { doc.text(line, PDF_MARGIN_X + 6, qy); qy += qLineH; }
-        doc.setCharSpace(0);
-        cursor.y = qy + 6;
-        // Reset to col 0 so next sections start fresh
-        cursor.col = 0;
-      }
-
-      // Remaining inline images: 1-col (1/3) or 2-col (2/3)
-      if (inlineImages.length && i < sections.length - 1) {
-        const imgData = inlineImages.shift();
-        const span = inlineImages.length > 0 ? 1 : 2;  // last remaining → 2-col
-        await writeColImage(doc, imgData, cursor, bodyTop, span, 60);
-      }
-    }
-
-    // ── Sources (full width, always below body columns) ────────────────────
+    // ── 5. Sources (full type width) ──────────────────────────────────────
     if (body.sources && body.sources.length) {
-      // Flush to page bottom area; add page if too close to footer
-      const srcY = Math.max(cursor.y, bodyBottom - 30);
-      let y = srcY;
-      if (y + 20 > PDF_H - PDF_MARGIN_BOTTOM) {
+      // Even when every image is unavailable, sources cannot be placed across
+      // completed columns. Move them to a guaranteed-empty full-width region.
+      let y = afterImgY != null
+        ? afterImgY
+        : startFullWidthAfterText(doc, endState, bodyBottom, 22);
+      if (y + 22 > PDF_H - PDF_MARGIN_BOTTOM) {
         doc.addPage();
         rgb(doc, PDF_COLORS.paper, 'fill');
         doc.rect(0, 0, PDF_W, PDF_H, 'F');
         y = PDF_MARGIN_TOP;
       }
-      y += 4;
+      y += 6;
       rgb(doc, PDF_COLORS.greyLight, 'draw');
       doc.setLineWidth(0.3);
       doc.line(PDF_MARGIN_X, y, PDF_W - PDF_MARGIN_X, y);
@@ -1602,7 +1692,7 @@
           doc.rect(0, 0, PDF_W, PDF_H, 'F');
           y = PDF_MARGIN_TOP;
         }
-        const srcLines = doc.splitTextToSize('\u00b7 ' + src.label, PDF_TYPE_W);
+        const srcLines = doc.splitTextToSize('\u00b7 ' + src.label, geom.typeW);
         for (const line of srcLines) {
           doc.textWithLink(line, PDF_MARGIN_X, y, { url: src.url });
           y += 4.2;
@@ -1610,8 +1700,7 @@
       }
     }
 
-    // ── Footer rule: page number on the first (hero) page ──────────────────
-    // (additional pages generated by cursor don't get footers to keep it clean)
+    // ── 6. Footer (page number on the opening page) ───────────────────────
     setBody(doc, 7.5, 'normal');
     doc.setCharSpace(1.2);
     rgb(doc, PDF_COLORS.grey, 'text');
@@ -1619,6 +1708,7 @@
     doc.text(String(pageNum).padStart(2, '0'), PDF_W - PDF_MARGIN_X - 6, PDF_H - 10);
     doc.setCharSpace(0);
   }
+
 
   // Lazily inject jsPDF only when the user requests a PDF. Keeps it off the
   // critical path so it can never block page load on slow connections.
@@ -1888,28 +1978,30 @@
     doc.setCharSpace(0);
   }
 
-  /* ---------- FROST-ON-SCROLL NAV (menu page + article page) ---------- */
+  /* ---------- FROST-ON-SCROLL NAV (article page) ---------- */
   function setupFrostNav() {
     const nav = document.getElementById('nav');
     if (!nav) return;
-    let rafPending = false;
     const update = () => {
-      rafPending = false;
-      // Article page: progress based on window scroll. The concrete rgba/blur
-      // values (set in applyNavFrost) guarantee the frost engages on every
-      // browser — including ones that drop calc(var()) inside color/filter.
-      const y = window.scrollY || window.pageYOffset ||
-        (document.documentElement && document.documentElement.scrollTop) || 0;
-      applyNavFrost(nav, y / 220);
+      const y = Math.max(
+        window.scrollY || window.pageYOffset || 0,
+        document.documentElement.scrollTop || 0,
+        document.body.scrollTop || 0,
+      );
+      applyNavFrost(nav, y);
     };
-    const onScroll = () => {
-      if (rafPending) return;
-      rafPending = true;
-      requestAnimationFrame(update);
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll, { passive: true });
-    update();
+    // This is a single class toggle, so update synchronously. Capturing on the
+    // document also covers WebKit builds that report the body as the scroll
+    // target while the browser chrome is expanding/collapsing.
+    window.addEventListener('scroll', update, { passive: true });
+    document.addEventListener('scroll', update, { passive: true, capture: true });
+    window.addEventListener('touchmove', update, { passive: true });
+    window.addEventListener('resize', update, { passive: true });
+    // Some iOS WebKit versions coalesce the first scroll event while browser
+    // chrome is collapsing. This low-frequency check is a small, deterministic
+    // fallback; classList.toggle is a no-op while the state is unchanged.
+    window.setInterval(update, 160);
+    update(); // set initial state
   }
 
   // After CMS hydration, swap the hero + feature-panel background images
@@ -2178,12 +2270,12 @@
 
   /* ---------- INIT ---------- */
   function init() {
-    // Hide the loader FIRST — before anything that could throw — so the page
-    // can never get stuck on the loading screen.
-    hideLoader();
-
     try {
       const page = document.body.dataset.page || 'home';
+      // Article content is already present as a stable page shell, so remove
+      // the fixed loader immediately. This avoids the first mobile swipe being
+      // consumed while the loading overlay is fading away.
+      hideLoader(page === 'article');
       initCursor();
 
       if (page === 'home') {
@@ -2201,6 +2293,24 @@
           }
         }).catch(() => {});
       } else if (page === 'article') {
+        // ── Defensive scroll unlock ──────────────────────────────────────────
+        // The home page locks scroll via html/body.no-scroll when overlays are
+        // open.  If the user navigates here while an overlay was open (e.g. taps
+        // an article card while the category panel is animating), those classes
+        // could still be set by the browser history restore.  Wipe everything so
+        // the article page always starts in a clean, scrollable state.
+        document.documentElement.classList.remove('no-scroll');
+        document.body.classList.remove('no-scroll');
+        document.documentElement.style.overflow = '';
+        document.documentElement.style.overflowY = 'auto';
+        document.body.style.overflow = '';
+        document.body.style.overflowY = 'visible';
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.height = '';
+        // Ensure scroll starts at the top of the article page
+        window.scrollTo(0, 0);
+
         bindEvents();
         renderArticlePage();
         setupFrostNav();
@@ -2227,11 +2337,27 @@
   window.addEventListener('pageshow', (event) => {
     if (!event.persisted) return;
     try {
+      const page = document.body.dataset.page || 'home';
       document.documentElement.classList.remove('no-scroll');
       document.body.classList.remove('no-scroll');
       document.body.style.position = '';
       document.body.style.top = '';
+      document.body.style.height = '';
       lockCount = 0;
+
+      // An article restored from the back/forward cache must keep its article
+      // navigation classes and must never run the home panel-height routine.
+      if (page === 'article') {
+        document.documentElement.style.overflowY = 'auto';
+        document.body.style.overflowY = 'visible';
+        const articleNav = document.getElementById('nav');
+        if (articleNav) {
+          articleNav.classList.add('is-dark', 'nav--frostable');
+          applyNavFrost(articleNav, window.scrollY || window.pageYOffset || 0);
+        }
+        return;
+      }
+
       state.isMenuOpen = false;
       state.isCategoryOpen = false;
       state.currentCategoryId = null;
@@ -2246,9 +2372,7 @@
       if (nav) {
         nav.classList.remove('is-dark', 'nav--frostable', 'is-frost-on');
         nav.style.removeProperty('--frost-p');
-        nav.style.backgroundColor = '';
-        nav.style.backdropFilter = '';
-        nav.style.webkitBackdropFilter = '';
+        // Frost is now class-only; no inline background/backdropFilter to clear.
       }
 
       // Re-run panel layout in case the viewport size changed since last visit
