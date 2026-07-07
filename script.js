@@ -291,7 +291,7 @@
   const I18N = {
     fr: {
       menuLabel: 'Sommaire',
-      heroSub: "Le Magazine de l'Association des Sociétés d'Assurance du Cameroun",
+      heroSub: "Le Magazine de l'Association des Sociétés d'Assurances du Cameroun",
       issueMonth: 'Juin 2026',
       scroll: 'Faites défiler',
       readMore: "Lire l'article",

@@ -1,6 +1,6 @@
 # ASAC Magazine — Assurances & Sécurité
 
-A bilingual (FR / EN) online magazine for the **Association des Sociétés d'Assurance du Cameroun**, inspired by floema.com. Built as a static site with optional Google Drive CMS for content management.
+A bilingual (FR / EN) online magazine for the **Association des Sociétés d'Assurances du Cameroun**, inspired by floema.com. Built as a static site with optional Google Drive CMS for content management.
 
 **Issue:** N°46 — Juin 2026
 
@@ -107,5 +107,5 @@ Just edit the Google Doc. See `docs/FOLDER-STRUCTURE.md` for the conventions the
 
 ## Built by
 
-Magazine: **ASAC** — Association des Sociétés d'Assurance du Cameroun  
+Magazine: **ASAC** — Association des Sociétés d'Assurances du Cameroun  
 Site design & build: **MW DDB Cameroon**
