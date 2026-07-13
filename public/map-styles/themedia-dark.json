@@ -1,0 +1,38 @@
+{
+  "version": 8,
+  "name": "TheMedia.guide Dark",
+  "metadata": {
+    "maputnik:renderer": "mlgljs"
+  },
+  "sources": {
+    "carto-dark": {
+      "type": "raster",
+      "tiles": [
+        "https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png"
+      ],
+      "tileSize": 256,
+      "attribution": "&copy; OpenStreetMap contributors &copy; CARTO"
+    }
+  },
+  "layers": [
+    {
+      "id": "background",
+      "type": "background",
+      "paint": {
+        "background-color": "#050505"
+      }
+    },
+    {
+      "id": "carto-dark",
+      "type": "raster",
+      "source": "carto-dark",
+      "paint": {
+        "raster-opacity": 0.82,
+        "raster-saturation": -0.35,
+        "raster-contrast": 0.12,
+        "raster-brightness-min": 0.02,
+        "raster-brightness-max": 0.78
+      }
+    }
+  ]
+}

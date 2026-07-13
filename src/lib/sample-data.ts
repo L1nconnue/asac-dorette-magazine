@@ -1,0 +1,78 @@
+import type { Billboard } from "./types";
+
+const base = {
+  city: "Douala",
+  faceIds: [],
+  facesOrientation: "",
+  photoFront: "",
+  photoContext: "",
+  lastVerified: "",
+  status: "APPROVED",
+  monthlyPriceXaf: null,
+  priceSource: "",
+};
+
+/**
+ * Only used if the Google Sheet cannot be read at all (bad sharing settings,
+ * network problem, first deploy without env vars). It keeps the map usable
+ * and is flagged in the UI as sample data, never as real inventory.
+ */
+export const SAMPLE_BILLBOARDS: Billboard[] = [
+  {
+    ...base,
+    id: "SAMPLE-01",
+    structureId: "SAMPLE-01",
+    faceCount: 2,
+    arrondissementCode: "DLA1",
+    arrondissementName: "Douala 1er",
+    neighborhood: "Bonanjo",
+    roadAxis: "Boulevard de la Liberté",
+    lat: 4.0483,
+    lng: 9.6947,
+    formatSize: "12x4m",
+    mediaType: "Unipole",
+    owner: "Sample Régie",
+    availability: "Available",
+    condition: "Good",
+    hasLights: "Yes",
+    notes: "Sample row — the platform could not read the master sheet.",
+  },
+  {
+    ...base,
+    id: "SAMPLE-02",
+    structureId: "SAMPLE-02",
+    faceCount: 1,
+    arrondissementCode: "DLA3",
+    arrondissementName: "Douala 3e",
+    neighborhood: "Ndokotti",
+    roadAxis: "Carrefour Ndokotti",
+    lat: 4.0463,
+    lng: 9.7345,
+    formatSize: "8x10m",
+    mediaType: "Panneau",
+    owner: "Sample Régie",
+    availability: "Occupied",
+    condition: "To Check",
+    hasLights: "Unknown",
+    notes: "Sample row — the platform could not read the master sheet.",
+  },
+  {
+    ...base,
+    id: "SAMPLE-03",
+    structureId: "SAMPLE-03",
+    faceCount: 2,
+    arrondissementCode: "DLA5",
+    arrondissementName: "Douala 5e",
+    neighborhood: "Kotto",
+    roadAxis: "Axe lourd Kotto",
+    lat: 4.0771,
+    lng: 9.7563,
+    formatSize: "15x5m",
+    mediaType: "Unipole",
+    owner: "Sample Régie",
+    availability: "Unknown",
+    condition: "Good",
+    hasLights: "No",
+    notes: "Sample row — the platform could not read the master sheet.",
+  },
+];

@@ -1,0 +1,176 @@
+@import url("https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --ink: #050505;
+  --white: #ffffff;
+  --brand: #ff1515;
+  --deep: #8a0d0d;
+  --graphite: #171717;
+  --muted: #a7a7a7;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --radius: 8px;
+}
+
+html,
+body {
+  background: var(--ink);
+  color: var(--white);
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior-y: none;
+}
+
+body {
+  font-family: "Sora", "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-weight: 400;
+  font-feature-settings: "ss01", "cv01";
+}
+
+h1,
+h2,
+h3 {
+  font-weight: 700;
+}
+
+::selection {
+  background: var(--brand);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+
+@layer components {
+  .tmg-card {
+    @apply rounded-card border border-white/10 bg-white/[0.03] backdrop-blur-[2px] transition duration-300 ease-tmg;
+  }
+  .tmg-card:hover {
+    @apply border-brand/40 bg-white/[0.05];
+    box-shadow: 0 10px 40px -20px rgba(255, 21, 21, 0.45);
+  }
+  .tmg-chip {
+    @apply inline-flex items-center gap-1 rounded-[4px] border border-white/10 px-2 py-1 text-[11px] uppercase tracking-wider text-muted;
+  }
+  .tmg-btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-[6px] px-4 py-2 text-sm font-medium transition duration-200 ease-tmg;
+  }
+  .tmg-btn-primary {
+    @apply tmg-btn bg-brand text-white hover:bg-[#e11010];
+  }
+  .tmg-btn-ghost {
+    @apply tmg-btn border border-white/15 text-white/80 hover:border-white/35 hover:text-white;
+  }
+  .tmg-label {
+    @apply text-[11px] uppercase tracking-[0.14em] text-muted;
+  }
+}
+
+/* Scrollbars inside panels */
+.tmg-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+.tmg-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 8px;
+}
+
+/* MapLibre chrome, toned down to brand */
+.maplibregl-ctrl-attrib,
+.maplibregl-ctrl-attrib a {
+  background: rgba(5, 5, 5, 0.65) !important;
+  color: rgba(167, 167, 167, 0.9) !important;
+  font-size: 10px !important;
+}
+.maplibregl-ctrl-group {
+  background: rgba(23, 23, 23, 0.9) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+.maplibregl-ctrl-group button + button {
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+.maplibregl-ctrl-icon {
+  filter: invert(1) opacity(0.75);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+@keyframes tmgFade {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes tmgStroke {
+  0% {
+    transform: scale(0.92);
+    opacity: 0.75;
+  }
+  70% {
+    transform: scale(1.28);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.28);
+    opacity: 0;
+  }
+}
+
+@keyframes tmgDrift {
+  0%,
+  100% {
+    transform: translate3d(8vw, 18vh, 0) scale(1);
+  }
+  45% {
+    transform: translate3d(62vw, 8vh, 0) scale(1.2);
+  }
+  75% {
+    transform: translate3d(38vw, 58vh, 0) scale(0.95);
+  }
+}
+
+@keyframes tmgDriftAlt {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(-48vw, -28vh, 0) scale(1.15);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [class*="tmgFade"] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* Hover preview popup on the map */
+.tmg-popup .maplibregl-popup-content {
+  background: rgba(5, 5, 5, 0.92);
+  border: 1px solid rgba(255, 21, 21, 0.35);
+  border-radius: 6px;
+  padding: 8px 10px;
+  box-shadow: 0 12px 40px -20px rgba(255, 21, 21, 0.6);
+}
+.tmg-popup .maplibregl-popup-tip {
+  display: none;
+}

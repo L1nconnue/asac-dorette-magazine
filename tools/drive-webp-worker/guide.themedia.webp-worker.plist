@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>guide.themedia.webp-worker</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/usr/local/bin/node</string>
+    <string>/Users/user/Documents/Codex/2026-07-09/https-docs-google-com-spreadsheets-d/work/themedia-guide-platform-build/themedia-guide-platform/tools/drive-webp-worker/run-local.mjs</string>
+  </array>
+  <key>WorkingDirectory</key>
+  <string>/Users/user/Documents/Codex/2026-07-09/https-docs-google-com-spreadsheets-d/work/themedia-guide-platform-build/themedia-guide-platform/tools/drive-webp-worker</string>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>GOOGLE_SERVICE_ACCOUNT_JSON</key>
+    <string>/Users/user/Downloads/themediaguide-538a8a80f67e.json</string>
+    <key>GOOGLE_SHEET_ID</key>
+    <string>1bqH2CNh5HJt2NPwKef79gthYz5Wu6XDGIowqaBQEgqI</string>
+    <key>SHEET_TAB_BILLBOARDS</key>
+    <string>Billboard_Database</string>
+    <key>SHEET_TAB_RAW</key>
+    <string>Raw_Submissions</string>
+    <key>WEBP_OUTPUT_FOLDER_ID</key>
+    <string>11gcRl5BqZfgCgY5eqXGTGWy67_IKBBLc</string>
+    <key>WEBP_OUTPUT_LOCAL_PATH</key>
+    <string>/Users/user/Library/CloudStorage/GoogleDrive-ntamak.dorette@gmail.com/My Drive/TheMedia.guide/Billboards/Douala/Billboard Photos/WebP</string>
+    <key>WEBP_QUALITY</key>
+    <string>78</string>
+    <key>WEBP_MAX_WIDTH</key>
+    <string>1800</string>
+    <key>WEBP_LIMIT</key>
+    <string>25</string>
+  </dict>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>StartInterval</key>
+  <integer>900</integer>
+  <key>ProcessType</key>
+  <string>Background</string>
+  <key>StandardOutPath</key>
+  <string>/Users/user/Library/Logs/TheMediaGuide-WebP.log</string>
+  <key>StandardErrorPath</key>
+  <string>/Users/user/Library/Logs/TheMediaGuide-WebP.error.log</string>
+</dict>
+</plist>

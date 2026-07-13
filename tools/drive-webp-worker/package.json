@@ -1,0 +1,13 @@
+{
+  "name": "themedia-drive-webp-worker",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node worker.mjs",
+    "start:local": "node run-local.mjs"
+  },
+  "dependencies": {
+    "sharp": "^0.33.5"
+  }
+}
